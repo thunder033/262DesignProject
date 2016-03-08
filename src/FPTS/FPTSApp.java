@@ -6,11 +6,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class FPTSApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("FPTS/fpts.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("FPTS.fxml"));
         primaryStage.setTitle("ThunderForge FPTS");
 
         primaryStage.setScene(new Scene(root, 300, 275));
