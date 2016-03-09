@@ -10,7 +10,7 @@ public class FPTSApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("FPTS.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("fpts.fxml"));
         primaryStage.setTitle("ThunderForge FPTS");
 
         primaryStage.setScene(new Scene(root, 300, 275));
