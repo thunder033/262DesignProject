@@ -11,6 +11,7 @@ public class FPTSApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
+        // UI structure is kept in fxml files.
         Parent root = FXMLLoader.load(getClass().getResource("FPTS.fxml"));
 
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
