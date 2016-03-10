@@ -1,11 +1,9 @@
 package FPTS.Data;
 
+
 import FPTS.Model;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -13,13 +11,8 @@ import java.util.stream.Collectors;
  */
 public class FPTSData {
 
-    static public String dataPath = "";
+    static public String dataPath = "data/";
     static private Map<Class, DataBin> elementLookup = new HashMap<>();
-    static private boolean loaded = false;
-
-    static private DataBin[] dataBins = new DataBin[]{
-
-    };
 
     protected FPTSData() {
 
@@ -33,12 +26,16 @@ public class FPTSData {
     /**
      * Load all defined model data bins
      */
-    public static void loadBins() {
-        if (!loaded) {
-            for (DataBin bin : dataBins) {
+    public static void loadBins(List<Class<? extends DataBin>> binTypes) {
+        for (Class binType : binTypes) {
+            try {
+                DataBin bin = (DataBin) binType.newInstance();
                 importBin(bin);
             }
-            loaded = true;
+            catch (InstantiationException|IllegalAccessException ex) {
+                System.out.println("Failed Instantiate DataBin " + binType.toString());
+                System.out.println(ex.getMessage());
+            }
         }
     }
 
