@@ -4,6 +4,7 @@ import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 import FPTS.Models.MarketEquity;
 import FPTS.Models.MarketEquityBin;
+import FPTS.Models.MarketIndex;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,6 +32,9 @@ public class FPTSApp extends Application {
         for(MarketEquity equity : equities) {
             System.out.println(equity.getName());
         }
+
+        MarketIndex NASDAQ100 = MarketIndex.class.cast(FPTSData.getInstanceById(MarketEquity.class, "NASDAQ100"));
+        System.out.println(NASDAQ100.getName() + " contains " + NASDAQ100.getEquities().size() + " equities");
 
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");

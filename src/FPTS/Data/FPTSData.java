@@ -19,8 +19,8 @@ public class FPTSData {
     }
 
     public static void importBin(DataBin bin) {
-        bin.loadInstances();
         elementLookup.put(bin.dataClass, bin);
+        bin.loadInstances();
     }
 
     /**
@@ -45,12 +45,14 @@ public class FPTSData {
      * @param type the type of model instance
      * @param id   the ID of the instance
      * @param <T>  a subclass of Model
-     * @return a model instance
+     * @return a model instance or null if the bin/model doesn't exist
      */
     public static <T extends Model> T getInstanceById(Class<T> type, String id) {
         //get the appropriate data bin by type and then request an instance by ID
-        //finally, cas the instance to the requested type
-        return type.cast(elementLookup.get(type).getByID(id));
+        DataBin bin = elementLookup.get(type);
+        Object instance = bin != null ? bin.getByID(id) : null;
+        //finally, cast the instance to the requested type
+        return instance != null ? type.cast(instance) : null;
     }
 
     /**

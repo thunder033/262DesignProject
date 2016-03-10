@@ -30,12 +30,4 @@ public class MarketEquity extends Model {
     public float getSharePrice() {
         return _sharePrice;
     }
-
-    public void addIndex(MarketIndex index) {
-        indices.add(index);
-    }
-
-    public boolean inIndex(String name) {
-        return indices.contains(name);
-    }
 }
