@@ -1,6 +1,7 @@
 package FPTS.Models;
 
 import FPTS.Data.DataBin;
+import FPTS.Data.FPTSData;
 import FPTS.Model;
 
 /**
@@ -20,6 +21,12 @@ public class MarketEquityBin extends DataBin {
         MarketEquity mEquity = new MarketEquity(values[0]);
         mEquity._name = values[1];
         mEquity._sharePrice = Float.parseFloat(values[2]);
+
+        for (int i = 3; i < values.length; i++) {
+            if(FPTSData.getInstanceById(MarketEquity.class, values[i]) == null) {
+                addInstance(new MarketIndex(values[i]));
+            }
+        }
 
         //convert values[3] to index reference
         return mEquity;

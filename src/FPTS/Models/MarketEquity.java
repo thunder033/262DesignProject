@@ -2,17 +2,21 @@ package FPTS.Models;
 
 import FPTS.Model;
 
+import java.util.ArrayList;
+
 /**
  * Created by Greg on 3/9/2016.
  */
 public class MarketEquity extends Model {
     protected String _name;
     protected float _sharePrice;
+    private ArrayList<MarketIndex> indices;
 
     //Equity index;
     protected MarketEquity(String tickerSymbol)
     {
         super(tickerSymbol);
+        indices = new ArrayList<>();
     }
 
     public String getTickerSymbol() {
@@ -25,5 +29,13 @@ public class MarketEquity extends Model {
 
     public float getSharePrice() {
         return _sharePrice;
+    }
+
+    public void addIndex(MarketIndex index) {
+        indices.add(index);
+    }
+
+    public boolean inIndex(String name) {
+        return indices.contains(name);
     }
 }
