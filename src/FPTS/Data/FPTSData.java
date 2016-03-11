@@ -1,7 +1,7 @@
 package FPTS.Data;
 
 
-import FPTS.Model;
+import FPTS.Models.Model;
 
 import java.util.*;
 import java.util.stream.Collectors;

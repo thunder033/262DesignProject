@@ -1,8 +1,7 @@
 package FPTS.Data;
 
-import FPTS.Model;
+import FPTS.Models.Model;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;

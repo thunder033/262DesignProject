@@ -2,7 +2,6 @@ package FPTS.Models;
 
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Model;
 
 /**
  * Created by Greg on 3/9/2016.

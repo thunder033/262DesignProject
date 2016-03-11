@@ -1,7 +1,5 @@
 package FPTS.Models;
 
-import FPTS.Model;
-
 import java.util.ArrayList;
 
 /**

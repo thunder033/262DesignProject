@@ -1,4 +1,4 @@
-package FPTS;
+package FPTS.Controllers;
 
 import java.util.Observable;
 import java.util.Observer;
