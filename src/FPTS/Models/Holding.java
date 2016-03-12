@@ -1,6 +1,6 @@
 package FPTS.Models;
 
-import FPTS.Model;
+import FPTS.Core.Model;
 
 /**
  * Created by gjr8050 on 3/10/2016.

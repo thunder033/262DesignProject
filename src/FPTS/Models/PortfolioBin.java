@@ -2,7 +2,7 @@ package FPTS.Models;
 
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Model;
+import FPTS.Core.Model;
 
 /**
  * Created by gjr8050 on 3/10/2016.
@@ -22,7 +22,7 @@ public class PortfolioBin extends DataBin {
         for (int h = 3; h < values.length; h++) {
             String id = values[h].substring(1);
             Class type = values[h].charAt(0) == 'C' ? CashAccount.class : Equity.class;
-            Holding holding = Holding.class.cast(FPTSData.getInstanceById(type, id));
+            Holding holding = Holding.class.cast(FPTSData.getDataRoot().getInstanceById(type, id));
 
             if(holding != null)
             {
@@ -31,5 +31,10 @@ public class PortfolioBin extends DataBin {
         }
 
         return portfolio;
+    }
+
+    @Override
+    public String[] toCSV(Model instance) {
+        return new String[0];
     }
 }
