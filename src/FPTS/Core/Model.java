@@ -12,4 +12,8 @@ public class Model extends Observable {
     {
         id = _id;
     }
+
+    public void save(){
+        notifyObservers();
+    }
 }

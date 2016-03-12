@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 /**
  * Created by Greg on 3/9/2016.
  */
-public class FPTSData {
+public class FPTSData implements Observer {
 
     static public String dataPath = "data/";
     static private Map<Class, DataBin> bins = new HashMap<>();
@@ -19,10 +19,8 @@ public class FPTSData {
 
     }
 
-    public static FPTSData getDataRoot()
-    {
-        if(_instance == null)
-        {
+    public static FPTSData getDataRoot() {
+        if(_instance == null) {
             _instance = new FPTSData();
         }
 
@@ -49,6 +47,11 @@ public class FPTSData {
                 System.out.println(ex.getMessage());
             }
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        bins.get(o.getClass()).writeInstances();
     }
 
     /**
@@ -103,13 +106,21 @@ public class FPTSData {
                 .collect(Collectors.toCollection(ArrayList<T>::new));
     }
 
-    public <T extends Model> void addInstance(T instance)
-    {
+    /**
+     * Add an instance to the appropriate data bin
+     * @param instance the instance to add
+     * @param <T> a subclass of model
+     */
+    public <T extends Model> void addInstance(T instance) {
         bins.get(instance.getClass()).addInstance(instance);
     }
 
-    public <T extends Model> void deleteInstance(T instance)
-    {
+    /**
+     * Remove an instance from the appropriate data bin
+     * @param instance the instance to remove
+     * @param <T> a subclass of Model
+     */
+    public <T extends Model> void deleteInstance(T instance) {
         bins.get(instance.getClass()).removeInstance(instance);
     }
 }
