@@ -1,5 +1,6 @@
 package FPTS;
 
+import FPTS.Core.View;
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 import FPTS.Models.MarketEquity;
@@ -26,24 +27,46 @@ import java.util.ArrayList;
 
 public class FPTSApp extends Application {
 
+    FPTSData data;
+    protected View currentView;
+
+
+    public FPTSData getData()
+    {
+        return data;
+    }
+
+    public View getCurrentView()
+    {
+        return currentView;
+    }
+
+    public void setCurrentView(View view)
+    {
+        currentView.Exit();
+        currentView = view;
+        currentView.Load();
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         // UI structure is kept in fxml files.
         Parent root = FXMLLoader.load(getClass().getResource("/assets/fpts.fxml"));
 
-        System.out.println("Loading bins...");
+        System.out.println("Loading data bins...");
         ArrayList<Class<? extends DataBin>> binTypes = new ArrayList<>();
         binTypes.add(MarketEquityBin.class);
 
-        FPTSData.loadBins(binTypes);
+        data = FPTSData.getDataRoot();
+        data.loadBins(binTypes);
 
-        ArrayList<MarketEquity> equities = FPTSData.getInstances(MarketEquity.class);
+        ArrayList<MarketEquity> equities = data.getInstances(MarketEquity.class);
 
         for(MarketEquity equity : equities) {
             System.out.println(equity.getName());
         }
 
-        MarketIndex NASDAQ100 = MarketIndex.class.cast(FPTSData.getInstanceById(MarketEquity.class, "NASDAQ100"));
+        MarketIndex NASDAQ100 = MarketIndex.class.cast(data.getInstanceById(MarketEquity.class, "NASDAQ100"));
         System.out.println(NASDAQ100.getName() + " contains " + NASDAQ100.getEquities().size() + " equities");
 
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));

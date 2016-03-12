@@ -1,7 +1,7 @@
 package FPTS.Data;
 
 
-import FPTS.Models.Model;
+import FPTS.Core.Model;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,21 +12,33 @@ import java.util.stream.Collectors;
 public class FPTSData {
 
     static public String dataPath = "data/";
-    static private Map<Class, DataBin> elementLookup = new HashMap<>();
-
+    static private Map<Class, DataBin> bins = new HashMap<>();
+    static private FPTSData _instance;
+    
     protected FPTSData() {
 
     }
 
-    public static void importBin(DataBin bin) {
-        elementLookup.put(bin.dataClass, bin);
+    public static FPTSData getDataRoot()
+    {
+        if(_instance == null)
+        {
+            _instance = new FPTSData();
+        }
+
+        return _instance;
+    }
+
+
+    public void importBin(DataBin bin) {
+        bins.put(bin.dataClass, bin);
         bin.loadInstances();
     }
 
     /**
      * Load all defined model data bins
      */
-    public static void loadBins(List<Class<? extends DataBin>> binTypes) {
+    public void loadBins(List<Class<? extends DataBin>> binTypes) {
         for (Class binType : binTypes) {
             try {
                 DataBin bin = (DataBin) binType.newInstance();
@@ -47,9 +59,9 @@ public class FPTSData {
      * @param <T>  a subclass of Model
      * @return a model instance or null if the bin/model doesn't exist
      */
-    public static <T extends Model> T getInstanceById(Class<T> type, String id) {
+    public <T extends Model> T getInstanceById(Class<T> type, String id) {
         //get the appropriate data bin by type and then request an instance by ID
-        DataBin bin = elementLookup.get(type);
+        DataBin bin = bins.get(type);
         Object instance = bin != null ? bin.getByID(id) : null;
         //finally, cast the instance to the requested type
         return instance != null ? type.cast(instance) : null;
@@ -62,9 +74,9 @@ public class FPTSData {
      * @param <T>  a subclass of Model
      * @return a list of model instances
      */
-    public static <T extends Model> ArrayList<T> getInstances(Class<T> type) {
+    public <T extends Model> ArrayList<T> getInstances(Class<T> type) {
         //Get all instances the given type
-        ArrayList<Model> models = elementLookup.get(type).getAll();
+        ArrayList<Model> models = bins.get(type).getAll();
         //create a stream from the arrayList
         return models.stream()
                 //cast each element in the stream to the provided type
@@ -81,7 +93,7 @@ public class FPTSData {
      * @param <T>  a subclass of Model
      * @return a filtered list of Model instances
      */
-    public static <T extends Model> ArrayList<T> getInstances(Class<T> type, String[] ids) {
+    public <T extends Model> ArrayList<T> getInstances(Class<T> type, String[] ids) {
         ArrayList<String> idsList = new ArrayList<>(Arrays.asList(ids));
         //create a stream from the arrayList
         return getInstances(type).stream()
@@ -89,5 +101,15 @@ public class FPTSData {
                 .filter(e -> idsList.contains(e.id))
                 //collect the stream into an arrayList
                 .collect(Collectors.toCollection(ArrayList<T>::new));
+    }
+
+    public <T extends Model> void addInstance(T instance)
+    {
+        bins.get(instance.getClass()).addInstance(instance);
+    }
+
+    public <T extends Model> void deleteInstance(T instance)
+    {
+        bins.get(instance.getClass()).removeInstance(instance);
     }
 }

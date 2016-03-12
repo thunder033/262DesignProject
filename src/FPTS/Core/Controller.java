@@ -1,4 +1,6 @@
-package FPTS.Controllers;
+package FPTS.Core;
+
+import javafx.application.Application;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -16,6 +18,18 @@ import java.util.Observer;
  */
 
 public class Controller implements Observer {
+
+    protected Application _app;
+
+    public void Load(Application app)
+    {
+        _app = app;
+    }
+
+    public void Exit()
+    {
+
+    }
 
     public void update(Observable subject, Object obj)
     {

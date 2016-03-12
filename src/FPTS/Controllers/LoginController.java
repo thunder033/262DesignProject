@@ -1,5 +1,7 @@
 package FPTS.Controllers;
 
+import FPTS.Core.Controller;
+
 /**
  * @author: Alexander Kidd
  * Created: 3/11/2016

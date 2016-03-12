@@ -1,4 +1,4 @@
-package FPTS.Models;
+package FPTS.Core;
 
 import java.util.Observable;
 
