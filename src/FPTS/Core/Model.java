@@ -7,6 +7,7 @@ import java.util.Observable;
  */
 public class Model extends Observable {
     public String id;
+    public boolean isPersistent = true;
 
     public Model(String _id)
     {
@@ -15,5 +16,10 @@ public class Model extends Observable {
 
     public void save(){
         notifyObservers();
+    }
+
+    public boolean getIsPersistent()
+    {
+        return isPersistent;
     }
 }

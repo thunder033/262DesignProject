@@ -51,7 +51,9 @@ public abstract class DataBin {
             CSV csv = new CSV(filePath);
             //serialize all model instances in the Bin
             ArrayList<String[]> serializedInstances = new ArrayList<>();
-            instanceMap.values().stream().map(i -> serializedInstances.add(toCSV(i)));
+            instanceMap.values().stream()
+                    .filter(Model::getIsPersistent)
+                    .map(i -> serializedInstances.add(toCSV(i)));
             //convert to an array and write to CSV file
             String[][] data = new String[serializedInstances.size()][];
             data = serializedInstances.toArray(data);

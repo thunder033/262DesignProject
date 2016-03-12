@@ -29,6 +29,7 @@ public class FPTSApp extends Application {
 
     FPTSData data;
     protected View currentView;
+    private Stage stage;
 
 
     public FPTSData getData()
@@ -41,17 +42,19 @@ public class FPTSApp extends Application {
         return currentView;
     }
 
-    public void setCurrentView(View view)
-    {
-        currentView.Exit();
+    public void setCurrentView(View view) {
+        if(currentView != null) {
+            currentView.Exit();
+        }
+
         currentView = view;
+        stage.setScene(currentView.getScene());
         currentView.Load();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        // UI structure is kept in fxml files.
-        Parent root = FXMLLoader.load(getClass().getResource("/assets/fpts.fxml"));
+    public void start(Stage primaryStage) throws Exception {
+        stage = primaryStage;
 
         System.out.println("Loading data bins...");
         ArrayList<Class<? extends DataBin>> binTypes = new ArrayList<>();
