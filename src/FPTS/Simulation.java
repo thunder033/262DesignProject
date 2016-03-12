@@ -1,6 +1,7 @@
 package FPTS;
 
 import java.util.ArrayList;
+import java.util.EmptyStackException;
 import java.util.List;
 import java.util.Stack;
 
@@ -13,27 +14,63 @@ public class Simulation {
 
     private MarketSimulationAlgorithm currentAlgorithm;
 
-    private Stack<MarketSimulationAlgorithm> algorithmStack;
+    private Stack<MarketSimulationAlgorithm> algorithmStack = new Stack<>();
 
     public Simulation(double portfolioValue){
         this.currentPortfolioValue = portfolioValue;
     }
 
-    public void setAlgorithm(MarketSimulationAlgorithm currentAlgorithm){
-        this.currentAlgorithm = currentAlgorithm;
+    public void setBearAlgorithm(double growthRate, int originalTimeSteps,
+                                 String timeInterval, double originalPortfolioValue){
+        this.currentAlgorithm = new BearMarketSimulation(growthRate, originalTimeSteps,
+                timeInterval, originalPortfolioValue);
+        this.algorithmStack.push(getCurrentAlgorithm());
     }
 
-    public MarketSimulationAlgorithm getAlgorithm() {
+    public void setBullAlgorithm(double growthRate, int originalTimeSteps,
+                                 String timeInterval, double originalPortfolioValue){
+        this.currentAlgorithm = new BullMarketSimulation(growthRate, originalTimeSteps,
+                timeInterval, originalPortfolioValue);
+        this.algorithmStack.push(getCurrentAlgorithm());
+    }
+
+    public void setNoGrowthAlgorithm (double growthRate, int originalTimeSteps,
+                                 String timeInterval, double originalPortfolioValue){
+        this.currentAlgorithm = new NoGrowthMarketSimulation(growthRate, originalTimeSteps,
+                timeInterval, originalPortfolioValue);
+        this.algorithmStack.push(getCurrentAlgorithm());
+    }
+
+    public MarketSimulationAlgorithm getCurrentAlgorithm() {
         return currentAlgorithm;
     }
 
-
-
-
-    public double addSimulation(){
-        algorithmStack.push(currentAlgorithm);
-        return currentAlgorithm.simulate(this.currentPortfolioValue);
+    /*
+     * Set the value to what it was before the last simulation was run
+     */
+    public double revertBackOneSimulation(){
+        currentPortfolioValue = algorithmStack.pop().getOriginalPortfolioValue();
+        try {
+            currentAlgorithm = algorithmStack.peek();
+        }catch (EmptyStackException e){
+            currentAlgorithm = null;
+        }
+        return currentPortfolioValue;
     }
+
+    public double revertToActualValue(){
+        currentPortfolioValue = algorithmStack.firstElement().getOriginalPortfolioValue();
+        algorithmStack.removeAllElements();
+        currentAlgorithm = null;
+        return currentPortfolioValue;
+    }
+
+
+    // This was an original method that I replaced with set___Algorithm
+//    public double addSimulation(){
+//        algorithmStack.push(currentAlgorithm);
+//        return currentAlgorithm.simulate(this.currentPortfolioValue);
+//    }
 
     public double getPortfolioValue() {
         return currentPortfolioValue;

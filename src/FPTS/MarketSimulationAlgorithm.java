@@ -17,7 +17,8 @@ public abstract class MarketSimulationAlgorithm {
 
     private double originalPortfolioValue;
 
-    public MarketSimulationAlgorithm(double growthRate, int originalTimeSteps, String timeInterval, double originalPortfolioValue){
+    public MarketSimulationAlgorithm(double growthRate, int originalTimeSteps,
+                                     String timeInterval, double originalPortfolioValue){
         this.growthRate = growthRate;
         this.timeInterval = timeInterval;
         this.originalTimeSteps = originalTimeSteps;
@@ -59,6 +60,10 @@ public abstract class MarketSimulationAlgorithm {
         return simulatedTimeSteps;
     }
 
+    public void setSimulatedTimeSteps(int simulatedTimeSteps) {
+        this.simulatedTimeSteps = simulatedTimeSteps;
+    }
+
     public String getTimeInterval() {
         return timeInterval;
     }
@@ -67,13 +72,24 @@ public abstract class MarketSimulationAlgorithm {
         this.timeInterval = timeInterval;
     }
 
+    public double getOriginalPortfolioValue() {
+        return originalPortfolioValue;
+    }
+
+    public double getRatePerInterval() {
+        return ratePerInterval;
+    }
+
     /*
-     * Returns the new value of the portfolio
-     * if there are still steps left to be run
-     */
+             * Returns the new value of the portfolio
+             * if there are still steps left to be run
+             */
     public double step(){
         if(simulatedTimeSteps < originalTimeSteps) {
             simulatedTimeSteps++;
+            System.err.println(getSimulatedTimeSteps());
+            System.err.println(getOriginalPortfolioValue());
+            System.err.println(getRatePerInterval());
         }
         return originalPortfolioValue * (1 + ratePerInterval * simulatedTimeSteps);
     }

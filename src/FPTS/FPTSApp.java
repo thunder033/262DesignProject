@@ -15,6 +15,15 @@ public class FPTSApp extends Application {
 
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
+
+        // Brian's Simulation Testing here
+
+        Simulation sim = new Simulation(100.00);
+        sim.setBullAlgorithm(.12, 12, "month", 100);
+        primaryStage.setTitle(Double.toString(sim.getCurrentAlgorithm().step()));
+        primaryStage.setTitle(Double.toString(sim.revertToActualValue()));
+
+        // End Brian's Simulation Testing
     }
 
     // Comment to test branching

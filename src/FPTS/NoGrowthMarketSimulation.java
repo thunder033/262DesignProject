@@ -5,7 +5,9 @@ package FPTS;
  */
 public class NoGrowthMarketSimulation extends MarketSimulationAlgorithm{
 
-    public NoGrowthMarketSimulation(double growthRate, int timeStep, int timeInterval) {
-        super(growthRate, timeStep, timeInterval);
+    public NoGrowthMarketSimulation(double growthRate, int originalTimeSteps,
+                                    String timeInterval, double originalPortfolioValue) {
+        super(growthRate, originalTimeSteps,
+        timeInterval, originalPortfolioValue);
     }
 }

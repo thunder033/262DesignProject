@@ -5,7 +5,9 @@ package FPTS;
  */
 public class BullMarketSimulation extends MarketSimulationAlgorithm {
 
-    public BullMarketSimulation(double growthRate, int timeStep, int timeInterval) {
-        super(growthRate, timeStep, timeInterval);
+    public BullMarketSimulation(double growthRate, int originalTimeSteps,
+                                String timeInterval, double originalPortfolioValue) {
+        super(growthRate, originalTimeSteps,
+                timeInterval, originalPortfolioValue);
     }
 }
