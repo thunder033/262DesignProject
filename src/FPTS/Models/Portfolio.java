@@ -19,6 +19,11 @@ public class Portfolio extends Model {
         _passHash = passHash;
     }
 
+    public String getUsername()
+    {
+        return id;
+    }
+
     public void addHolding(Holding holding)
     {
         holdings.add(holding);

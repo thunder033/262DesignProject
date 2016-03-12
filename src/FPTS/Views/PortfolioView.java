@@ -1,5 +1,6 @@
 package FPTS.Views;
 
+import FPTS.Controllers.PortfolioController;
 import FPTS.Core.View;
 import javafx.application.Application;
 
@@ -13,5 +14,7 @@ import javafx.application.Application;
 public class PortfolioView extends View {
     public PortfolioView(Application app){
         super(app);
+        _fxmlName = "portfolio.fxml";
+        _controller = new PortfolioController();
     }
 }

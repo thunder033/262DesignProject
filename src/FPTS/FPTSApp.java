@@ -6,6 +6,7 @@ import FPTS.Data.FPTSData;
 import FPTS.Models.MarketEquity;
 import FPTS.Models.MarketEquityBin;
 import FPTS.Models.MarketIndex;
+import FPTS.Views.PortfolioView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -74,9 +75,11 @@ public class FPTSApp extends Application {
 
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
 
+        //Hard code create the portfolio view
+        View view = new PortfolioView(this);
+        setCurrentView(view);
+        primaryStage.show();
     }
 
 
