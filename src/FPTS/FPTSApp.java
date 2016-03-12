@@ -14,12 +14,22 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
+/**
+ * @author: Greg Rozmarynowycz
+ * Created: 3/11/2016
+ * Revised: 3/11/2016
+ * Description: The initialization point for
+ * the application via a launch command which automates
+ * much of running the thread.  An initial view is launched
+ * and CSV file data is loaded into respective bins.
+ */
+
 public class FPTSApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
         // UI structure is kept in fxml files.
-        Parent root = FXMLLoader.load(getClass().getResource("FPTS.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/assets/FPTS.fxml"));
 
         System.out.println("Loading bins...");
         ArrayList<Class<? extends DataBin>> binTypes = new ArrayList<>();
