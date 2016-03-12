@@ -10,7 +10,7 @@ public class FPTSApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("fpts.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("SimulationView.fxml"));
         primaryStage.setTitle("ThunderForge FPTS");
 
         primaryStage.setScene(new Scene(root, 300, 275));
@@ -18,10 +18,7 @@ public class FPTSApp extends Application {
 
         // Brian's Simulation Testing here
 
-        Simulation sim = new Simulation(100.00);
-        sim.setBullAlgorithm(.12, 12, "month", 100);
-        primaryStage.setTitle(Double.toString(sim.getCurrentAlgorithm().step()));
-        primaryStage.setTitle(Double.toString(sim.revertToActualValue()));
+
 
         // End Brian's Simulation Testing
     }

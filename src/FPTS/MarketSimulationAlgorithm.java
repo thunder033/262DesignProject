@@ -91,11 +91,11 @@ public abstract class MarketSimulationAlgorithm {
             System.err.println(getOriginalPortfolioValue());
             System.err.println(getRatePerInterval());
         }
-        return originalPortfolioValue * (1 + ratePerInterval * simulatedTimeSteps);
+        return originalPortfolioValue * (1.0 + ratePerInterval * simulatedTimeSteps);
     }
 
-    public double simulate(double portfolioValue){
+    public double simulate(){
         simulatedTimeSteps = originalTimeSteps;
-        return originalPortfolioValue * (1 + ratePerInterval * simulatedTimeSteps);
+        return originalPortfolioValue * (1.0 + ratePerInterval * simulatedTimeSteps);
     }
 }
