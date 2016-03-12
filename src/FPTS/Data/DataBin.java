@@ -1,8 +1,7 @@
 package FPTS.Data;
 
-import FPTS.Model;
+import FPTS.Core.Model;
 
-import javax.imageio.IIOException;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -53,6 +52,11 @@ public abstract class DataBin {
     protected void addInstance(Model element)
     {
         instanceMap.put(element.id, element);
+    }
+
+    protected void removeInstance(Model element)
+    {
+        instanceMap.remove(element.id);
     }
 
     public abstract Model fromCSV(String[] values);

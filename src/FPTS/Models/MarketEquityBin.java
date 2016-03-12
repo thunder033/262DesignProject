@@ -2,7 +2,7 @@ package FPTS.Models;
 
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Model;
+import FPTS.Core.Model;
 
 /**
  * Created by Greg on 3/9/2016.
@@ -23,7 +23,7 @@ public class MarketEquityBin extends DataBin {
         mEquity._sharePrice = Float.parseFloat(values[2]);
 
         for (int i = 3; i < values.length; i++) {
-            MarketIndex index = MarketIndex.class.cast(FPTSData.getInstanceById(MarketEquity.class, values[i]));
+            MarketIndex index = MarketIndex.class.cast(FPTSData.getDataRoot().getInstanceById(MarketEquity.class, values[i]));
 
             if(index == null) {
                 index = new MarketIndex(values[i]);

@@ -1,6 +1,6 @@
 package FPTS.Models;
 
-import FPTS.Model;
+import FPTS.Core.Model;
 
 import java.util.ArrayList;
 
