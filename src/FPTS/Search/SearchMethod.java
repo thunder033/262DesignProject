@@ -1,5 +1,5 @@
-public interface SearchMethod {
-	
-   public boolean compare(string searchTerm, string cmp);
-
-}
+//public interface SearchMethod {
+//
+//   public boolean compare(string searchTerm, string cmp);
+//
+//}
