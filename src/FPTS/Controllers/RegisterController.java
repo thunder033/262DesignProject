@@ -2,10 +2,15 @@ package FPTS.Controllers;
 
 import FPTS.Core.Controller;
 import FPTS.Core.View;
+import FPTS.Data.Authenticator;
 import FPTS.Data.CSV;
+import FPTS.Models.Portfolio;
 import FPTS.Views.LoginView;
+import FPTS.Views.PortfolioView;
 import FPTS.Views.RegisterView;
 import javafx.fxml.FXML;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 /**
  * @author: Alexander Kidd
@@ -17,7 +22,38 @@ import javafx.fxml.FXML;
  */
 public class RegisterController extends Controller {
 
+    @FXML TextField username;
+    @FXML TextField password;
+    @FXML TextField passwordConfirm;
+    @FXML Text errorMessage;
+
     @FXML protected void registerUser() {
-        _app.setCurrentView(new LoginView(_app));
+        String error = "";
+
+        if(!password.getText().equals(passwordConfirm.getText())) {
+            error = "Password do not match";
+        }
+
+        if(password.getLength() == 0) {
+            error = "Password is required";
+        }
+
+        if(username.getLength() == 0) {
+            error = "Username is required";
+        }
+        else if(_app.getData().getInstanceById(Portfolio.class, username.getText()) != null) {
+            error = "Portfolio with " + username.getText() + "already exists";
+        }
+
+        if(error.length() == 0){
+            Portfolio portfolio = new Portfolio(username.getText(), Authenticator.makeHash(password.getText()));
+            _app.getData().addInstance(portfolio);
+            _portfolio = portfolio;
+            portfolio.notifyObservers();
+            _app.setCurrentView(new PortfolioView(_app));
+        }
+        else {
+            errorMessage.setText(error);
+        }
     }
 }

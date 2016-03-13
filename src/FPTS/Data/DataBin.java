@@ -50,7 +50,9 @@ public abstract class DataBin {
             String[][] data = csv.Read();
             //create a new model instance for each line of the CSV
             for (String[] line : data) {
-                addInstance(fromCSV(line));
+                Model instance = fromCSV(line);
+                instance.save();
+                addInstance(instance);
             }
         } catch (IOException ex) {
             System.out.println("WARNING: " + getClass().toString() + " failed to read file at " + filePath);
@@ -64,6 +66,7 @@ public abstract class DataBin {
     public final void writeInstances()
     {
         Path filePath = Paths.get(FPTSData.dataPath, fileName);
+        System.out.println("Write instances from " + getClass().toString() + " to " + filePath.toString());
         try {
             //Create a new CSV interface
             CSV csv = new CSV(filePath);
@@ -71,7 +74,7 @@ public abstract class DataBin {
             ArrayList<String[]> serializedInstances = new ArrayList<>();
             instanceMap.values().stream()
                     .filter(Model::getIsPersistent)
-                    .map(i -> serializedInstances.add(toCSV(i)));
+                    .forEach(i -> serializedInstances.add(toCSV(i)));
             //convert to an array and write to CSV file
             String[][] data = new String[serializedInstances.size()][];
             data = serializedInstances.toArray(data);

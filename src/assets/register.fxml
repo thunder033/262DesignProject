@@ -3,10 +3,9 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.text.Text?>
-<?import javafx.scene.control.Hyperlink?>
 
+<?import javafx.scene.control.PasswordField?>
 <VBox alignment="TOP_CENTER"
       fx:controller="FPTS.Controllers.RegisterController"
       xmlns:fx="http://javafx.com/fxml"
@@ -18,11 +17,13 @@
         Please Fill Out The Info Below To Make A Portfolio
     </Label>
 
-    <TextField fx:id="username" maxWidth="200" promptText="Enter A Username"></TextField>
+    <TextField fx:id="username" maxWidth="200" promptText="Enter A Username"/>
 
-    <TextField fx:id="password" maxWidth="200" promptText="Enter A Password"></TextField>
+    <PasswordField fx:id="password" maxWidth="200" promptText="Enter A Password"/>
 
-    <TextField fx:id="passwordConfirm" maxWidth="200" promptText="Confirm Password"></TextField>
+    <PasswordField fx:id="passwordConfirm" maxWidth="200" promptText="Confirm Password"/>
+
+    <Text fx:id="errorMessage"/>
 
     <Button fx:id="register" onAction="#registerUser"> Register </Button>
 </VBox>

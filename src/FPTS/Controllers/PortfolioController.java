@@ -30,15 +30,6 @@ public class PortfolioController extends Controller {
     final DirectoryChooser directoryChooser = new DirectoryChooser();
 
     public PortfolioController() {
-        _portfolio = new Portfolio("Greg", "asdj;flkas;d");
-
-        MarketEquity marketEquity = FPTSData.getDataRoot().getInstanceById(MarketEquity.class, "ADBE");
-        Equity equity = new Equity(marketEquity);
-        equity.addValue(123.54f);
-        _portfolio.addHolding(equity);
-        _portfolio.addHolding(new Equity(FPTSData.getDataRoot().getInstanceById(MarketEquity.class, "AMZN")));
-        _portfolio.addHolding(new CashAccount("Bank Account 1", 225));
-        _portfolio.addHolding(new Equity(FPTSData.getDataRoot().getInstanceById(MarketEquity.class, "BIDU")));
     }
 
     @FXML

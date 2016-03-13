@@ -65,7 +65,7 @@ public class PortfolioBin extends DataBin {
         ArrayList<String> values = new ArrayList<>();
         values.add(portfolio.id);
         values.add(portfolio._passHash);
-        portfolio.holdings.stream().map(holding -> values.add(getHoldingIdHash(holding)));
+        portfolio.holdings.stream().forEach(holding -> values.add(getHoldingIdHash(holding)));
 
         String[] stringVals = new String[values.size()];
         stringVals = values.toArray(stringVals);
