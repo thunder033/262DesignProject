@@ -1,15 +1,12 @@
 package FPTS.Models;
 
-import FPTS.Core.Model;
-
 /**
  * Created by gjr8050 on 3/10/2016.
  */
-public abstract class Holding extends Model {
-
-    public Holding(String id) {
-        super(id);
-    }
-
-
+public interface Holding {
+    String getName();
+    float getValue();
+    void addValue(float value);
+    void removeValue(float value);
+    String getType();
 }

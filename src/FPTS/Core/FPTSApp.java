@@ -3,9 +3,7 @@ package FPTS.Core;
 import FPTS.Core.View;
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Models.MarketEquity;
-import FPTS.Models.MarketEquityBin;
-import FPTS.Models.MarketIndex;
+import FPTS.Models.*;
 import FPTS.Views.PortfolioView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -59,6 +57,9 @@ public class FPTSApp extends Application {
         System.out.println("Loading data bins...");
         ArrayList<Class<? extends DataBin>> binTypes = new ArrayList<>();
         binTypes.add(MarketEquityBin.class);
+        binTypes.add(CashAccountBin.class);
+        binTypes.add(EquityBin.class);
+        binTypes.add(PortfolioBin.class);
 
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
