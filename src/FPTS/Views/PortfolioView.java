@@ -15,6 +15,5 @@ public class PortfolioView extends View {
     public PortfolioView(FPTSApp app){
         super(app);
         _fxmlName = "portfolio.fxml";
-        _controller = new PortfolioController();
     }
 }
