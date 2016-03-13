@@ -1,3 +1,0 @@
-TransactionController{
-	SearchController = new SearchController();
-}
