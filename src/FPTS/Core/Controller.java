@@ -1,7 +1,6 @@
 package FPTS.Core;
 
 import FPTS.Models.Portfolio;
-import javafx.application.Application;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
@@ -23,10 +22,10 @@ import java.util.ResourceBundle;
 
 public class Controller implements Observer, Initializable {
 
-    protected Application _app;
+    protected FPTSApp _app;
     protected Portfolio _portfolio;
 
-    public void Load(Application app, Portfolio portfolio)
+    public void Load(FPTSApp app, Portfolio portfolio)
     {
         _app = app;
 

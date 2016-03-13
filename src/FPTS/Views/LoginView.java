@@ -1,7 +1,7 @@
 package FPTS.Views;
 
+import FPTS.Core.FPTSApp;
 import FPTS.Core.View;
-import javafx.application.Application;
 
 /**
  * @author: Alexander Kidd
@@ -11,7 +11,7 @@ import javafx.application.Application;
  * the UI associated with logging the user in.
  */
 public class LoginView extends View {
-    public LoginView(Application app){
+    public LoginView(FPTSApp app){
         super(app);
     }
 }

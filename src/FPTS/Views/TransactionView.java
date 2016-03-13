@@ -1,7 +1,7 @@
 package FPTS.Views;
 
+import FPTS.Core.FPTSApp;
 import FPTS.Core.View;
-import javafx.application.Application;
 
 /**
  * @author: Alexander Kidd
@@ -11,7 +11,7 @@ import javafx.application.Application;
  */
 public class TransactionView extends View {
 
-    public TransactionView(Application app) {
+    public TransactionView(FPTSApp app) {
         super(app);
     }
 }

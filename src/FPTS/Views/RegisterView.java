@@ -1,7 +1,7 @@
 package FPTS.Views;
 
+import FPTS.Core.FPTSApp;
 import FPTS.Core.View;
-import javafx.application.Application;
 
 /**
  * @author: Alexander Kidd
@@ -11,7 +11,7 @@ import javafx.application.Application;
  * to register the user with a new account form.
  */
 public class RegisterView extends View {
-    public RegisterView(Application app){
+    public RegisterView(FPTSApp app){
         super(app);
     }
 }
