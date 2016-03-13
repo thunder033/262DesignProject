@@ -1,6 +1,5 @@
 package FPTS.Core;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
@@ -18,12 +17,12 @@ public abstract class View {
     protected Controller _controller;
     protected Scene _scene;
     protected String _fxmlName;
-    protected Application _app;
+    protected FPTSApp _app;
 
     public int width = 800;
     public int height = 600;
 
-    public View(Application app)
+    public View(FPTSApp app)
     {
         _app = app;
     }
