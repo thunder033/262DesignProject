@@ -1,5 +1,7 @@
-//public interface SearchMethod {
-//
-//   public boolean compare(string searchTerm, string cmp);
-//
-//}
+package FPTS.Search;
+
+public interface SearchMethod {
+
+   public boolean compare(String searchTerm, String cmp);
+
+}

@@ -1,9 +1,12 @@
-//public class BeginsWith implements SearchMethod{
-//
-//	public boolean compare(string searchTerm, string cmp){
-//
-//		return searchTerm == cmp[0:searchTerm.length-1]);
-//
-//	}
-//
-//}
+package FPTS.Search;
+
+public class BeginsWith implements SearchMethod{
+
+        @Override
+	public boolean compare(String searchTerm, String cmp){
+
+		return searchTerm.equals(cmp.substring(0, searchTerm.length()));
+
+	}
+
+}
