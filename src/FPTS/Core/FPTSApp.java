@@ -1,4 +1,4 @@
-package FPTS;
+package FPTS.Core;
 
 import FPTS.Core.View;
 import FPTS.Data.DataBin;
@@ -33,8 +33,7 @@ public class FPTSApp extends Application {
     private Stage stage;
 
 
-    public FPTSData getData()
-    {
+    public FPTSData getData() {
         return data;
     }
 
