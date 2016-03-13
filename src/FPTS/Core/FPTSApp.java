@@ -1,11 +1,10 @@
-package FPTS;
+package FPTS.Core;
 
 import FPTS.Core.View;
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Models.MarketEquity;
-import FPTS.Models.MarketEquityBin;
-import FPTS.Models.MarketIndex;
+import FPTS.Models.*;
+import FPTS.Views.PortfolioView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,10 +28,10 @@ public class FPTSApp extends Application {
 
     FPTSData data;
     protected View currentView;
+    private Stage stage;
 
 
-    public FPTSData getData()
-    {
+    public FPTSData getData() {
         return data;
     }
 
@@ -41,39 +40,46 @@ public class FPTSApp extends Application {
         return currentView;
     }
 
-    public void setCurrentView(View view)
-    {
-        currentView.Exit();
+    public void setCurrentView(View view) {
+        if(currentView != null) {
+            currentView.Exit();
+        }
+
         currentView = view;
+        stage.setScene(currentView.getScene());
         currentView.Load();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
-        // UI structure is kept in fxml files.
-        Parent root = FXMLLoader.load(getClass().getResource("/assets/fpts.fxml"));
+    public void start(Stage primaryStage) throws Exception {
+        stage = primaryStage;
 
         System.out.println("Loading data bins...");
         ArrayList<Class<? extends DataBin>> binTypes = new ArrayList<>();
         binTypes.add(MarketEquityBin.class);
+        binTypes.add(CashAccountBin.class);
+        binTypes.add(EquityBin.class);
+        binTypes.add(PortfolioBin.class);
 
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
 
-        ArrayList<MarketEquity> equities = data.getInstances(MarketEquity.class);
+        ArrayList<Portfolio> portfolios = data.getInstances(Portfolio.class);
+        System.out.println("Loaded " + portfolios.size() + " portfolios");
 
-        for(MarketEquity equity : equities) {
-            System.out.println(equity.getName());
-        }
+        Portfolio portfolio = portfolios.get(0);
+        System.out.println(portfolio.id);
+        System.out.println(portfolio.getHoldings().size());
 
-        MarketIndex NASDAQ100 = MarketIndex.class.cast(data.getInstanceById(MarketEquity.class, "NASDAQ100"));
-        System.out.println(NASDAQ100.getName() + " contains " + NASDAQ100.getEquities().size() + " equities");
+        System.out.println(data.getInstanceById(Equity.class, "2").getShares());
 
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
 
+        //Hard code create the portfolio view
+        View view = new PortfolioView(this);
+        setCurrentView(view);
+        primaryStage.show();
     }
 
 

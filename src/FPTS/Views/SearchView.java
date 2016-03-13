@@ -1,7 +1,7 @@
 package FPTS.Views;
 
+import FPTS.Core.FPTSApp;
 import FPTS.Core.View;
-import javafx.application.Application;
 
 /**
  * @author: Alexander Kidd
@@ -10,7 +10,7 @@ import javafx.application.Application;
  * Description: In charge of displaying search component in the UI.
  */
 public class SearchView extends View {
-    public SearchView(Application app) {
+    public SearchView(FPTSApp app) {
         super(app);
     }
 }

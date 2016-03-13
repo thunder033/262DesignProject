@@ -1,0 +1,16 @@
+.root {
+    display: block;
+}
+
+#portfolioName {
+    -fx-alignment: center-left;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-font-size: 32px;
+}
+.holding-name {
+    display: block;
+}
+.holdings-header {
+    -fx-font-size: 20px;
+}

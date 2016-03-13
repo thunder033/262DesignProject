@@ -1,5 +1,5 @@
-public class SearchQuery{
-	
-	private SearchParameter searchParameter;	
-
-}
+//public class SearchQuery{
+//
+//	private SearchParameter searchParameter;
+//
+//}

@@ -36,4 +36,9 @@ public class MarketEquityBin extends DataBin {
         //convert values[3] to index reference
         return mEquity;
     }
+
+    @Override
+    public String[] toCSV(Model instance) {
+        return new String[0];
+    }
 }

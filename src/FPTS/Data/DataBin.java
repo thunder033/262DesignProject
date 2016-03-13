@@ -18,23 +18,19 @@ public abstract class DataBin {
 
     private Map<String, Model> instanceMap;
 
-    public DataBin()
-    {
+    public DataBin() {
         instanceMap = new HashMap<>();
     }
 
-    public ArrayList<Model> getAll()
-    {
+    public ArrayList<Model> getAll() {
         return new ArrayList<>(instanceMap.values());
     }
 
-    public Model getByID(String id)
-    {
+    public Model getByID(String id) {
         return instanceMap.get(id);
     }
 
-    public final void loadInstances()
-    {
+    public final void loadInstances() {
         Path filePath = Paths.get(FPTSData.dataPath, fileName);
         try {
             CSV csv = new CSV(filePath);
@@ -42,22 +38,42 @@ public abstract class DataBin {
             for (String[] line : data) {
                 addInstance(fromCSV(line));
             }
-        }
-        catch (IOException ex)
-        {
+        } catch (IOException ex) {
             System.out.println("WARNING: " + getClass().toString() + " failed to read file at " + filePath);
         }
     }
 
-    protected void addInstance(Model element)
+    public final void writeInstances()
     {
-        instanceMap.put(element.id, element);
+        Path filePath = Paths.get(FPTSData.dataPath, fileName);
+        try {
+            //Create a new CSV interface
+            CSV csv = new CSV(filePath);
+            //serialize all model instances in the Bin
+            ArrayList<String[]> serializedInstances = new ArrayList<>();
+            instanceMap.values().stream()
+                    .filter(Model::getIsPersistent)
+                    .map(i -> serializedInstances.add(toCSV(i)));
+            //convert to an array and write to CSV file
+            String[][] data = new String[serializedInstances.size()][];
+            data = serializedInstances.toArray(data);
+            csv.Write(data);
+        } catch (IOException ex) {
+            System.out.println("WARNING: " + getClass().toString() + " failed to write to file at " + filePath);
+        }
     }
 
-    protected void removeInstance(Model element)
-    {
+    protected void addInstance(Model element) {
+        instanceMap.put(element.id, element);
+        element.addObserver(FPTSData.getDataRoot());
+    }
+
+    protected void removeInstance(Model element) {
+        element.deleteObserver(FPTSData.getDataRoot());
         instanceMap.remove(element.id);
     }
 
     public abstract Model fromCSV(String[] values);
+
+    public abstract String[] toCSV(Model instance);
 }
