@@ -44,7 +44,7 @@ public abstract class View {
         try {
             if(_fxmlName != null) {
                 String path = Paths.get(fxmlPath, _fxmlName).toString();
-                URL url = _app.getClass().getResource("/assets/portfolio.fxml");
+                URL url = _app.getClass().getResource(path.toString().replace("\\", "/"));
 
                 if(url == null)
                 {

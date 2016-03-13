@@ -22,14 +22,4 @@ public class RegisterView extends View {
         width = 300;
         height = 275;
     }
-
-    @Override
-    public void Load() {
-//        try {
-//            Parent root = FXMLLoader.load(_app.getClass().getResource("/assets/register.fxml"));
-//            _app.getStage().setScene(new Scene(root, 300, 275));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-    }
 }

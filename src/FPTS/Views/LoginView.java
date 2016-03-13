@@ -20,15 +20,8 @@ public class LoginView extends View {
     public LoginView(FPTSApp app){
         super(app);
         _fxmlName = "login.fxml";
+        width = 300;
+        height = 275;
     }
 
-    @Override
-    public void Load() {
-        try {
-            Parent root = FXMLLoader.load(_app.getClass().getResource("/assets/login.fxml"));
-            _app.getStage().setScene(new Scene(root, 300, 275));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -37,8 +37,7 @@ public class FPTSApp extends Application {
     /**
      * @return the current view
      */
-    public View getCurrentView()
-    {
+    public View getCurrentView() {
         return currentView;
     }
 
@@ -74,13 +73,6 @@ public class FPTSApp extends Application {
 
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
-
-        ArrayList<MarketEquity> equities = data.getInstances(MarketEquity.class);
-
-        for(MarketEquity equity : equities) {
-            System.out.println(equity.getName());
-        }
-
 
         setCurrentView(new LoginView(this));
         mainStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));

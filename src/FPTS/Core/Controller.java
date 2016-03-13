@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 public class Controller implements Observer, Initializable {
 
     protected FPTSApp _app;
-    protected Portfolio _portfolio;
+    protected static Portfolio _portfolio;
 
     /**
      * Operations to perform when the controller loads. Creates a default portfolio if
