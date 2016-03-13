@@ -4,7 +4,9 @@ import FPTS.Core.Model;
 import FPTS.Data.DataBin;
 
 /**
- * Created by Greg on 3/12/2016.
+ * Cash Account Bin
+ * Responsible for mapping cash accounts and converting between
+ * instances and values arrays.
  */
 public class CashAccountBin extends DataBin {
 
@@ -13,6 +15,11 @@ public class CashAccountBin extends DataBin {
         dataClass = CashAccount.class;
     }
 
+    /**
+     * Parses a values array into cash account instance
+     * @param values [id, name, amount]
+     * @return a values array instance
+     */
     @Override
     public Model fromCSV(String[] values) {
         CashAccount cashAccount = new CashAccount(values[0]);
@@ -22,6 +29,11 @@ public class CashAccountBin extends DataBin {
         return cashAccount;
     }
 
+    /**
+     * Converts a Cash Account to a values array
+     * @param instance a cash account instance
+     * @return values [id, name, amount]
+     */
     @Override
     public String[] toCSV(Model instance) {
         CashAccount cashAccount = CashAccount.class.cast(instance);

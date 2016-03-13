@@ -31,15 +31,26 @@ public class FPTSApp extends Application {
     private Stage stage;
 
 
+    /**
+     * @return a reference to the data root
+     */
     public FPTSData getData() {
         return data;
     }
 
+    /**
+     * @return the current view
+     */
     public View getCurrentView()
     {
         return currentView;
     }
 
+    /**
+     * Change the current view of the app, triggering exit and load
+     * functions on the respective views
+     * @param view the view to change to
+     */
     public void setCurrentView(View view) {
         if(currentView != null) {
             currentView.Exit();

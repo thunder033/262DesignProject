@@ -25,6 +25,12 @@ public class Controller implements Observer, Initializable {
     protected FPTSApp _app;
     protected Portfolio _portfolio;
 
+    /**
+     * Operations to perform when the controller loads. Creates a default portfolio if
+     * necessary since all controllers have the context of a portfolio
+     * @param app reference to the app the controller is in
+     * @param portfolio reference to current active portfolio in the system
+     */
     public void Load(FPTSApp app, Portfolio portfolio)
     {
         _app = app;
@@ -45,6 +51,9 @@ public class Controller implements Observer, Initializable {
         refreshView();
     }
 
+    /**
+     * operations to execute before the controller is exited from
+     */
     public void Exit()
     {
         _portfolio.deleteObserver(this);
@@ -55,6 +64,9 @@ public class Controller implements Observer, Initializable {
         refreshView();
     }
 
+    /**
+     * update the view to reflect changes in data
+     */
     public void refreshView() {
 
     }

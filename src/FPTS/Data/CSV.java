@@ -9,6 +9,8 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Greg on 3/9/2016.
+ * Handles reading from/writing to CSV files and converting between
+ * CSV and value arrays
  */
 public class CSV {
 

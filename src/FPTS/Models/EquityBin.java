@@ -5,7 +5,9 @@ import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 
 /**
- * Created by Greg on 3/12/2016.
+ * Equity Bin
+ * Responsible for storing equities and converting between
+ * instances and values arrays.
  */
 public class EquityBin extends DataBin {
 
@@ -28,7 +30,7 @@ public class EquityBin extends DataBin {
 
         String[] values = new String[3];
         values[0] = equity.id;
-        values[1] = equity.getTickerSybmol();
+        values[1] = equity.getTickerSymbol();
         values[2] = Float.toString(equity.shares);
 
         return  values;

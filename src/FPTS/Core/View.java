@@ -10,6 +10,9 @@ import java.nio.file.Paths;
 
 /**
  * Created by Greg on 3/12/2016.
+ * A view is a definition of discrete segment of functionality provided
+ * by the system to users. The view associates controllers with GUI components
+ * and handles switching between views.
  */
 public abstract class View {
     static String fxmlPath = "/assets";

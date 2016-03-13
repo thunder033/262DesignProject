@@ -15,6 +15,12 @@ public class MarketEquityBin extends DataBin {
         dataClass = MarketEquity.class;
     }
 
+    /**
+     * Parses a market equity values array into a market equity instance
+     * Builds market indexs by adding the created equity to the appropriate index
+     * @param values [tickerSymbol, name, sharePrice, index/sector]
+     * @return a market equity index
+     */
     @Override
     public Model fromCSV(String[] values) {
 
@@ -33,7 +39,6 @@ public class MarketEquityBin extends DataBin {
             index.addEquity(mEquity);
         }
 
-        //convert values[3] to index reference
         return mEquity;
     }
 

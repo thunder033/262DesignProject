@@ -3,7 +3,6 @@ package FPTS.Core;
 import FPTS.Data.FPTSData;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,6 +11,10 @@ import java.util.Observable;
 
 /**
  * Created by Greg on 3/9/2016.
+ * A model instance encapsulates a related set of parameters.
+ * The abstract model is responsible for generating an a unique
+ * id for each new instance and providing a core set of functions
+ * for interacting with models
  */
 public abstract class Model extends Observable {
     public String id;
