@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.ToggleGroup?>
 <GridPane fx:controller="FPTS.SimulationCtrl" prefHeight="Infinity" prefWidth="Infinity"
-          gridLinesVisible="true"
+          gridLinesVisible="false"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10">
 
 
@@ -30,6 +30,9 @@
     <Label text="Market Type: " GridPane.rowIndex="5" GridPane.columnIndex="1"
            GridPane.columnSpan="2"/>
 
+    <Label text="Please select a market type." GridPane.rowIndex="5" fx:id="marketError"
+           GridPane.columnIndex="2" GridPane.columnSpan="2" visible="false"/>
+
     <RadioButton text="Bull" GridPane.rowIndex="6" GridPane.columnIndex="1"
                  fx:id="bull" toggleGroup="$simulationToggle"/>
 
@@ -42,9 +45,14 @@
     <Label text="Per Annum: " GridPane.rowIndex="7" GridPane.columnIndex="1"
            GridPane.columnSpan="2"/>
 
-    <TextField GridPane.rowIndex="7" GridPane.columnIndex="2" fx:id="perAnnum"/>
+    <TextField GridPane.rowIndex="7" GridPane.columnIndex="2" fx:id="perAnnumText"/>
+
+    <Label text="\%"  GridPane.rowIndex="7" GridPane.columnIndex="3"/>
 
     <Label text="Time Interval: "  GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+
+    <Label text="Please select a time interval" GridPane.rowIndex="8" fx:id="intervalError"
+           GridPane.columnIndex="2" visible="false" GridPane.columnSpan="2"/>
 
     <RadioButton text="Day" GridPane.rowIndex="9" GridPane.columnIndex="1"
                  fx:id="day" toggleGroup="$timeIntervalToggle"/>
@@ -53,12 +61,17 @@
                  fx:id="month" toggleGroup="$timeIntervalToggle"/>
 
     <RadioButton text="Year" GridPane.rowIndex="9" GridPane.columnIndex="3"
-                 fx:id="year" toggleGroup="$timeIntervalToggle"/>
+                 fx:id="year" toggleGroup="$timeIntervalToggle" />
 
     <Label text="Time Steps: " GridPane.rowIndex="10" GridPane.columnIndex="1"/>
 
-    <TextField GridPane.rowIndex="10" GridPane.columnIndex="2" fx:id="timeSteps"/>
+    <TextField GridPane.rowIndex="10" GridPane.columnIndex="2" fx:id="timeStepsText"/>
 
-    <Button text="Bull Simulation" GridPane.rowIndex="12" GridPane.columnIndex="3"
+    <Button text="Run Simulation" GridPane.rowIndex="12" GridPane.columnIndex="1"
             onAction="#simulateClicked"/>
+
+    <Button text="Revert to actual value" GridPane.rowIndex="12" GridPane.columnIndex="2"
+            onAction="#revertClicked" visible="false" fx:id="revertButton"/>
+
+
 </GridPane>

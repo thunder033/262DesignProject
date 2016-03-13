@@ -13,7 +13,7 @@ public class FPTSApp extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("SimulationView.fxml"));
         primaryStage.setTitle("ThunderForge FPTS");
 
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 400, 350));
         primaryStage.show();
 
         // Brian's Simulation Testing here
