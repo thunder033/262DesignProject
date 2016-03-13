@@ -12,13 +12,13 @@ import java.text.DecimalFormat;
 public class SimulationCtrl extends Controller{
 
     // It seems I don't need this False
-    private Simulation sim = new Simulation(100.00);
+    private static Simulation sim = new Simulation(100.00);
 
     @FXML private Label value;
 
     @FXML protected void simulateClicked(ActionEvent event){
-        sim.setBullAlgorithm(.10, 12, "month", 100);
-        double portfolioValue = sim.getCurrentAlgorithm().simulate();
+        sim.setBullAlgorithm(.10, 12, "month", sim.getPortfolioValue());
+        double portfolioValue = sim.simulate();
         DecimalFormat df = new DecimalFormat("#.##");
         value.setText(df.format(portfolioValue));
         //value.setText(Double.toString(sim.revertToActualValue()));

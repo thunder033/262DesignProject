@@ -45,6 +45,12 @@ public class Simulation {
         return currentAlgorithm;
     }
 
+    public double simulate(){
+        double newVal = getCurrentAlgorithm().simulate();
+        setPortfolioValue(newVal);
+        return newVal;
+    }
+
     /*
      * Set the value to what it was before the last simulation was run
      */

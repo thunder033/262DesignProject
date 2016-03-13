@@ -4,20 +4,61 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ToggleGroup?>
 <GridPane fx:controller="FPTS.SimulationCtrl" prefHeight="Infinity" prefWidth="Infinity"
           gridLinesVisible="true"
           xmlns:fx="http://javafx.com/fxml" alignment="TOP_LEFT" hgap="10" vgap="10">
 
+
+    <fx:define>
+        <ToggleGroup fx:id="simulationToggle"/>
+        <ToggleGroup fx:id="timeIntervalToggle"/>
+    </fx:define>
     <Text text="Simulation Page"
-          GridPane.columnIndex="0" GridPane.rowIndex="0"
+          GridPane.rowIndex="0" GridPane.columnIndex="0"
           GridPane.columnSpan="2"/>
 
     <Label text="Value: "
-           GridPane.columnIndex="3" GridPane.rowIndex="5"/>
+           GridPane.rowIndex="3" GridPane.columnIndex="2"/>
 
     <Label text=""
-           GridPane.columnIndex="4" GridPane.rowIndex="5" fx:id="value"/>
+           GridPane.rowIndex="3" GridPane.columnIndex="3" fx:id="value"/>
 
-    <Button text="Bull Simulation" GridPane.columnIndex="3" GridPane.rowIndex="7"
+    <Label text="Market Type: " GridPane.rowIndex="5" GridPane.columnIndex="1"
+           GridPane.columnSpan="2"/>
+
+    <RadioButton text="Bull" GridPane.rowIndex="6" GridPane.columnIndex="1"
+                 fx:id="bull" toggleGroup="$simulationToggle"/>
+
+    <RadioButton text="Bear" GridPane.rowIndex="6" GridPane.columnIndex="2"
+                 fx:id="bear" toggleGroup="$simulationToggle"/>
+
+    <RadioButton text="No Growth" GridPane.rowIndex="6" GridPane.columnIndex="3"
+                 fx:id="noGrowth" toggleGroup="$simulationToggle"/>
+
+    <Label text="Per Annum: " GridPane.rowIndex="7" GridPane.columnIndex="1"
+           GridPane.columnSpan="2"/>
+
+    <TextField GridPane.rowIndex="7" GridPane.columnIndex="2" fx:id="perAnnum"/>
+
+    <Label text="Time Interval: "  GridPane.rowIndex="8" GridPane.columnIndex="1"/>
+
+    <RadioButton text="Day" GridPane.rowIndex="9" GridPane.columnIndex="1"
+                 fx:id="day" toggleGroup="$timeIntervalToggle"/>
+
+    <RadioButton text="Month" GridPane.rowIndex="9" GridPane.columnIndex="2"
+                 fx:id="month" toggleGroup="$timeIntervalToggle"/>
+
+    <RadioButton text="Year" GridPane.rowIndex="9" GridPane.columnIndex="3"
+                 fx:id="year" toggleGroup="$timeIntervalToggle"/>
+
+    <Label text="Time Steps: " GridPane.rowIndex="10" GridPane.columnIndex="1"/>
+
+    <TextField GridPane.rowIndex="10" GridPane.columnIndex="2" fx:id="timeSteps"/>
+
+    <Button text="Bull Simulation" GridPane.rowIndex="12" GridPane.columnIndex="3"
             onAction="#simulateClicked"/>
 </GridPane>
