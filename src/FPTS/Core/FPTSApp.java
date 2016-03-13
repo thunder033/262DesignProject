@@ -3,8 +3,10 @@ package FPTS.Core;
 import FPTS.Core.View;
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Models.*;
-import FPTS.Views.PortfolioView;
+import FPTS.Models.MarketEquity;
+import FPTS.Models.MarketEquityBin;
+import FPTS.Models.MarketIndex;
+import FPTS.Views.LoginView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,75 +30,52 @@ public class FPTSApp extends Application {
 
     FPTSData data;
     protected View currentView;
-    private Stage stage;
+    public Stage mainStage;
 
 
-    /**
-     * @return a reference to the data root
-     */
-    public FPTSData getData() {
+    public FPTSData getData()
+    {
         return data;
     }
 
-    /**
-     * @return the current view
-     */
+    public Stage getStage() { return mainStage; }
+
     public View getCurrentView()
     {
         return currentView;
     }
 
-    public Stage getStage(){
-        return stage;
-    }
-
-    /**
-     * Change the current view of the app, triggering exit and load
-     * functions on the respective views
-     * @param view the view to change to
-     */
-    public void setCurrentView(View view) {
-        if(currentView != null) {
-            currentView.Exit();
-        }
-
+    public void setCurrentView(View view)
+    {
+        //currentView.Exit();
         currentView = view;
-        stage.setScene(currentView.getScene());
         currentView.Load();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        stage = primaryStage;
-
+    public void start(Stage primaryStage) throws Exception{
         System.out.println("Loading data bins...");
         ArrayList<Class<? extends DataBin>> binTypes = new ArrayList<>();
         binTypes.add(MarketEquityBin.class);
-        binTypes.add(CashAccountBin.class);
-        binTypes.add(EquityBin.class);
-        binTypes.add(PortfolioBin.class);
 
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
 
-        ArrayList<Portfolio> portfolios = data.getInstances(Portfolio.class);
-        System.out.println("Loaded " + portfolios.size() + " portfolios");
+        ArrayList<MarketEquity> equities = data.getInstances(MarketEquity.class);
 
-        Portfolio portfolio = portfolios.get(0);
-        System.out.println(portfolio.id);
-        System.out.println(portfolio.getHoldings().size());
+        for(MarketEquity equity : equities) {
+            System.out.println(equity.getName());
+        }
 
-        System.out.println(data.getInstanceById(Equity.class, "2").getShares());
+        MarketIndex NASDAQ100 = MarketIndex.class.cast(data.getInstanceById(MarketEquity.class, "NASDAQ100"));
+        System.out.println(NASDAQ100.getName() + " contains " + NASDAQ100.getEquities().size() + " equities");
 
-        primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
-        primaryStage.setTitle("ThunderForge FPTS");
-
-        //Hard code create the portfolio view
-        View view = new PortfolioView(this);
-        setCurrentView(view);
-        primaryStage.show();
+        mainStage = new Stage();
+        setCurrentView(new LoginView(this));
+        mainStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
+        mainStage.setTitle("ThunderForge FPTS");
+        mainStage.show();
     }
-
 
     public static void main(String[] args) {
         launch(args);

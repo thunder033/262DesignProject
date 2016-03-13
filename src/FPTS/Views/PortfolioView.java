@@ -1,8 +1,7 @@
 package FPTS.Views;
 
-import FPTS.Controllers.PortfolioController;
-import FPTS.Core.FPTSApp;
 import FPTS.Core.View;
+import FPTS.Core.FPTSApp;
 
 /**
  * @author: Alexander Kidd
@@ -14,6 +13,5 @@ import FPTS.Core.View;
 public class PortfolioView extends View {
     public PortfolioView(FPTSApp app){
         super(app);
-        _fxmlName = "portfolio.fxml";
     }
 }

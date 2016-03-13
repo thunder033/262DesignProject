@@ -1,7 +1,12 @@
 package FPTS.Views;
 
-import FPTS.Core.FPTSApp;
 import FPTS.Core.View;
+import FPTS.Core.FPTSApp;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
+import java.io.IOException;
 
 /**
  * @author: Alexander Kidd
@@ -11,8 +16,18 @@ import FPTS.Core.View;
  * the UI associated with logging the user in.
  */
 public class LoginView extends View {
+
     public LoginView(FPTSApp app){
         super(app);
-        _fxmlName = "login.fxml";
+    }
+
+    @Override
+    public void Load() {
+        try {
+            Parent root = FXMLLoader.load(_app.getClass().getResource("/assets/login.fxml"));
+            _app.mainStage.setScene(new Scene(root, 300, 275));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,7 +1,12 @@
 package FPTS.Views;
 
-import FPTS.Core.FPTSApp;
 import FPTS.Core.View;
+import FPTS.Core.FPTSApp;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+
+import java.io.IOException;
 
 /**
  * @author: Alexander Kidd
@@ -13,6 +18,15 @@ import FPTS.Core.View;
 public class RegisterView extends View {
     public RegisterView(FPTSApp app){
         super(app);
-        _fxmlName = "register.fxml";
+    }
+
+    @Override
+    public void Load() {
+        try {
+            Parent root = FXMLLoader.load(_app.getClass().getResource("/assets/register.fxml"));
+            _app.mainStage.setScene(new Scene(root, 300, 275));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
