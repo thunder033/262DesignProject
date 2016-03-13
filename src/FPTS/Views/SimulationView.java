@@ -14,5 +14,6 @@ public class SimulationView extends View {
     public SimulationView(FPTSApp app)
     {
         super(app);
+        _fxmlName = "simulation.fxml";
     }
 }

@@ -18,6 +18,7 @@ import java.io.IOException;
 public class RegisterView extends View {
     public RegisterView(FPTSApp app){
         super(app);
+        _fxmlName = "register.fxml";
     }
 
     @Override
