@@ -7,6 +7,7 @@ import FPTS.Models.Portfolio;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -63,7 +64,7 @@ public class Exporter {
         line[0] = values;
 
         try {
-            CSV csv = new CSV(path);
+            CSV csv = new CSV(Paths.get(path.toString(), portfolio.id + ".csv"));
             csv.Write(line);
         } catch (IOException ex) {
             System.out.println("Warning Portfolio:" + portfolio.id + " export to " + path + " failed");
