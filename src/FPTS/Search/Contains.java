@@ -1,6 +1,9 @@
 public class Contains implements SearchMethod{
+	
 	public boolean compare(string searchTerm, string cmp){
+	
 		return cmp.contains(searchTerm);
+	
 	}
 /*
 	public ArrayList doMethod(string searchTerm, ArrayList csvTable){
