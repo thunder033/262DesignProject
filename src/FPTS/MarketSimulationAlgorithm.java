@@ -94,6 +94,9 @@ public abstract class MarketSimulationAlgorithm {
         return originalPortfolioValue * (1.0 + ratePerInterval * simulatedTimeSteps);
     }
 
+    /*
+     * Returns the value at the end of the simulation
+     */
     public double simulate(){
         simulatedTimeSteps = originalTimeSteps;
         return originalPortfolioValue * (1.0 + ratePerInterval * simulatedTimeSteps);

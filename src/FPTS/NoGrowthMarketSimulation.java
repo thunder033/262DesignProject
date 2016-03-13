@@ -10,4 +10,12 @@ public class NoGrowthMarketSimulation extends MarketSimulationAlgorithm{
         super(growthRate, originalTimeSteps,
         timeInterval, originalPortfolioValue);
     }
+
+    public double simulate(){
+        return getOriginalPortfolioValue();
+    }
+
+    public double step(){
+        return getOriginalPortfolioValue();
+    }
 }

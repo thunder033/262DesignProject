@@ -49,6 +49,23 @@ public class Simulation {
         double newVal;
         try {
             newVal = getCurrentAlgorithm().simulate();
+            if(newVal < 0){
+                newVal = 0;
+            }
+            setPortfolioValue(newVal);
+        }catch (NullPointerException e){
+            newVal = getPortfolioValue();
+        }
+        return newVal;
+    }
+
+    public double step(){
+        double newVal;
+        try {
+            newVal = getCurrentAlgorithm().step();
+            if(newVal < 0){
+                newVal = 0;
+            }
             setPortfolioValue(newVal);
         }catch (NullPointerException e){
             newVal = getPortfolioValue();

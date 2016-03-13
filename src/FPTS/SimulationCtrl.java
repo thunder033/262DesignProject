@@ -12,7 +12,7 @@ import java.text.DecimalFormat;
 public class SimulationCtrl extends Controller{
 
     // It seems I don't need this False
-    private static Simulation sim = new Simulation(100.00);
+    private static Simulation sim = new Simulation(2048.00);
 
     @FXML private Label value;
 
@@ -48,10 +48,10 @@ public class SimulationCtrl extends Controller{
 
 
 
-    @FXML protected void simulateClicked(ActionEvent event) {
+    @FXML protected void simulateOrStepClicked(ActionEvent event) {
+
         try {
             perAnnum = Double.parseDouble(perAnnumText.getText()) / 100.0;
-            System.out.println(perAnnum);
         } catch (NumberFormatException e) {
             perAnnumText.setText("Enter a number in this field");
         }
@@ -87,7 +87,14 @@ public class SimulationCtrl extends Controller{
         }else {
             marketError.setVisible(true);
         }
-        double portfolioValue = sim.simulate();
+        double portfolioValue;
+        if (((Button) event.getSource()).getText().equals("Run Simulation")) {
+            portfolioValue = sim.simulate();
+        }else{
+            portfolioValue = sim.step();
+            timeStepsText.setText(Integer.toString(sim.getCurrentAlgorithm().getOriginalTimeSteps()
+            - sim.getCurrentAlgorithm().getSimulatedTimeSteps()));
+        }
         DecimalFormat df = new DecimalFormat("#.##");
         value.setText(df.format(portfolioValue));
 
@@ -97,4 +104,6 @@ public class SimulationCtrl extends Controller{
         value.setText(Double.toString(sim.revertToActualValue()));
         revertButton.setVisible(false);
     }
+
+
 }

@@ -68,9 +68,12 @@
     <TextField GridPane.rowIndex="10" GridPane.columnIndex="2" fx:id="timeStepsText"/>
 
     <Button text="Run Simulation" GridPane.rowIndex="12" GridPane.columnIndex="1"
-            onAction="#simulateClicked"/>
+            onAction="#simulateOrStepClicked"/>
 
-    <Button text="Revert to actual value" GridPane.rowIndex="12" GridPane.columnIndex="2"
+    <Button text="Step" GridPane.rowIndex="12" GridPane.columnIndex="2"
+            onAction="#simulateOrStepClicked"/>
+
+    <Button text="Revert to actual value" GridPane.rowIndex="12" GridPane.columnIndex="3"
             onAction="#revertClicked" visible="false" fx:id="revertButton"/>
 
 

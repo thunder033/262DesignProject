@@ -18,7 +18,7 @@ public class BearMarketSimulation extends MarketSimulationAlgorithm {
         return getOriginalPortfolioValue() * (1 - getRatePerInterval() * getSimulatedTimeSteps());
     }
 
-    public double simulate(double portfolioValue){
+    public double simulate(){
         setSimulatedTimeSteps(getOriginalTimeSteps());
         return getOriginalPortfolioValue() * (1 - getRatePerInterval() * getSimulatedTimeSteps());
     }
