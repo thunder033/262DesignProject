@@ -19,6 +19,11 @@ public class Portfolio extends Model {
         super(username);
         holdings = new ArrayList<>();
         _passHash = passHash;
+        setChanged();
+    }
+
+    public boolean validateHash(String hash){
+        return hash.equals(_passHash);
     }
 
     /**
@@ -44,6 +49,7 @@ public class Portfolio extends Model {
      */
     public void addHolding(Holding holding)
     {
+        setChanged();
         holdings.add(holding);
     }
 }

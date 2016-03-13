@@ -2,9 +2,13 @@ package FPTS.Controllers;
 
 import FPTS.Core.Controller;
 import FPTS.Core.View;
+import FPTS.Data.Authenticator;
+import FPTS.Models.Portfolio;
+import FPTS.Views.PortfolioView;
 import FPTS.Views.RegisterView;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 
 /**
  * @author: Alexander Kidd
@@ -17,10 +21,22 @@ import javafx.scene.control.TextField;
 public class LoginController extends Controller {
     @FXML private TextField username;
     @FXML private TextField password;
+    @FXML private Text errorMessage;
 
     @FXML
     protected void loginUser() {
-        System.out.println(username.getText());
+        Portfolio portfolio = _app.getData().getInstanceById(Portfolio.class, username.getText());
+        if(portfolio != null){
+            if(portfolio.validateHash(Authenticator.makeHash(password.getText()))){
+                _portfolio = portfolio;
+                _app.setCurrentView(new PortfolioView(_app));
+            } else {
+                errorMessage.setText("No portfolio found for username and password");
+            }
+        }
+        else {
+            errorMessage.setText("No portfolio found for username and password");
+        }
     }
 
     @FXML

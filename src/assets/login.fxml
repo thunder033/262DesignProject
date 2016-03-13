@@ -6,6 +6,7 @@
 <?import javafx.scene.text.TextFlow?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
 <VBox alignment="TOP_CENTER"
       fx:controller="FPTS.Controllers.LoginController"
       xmlns:fx="http://javafx.com/fxml"
@@ -17,9 +18,11 @@
         Please Log In To View Your Portfolio
     </Label>
 
-    <TextField fx:id="username" maxWidth="200" promptText="Username"></TextField>
+    <TextField fx:id="username" maxWidth="200" promptText="Username"/>
 
-    <TextField fx:id="password" maxWidth="200" promptText="Password"></TextField>
+    <PasswordField fx:id="password" maxWidth="200" promptText="Password"/>
+
+    <Text fx:id="errorMessage"/>
 
     <Button fx:id="login" onAction="#loginUser"> Login </Button>
 

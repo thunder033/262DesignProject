@@ -33,6 +33,7 @@ public class FPTSData implements Observer {
     public void importBin(DataBin bin) {
         bins.put(bin.dataClass, bin);
         bin.loadInstances();
+        System.out.println("Loaded " + bin.getAll().size() + " [" + bin.dataClass.toString() + "] instances into [" + bin.getClass().toString() +"] from " + bin.fileName);
     }
 
     /**
