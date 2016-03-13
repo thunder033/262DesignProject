@@ -1,16 +1,10 @@
 package FPTS.Core;
 
-import FPTS.Core.View;
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Models.MarketEquity;
-import FPTS.Models.MarketEquityBin;
-import FPTS.Models.MarketIndex;
+import FPTS.Models.*;
 import FPTS.Views.LoginView;
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
@@ -30,33 +24,53 @@ public class FPTSApp extends Application {
 
     FPTSData data;
     protected View currentView;
-    public Stage mainStage;
+    private Stage mainStage;
 
 
-    public FPTSData getData()
-    {
+    /**
+     * @return a reference to the data root
+     */
+    public FPTSData getData() {
         return data;
     }
 
-    public Stage getStage() { return mainStage; }
-
+    /**
+     * @return the current view
+     */
     public View getCurrentView()
     {
         return currentView;
     }
 
-    public void setCurrentView(View view)
-    {
-        //currentView.Exit();
+    public Stage getStage(){
+        return mainStage;
+    }
+
+    /**
+     * Change the current view of the app, triggering exit and load
+     * functions on the respective views
+     * @param view the view to change to
+     */
+    public void setCurrentView(View view) {
+        if(currentView != null) {
+            currentView.Exit();
+        }
+
         currentView = view;
+        mainStage.setScene(currentView.getScene());
         currentView.Load();
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
+        mainStage = primaryStage;
+
         System.out.println("Loading data bins...");
         ArrayList<Class<? extends DataBin>> binTypes = new ArrayList<>();
         binTypes.add(MarketEquityBin.class);
+        binTypes.add(CashAccountBin.class);
+        binTypes.add(EquityBin.class);
+        binTypes.add(PortfolioBin.class);
 
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
@@ -67,10 +81,7 @@ public class FPTSApp extends Application {
             System.out.println(equity.getName());
         }
 
-        MarketIndex NASDAQ100 = MarketIndex.class.cast(data.getInstanceById(MarketEquity.class, "NASDAQ100"));
-        System.out.println(NASDAQ100.getName() + " contains " + NASDAQ100.getEquities().size() + " equities");
 
-        mainStage = new Stage();
         setCurrentView(new LoginView(this));
         mainStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         mainStage.setTitle("ThunderForge FPTS");

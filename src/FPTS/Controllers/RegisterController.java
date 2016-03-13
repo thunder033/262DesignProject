@@ -18,6 +18,6 @@ import javafx.fxml.FXML;
 public class RegisterController extends Controller {
 
     @FXML protected void registerUser() {
-        View._app.setCurrentView(new LoginView(View._app));
+        _app.setCurrentView(new LoginView(_app));
     }
 }

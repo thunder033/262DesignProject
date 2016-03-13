@@ -19,15 +19,17 @@ public class RegisterView extends View {
     public RegisterView(FPTSApp app){
         super(app);
         _fxmlName = "register.fxml";
+        width = 300;
+        height = 275;
     }
 
     @Override
     public void Load() {
-        try {
-            Parent root = FXMLLoader.load(_app.getClass().getResource("/assets/register.fxml"));
-            _app.mainStage.setScene(new Scene(root, 300, 275));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            Parent root = FXMLLoader.load(_app.getClass().getResource("/assets/register.fxml"));
+//            _app.getStage().setScene(new Scene(root, 300, 275));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 }

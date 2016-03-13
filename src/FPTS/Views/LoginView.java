@@ -26,7 +26,7 @@ public class LoginView extends View {
     public void Load() {
         try {
             Parent root = FXMLLoader.load(_app.getClass().getResource("/assets/login.fxml"));
-            _app.mainStage.setScene(new Scene(root, 300, 275));
+            _app.getStage().setScene(new Scene(root, 300, 275));
         } catch (IOException e) {
             e.printStackTrace();
         }

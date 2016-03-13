@@ -25,6 +25,6 @@ public class LoginController extends Controller {
 
     @FXML
     protected void registerRedirect() {
-        View._app.setCurrentView(new RegisterView(View._app));
+        _app.setCurrentView(new RegisterView(_app));
     }
 }
