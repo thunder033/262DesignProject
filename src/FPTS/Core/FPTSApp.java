@@ -64,14 +64,14 @@ public class FPTSApp extends Application {
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
 
-        ArrayList<MarketEquity> equities = data.getInstances(MarketEquity.class);
+        ArrayList<Portfolio> portfolios = data.getInstances(Portfolio.class);
+        System.out.println("Loaded " + portfolios.size() + " portfolios");
 
-        for(MarketEquity equity : equities) {
-            System.out.println(equity.getName());
-        }
+        Portfolio portfolio = portfolios.get(0);
+        System.out.println(portfolio.id);
+        System.out.println(portfolio.getHoldings().size());
 
-        MarketIndex NASDAQ100 = MarketIndex.class.cast(data.getInstanceById(MarketEquity.class, "NASDAQ100"));
-        System.out.println(NASDAQ100.getName() + " contains " + NASDAQ100.getEquities().size() + " equities");
+        System.out.println(data.getInstanceById(Equity.class, "2").getShares());
 
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
