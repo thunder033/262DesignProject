@@ -13,5 +13,6 @@ import FPTS.Core.View;
 public class RegisterView extends View {
     public RegisterView(FPTSApp app){
         super(app);
+        _fxmlName = "register.fxml";
     }
 }

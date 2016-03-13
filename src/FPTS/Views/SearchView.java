@@ -12,5 +12,6 @@ import FPTS.Core.View;
 public class SearchView extends View {
     public SearchView(FPTSApp app) {
         super(app);
+        _fxmlName = "search.fxml";
     }
 }
