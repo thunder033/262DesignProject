@@ -13,5 +13,6 @@ public class TransactionView extends View {
 
     public TransactionView(FPTSApp app) {
         super(app);
+        _fxmlName = "transaction.fxml";
     }
 }

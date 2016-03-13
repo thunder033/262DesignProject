@@ -13,5 +13,6 @@ import FPTS.Core.View;
 public class LoginView extends View {
     public LoginView(FPTSApp app){
         super(app);
+        _fxmlName = "login.fxml";
     }
 }

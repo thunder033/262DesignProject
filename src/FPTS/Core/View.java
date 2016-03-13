@@ -32,10 +32,6 @@ public abstract class View {
 
     public void Load()
     {
-        if(_controller == null) {
-            _controller = new Controller();
-        }
-
         _controller.Load(_app, _controller._portfolio);
     }
 
@@ -55,8 +51,11 @@ public abstract class View {
                     throw new IOException("No FXML file exists at " + path);
                 }
 
-                Pane layout = FXMLLoader.load(url);
+                FXMLLoader loader = new FXMLLoader(url);
+                Pane layout = loader.load();
                 scene = new Scene(layout, width, height);
+                _controller = loader.getController();
+                System.out.println(_controller);
             }
             else {
                 scene = _scene;

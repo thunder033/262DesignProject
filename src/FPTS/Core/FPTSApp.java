@@ -46,6 +46,10 @@ public class FPTSApp extends Application {
         return currentView;
     }
 
+    public Stage getStage(){
+        return stage;
+    }
+
     /**
      * Change the current view of the app, triggering exit and load
      * functions on the respective views
