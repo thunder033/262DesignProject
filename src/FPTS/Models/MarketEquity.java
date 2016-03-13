@@ -5,9 +5,12 @@ import FPTS.Core.Model;
 import java.util.ArrayList;
 
 /**
- * Created by Greg on 3/9/2016.
- * Stores the ticker symbol, name, and share price of given equity
- * on the market
+ * @author: Greg
+ * Created: 3/9/16
+ * Revised: 3/13/16
+ * Description: Stores the ticker
+ * symbol, name, and share price
+ * of given equity on the market.
  */
 public class MarketEquity extends Model {
     protected String _name;

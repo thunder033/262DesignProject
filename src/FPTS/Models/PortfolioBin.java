@@ -7,8 +7,11 @@ import FPTS.Core.Model;
 import java.util.ArrayList;
 
 /**
- * Created by gjr8050 on 3/10/2016.
- * Responsible for mapping portfolio and converting between
+ * @author: Greg
+ * Created: 3/10/16
+ * Revised: 3/13/16
+ * Description: Responsible for
+ * mapping portfolio and converting between
  * instances and values arrays.
  */
 public class PortfolioBin extends DataBin {

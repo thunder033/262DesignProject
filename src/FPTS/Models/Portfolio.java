@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by gjr8050 on 3/10/2016.
- * A collection of holdings managed by one user
+ * @author: Greg
+ * Created: 3/10/16
+ * Revised: 3/13/16
+ * Description: A collection
+ * of holdings managed by one user.
  */
 public class Portfolio extends Model {
 

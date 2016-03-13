@@ -4,8 +4,10 @@ import FPTS.Core.Model;
 import FPTS.Data.DataBin;
 
 /**
- * Cash Account Bin
- * Responsible for mapping cash accounts and converting between
+ * @author: Greg
+ * Created: 3/9/16
+ * Description: Responsible for mapping
+ * cash accounts and converting between
  * instances and values arrays.
  */
 public class CashAccountBin extends DataBin {

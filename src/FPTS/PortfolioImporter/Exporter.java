@@ -12,8 +12,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by Greg on 3/13/2016.
- * Serializes a Portfolio and its holdings into a values array
+ * @author: Greg
+ * Created: 3/13/16
+ * Revised: 3/13/16
+ * Description: Serializes a
+ * Portfolio and its holdings into a values array.
  */
 public class Exporter {
 

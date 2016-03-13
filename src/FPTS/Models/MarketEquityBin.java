@@ -5,7 +5,12 @@ import FPTS.Data.FPTSData;
 import FPTS.Core.Model;
 
 /**
- * Created by Greg on 3/9/2016.
+ * @author: Greg
+ * Created: 3/9/16
+ * Revised: 3/13/16
+ * Description: Represents a storage
+ * space in persistent memory for
+ * market equities.
  */
 public class MarketEquityBin extends DataBin {
 

@@ -9,8 +9,10 @@ import java.net.URL;
 import java.nio.file.Paths;
 
 /**
- * Created by Greg on 3/12/2016.
- * A view is a definition of discrete segment of functionality provided
+ * @author: Greg
+ * Created: 3/12/16
+ * Revised: 3/13/16
+ * Description: A view is a definition of discrete segment of functionality provided
  * by the system to users. The view associates controllers with GUI components
  * and handles switching between views.
  */

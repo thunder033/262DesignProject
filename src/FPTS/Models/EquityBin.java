@@ -5,8 +5,11 @@ import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 
 /**
- * Equity Bin
- * Responsible for storing equities and converting between
+ * @author: Greg
+ * Created: 3/13/16
+ * Revised: 3/13/16
+ * Description: Responsible for storing
+ * equities and converting between
  * instances and values arrays.
  */
 public class EquityBin extends DataBin {

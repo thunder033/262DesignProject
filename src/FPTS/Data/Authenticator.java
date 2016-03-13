@@ -4,7 +4,9 @@ package FPTS.Data;
  * @author: Alexander Kidd
  * Created: 3/13/2016
  * Revised: 3/13/2016
- * Description:
+ * Description: Responsible for validating
+ * user login credentials and hashing passwords
+ * as security features.
  */
 public class Authenticator {
 

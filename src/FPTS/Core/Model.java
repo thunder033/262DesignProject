@@ -10,8 +10,10 @@ import java.nio.file.Paths;
 import java.util.Observable;
 
 /**
- * Created by Greg on 3/9/2016.
- * A model instance encapsulates a related set of parameters.
+ * @author: Greg
+ * Created: 3/9/16
+ * Revised: 3/13/16
+ * Description: A model instance encapsulates a related set of parameters.
  * The abstract model is responsible for generating an a unique
  * id for each new instance and providing a core set of functions
  * for interacting with models

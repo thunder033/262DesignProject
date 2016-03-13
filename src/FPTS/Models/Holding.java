@@ -1,8 +1,10 @@
 package FPTS.Models;
 
 /**
- * Created by gjr8050 on 3/10/2016.
- * Interface for managing holdings in a portfolio
+ * @author: Greg
+ * Created: 3/10/16
+ * Revised: 3/13/16
+ * Interface for managing holdings in a portfolio.
  */
 public interface Holding {
     /**

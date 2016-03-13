@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 /**
  * @author: Greg Rozmarynowycz
- * Created: 3/11/2016
- * Revised: 3/11/2016
+ * Created: 3/11/16
+ * Revised: 3/13/16
  * Description: The initialization point for
  * the application via a launch command which automates
  * much of running the thread.  An initial view is launched

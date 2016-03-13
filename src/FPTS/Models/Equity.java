@@ -3,8 +3,12 @@ package FPTS.Models;
 import FPTS.Core.Model;
 
 /**
- * Created by gjr8050 on 3/10/2016.
- * Represents a share of an equity on the market held in a portfolio
+ * @author: Greg
+ * Created: 3/10/16
+ * Revised: 3/13/16
+ * Description: Represents a
+ * share of an equity on the
+ * market held in a portfolio.
  */
 public class Equity extends Model implements Holding {
     MarketEquity _marketEquity;

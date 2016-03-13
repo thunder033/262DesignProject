@@ -10,7 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Stores a map of model instances and provides an interface for persistence and retrieval
+ * @author: Greg
+ * Created: 3/11/16
+ * Revised: 3/13/16
+ * Description: Stores a map of model
+ * instances and provides an interface
+ * for persistence and retrieval.
  */
 public abstract class DataBin {
     protected String fileName;

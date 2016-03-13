@@ -11,8 +11,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 
 /**
- * Created by Greg on 3/13/2016.
- * Parses a ThunderForge CSV into a portfolio instance
+ * @author: Greg
+ * Created: 3/13/16
+ * Revised: 3/13/16
+ * Description: Parses a ThunderForge
+ * CSV into a portfolio instance.
  */
 public class CSVImporter implements ImportStrategy {
 

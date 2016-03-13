@@ -3,8 +3,11 @@ package FPTS.Models;
 import FPTS.Core.Model;
 
 /**
- * Created by gjr8050 on 3/10/2016.
- * Representation of liquid assets held in the portfolio
+ * @author: Greg
+ * Created: 3/10/16
+ * Revised: 3/13/16
+ * Description: Representation of
+ * liquid assets held in the portfolio.
  */
 public class CashAccount extends Model implements Holding {
 

@@ -3,8 +3,11 @@ package FPTS.Models;
 import java.util.ArrayList;
 
 /**
- * Created by gjr8050 on 3/10/2016.
- * Contains a group of equities based on a market index or sector
+ * @author: Greg
+ * Created: 3/10/16
+ * Revised: 3/13/16
+ * Description: Contains a group of
+ * equities based on a market index or sector.
  */
 public class MarketIndex extends MarketEquity {
 

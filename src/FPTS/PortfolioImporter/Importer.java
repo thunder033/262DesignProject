@@ -5,7 +5,12 @@ import FPTS.Models.Portfolio;
 import java.nio.file.Path;
 
 /**
- * Created by Greg on 3/13/2016.
+ * @author: Greg
+ * Created: 3/13/16
+ * Revised: 3/13/16
+ * Description: Provides context for
+ * importing, setting a different import
+ * strategy based on input parameters.
  */
 public class Importer {
 

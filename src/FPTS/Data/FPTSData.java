@@ -7,9 +7,12 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Created by Greg on 3/9/2016.
- * Provides an interface for retrieving persisted data models, managing
- * model instances, and writing changes to models
+ * @author: Greg
+ * Created: 3/9/16
+ * Revised: 3/13/16
+ * Description: Provides an interface
+ * for retrieving persisted data models, managing
+ * model instances, and writing changes to models.
  */
 public class FPTSData implements Observer {
 
