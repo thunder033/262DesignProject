@@ -9,6 +9,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author: Greg Rozmarynowycz
@@ -24,8 +26,7 @@ public class FPTSApp extends Application {
 
     FPTSData data;
     protected View currentView;
-    private Stage mainStage;
-
+    private Map<String, Stage> stageMap;
 
     /**
      * @return a reference to the data root
@@ -41,8 +42,17 @@ public class FPTSApp extends Application {
         return currentView;
     }
 
+    public void CloseStage(String name){
+        stageMap.get(name).close();
+        currentView._controller.refreshView();
+    }
+
     public Stage getStage(){
-        return mainStage;
+        return stageMap.get("Main");
+    }
+
+    public Stage getStage(String name){
+        return stageMap.get(name);
     }
 
     /**
@@ -50,19 +60,29 @@ public class FPTSApp extends Application {
      * functions on the respective views
      * @param view the view to change to
      */
-    public void setCurrentView(View view) {
+    public void loadView(View view) {
         if(currentView != null) {
             currentView.Exit();
         }
 
-        currentView = view;
-        mainStage.setScene(currentView.getScene());
-        currentView.Load();
+        if(view.newWindow){
+            view.getScene();
+            view.Load();
+            stageMap.put(view.getClass().getSimpleName(), view._stage);
+        } else {
+            currentView = view;
+            getStage().setScene(currentView.getScene());
+            getStage().setTitle(currentView.title);
+
+            currentView.Load();
+        }
+
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        mainStage = primaryStage;
+        stageMap = new HashMap<>();
+        stageMap.put("Main", primaryStage);
 
         System.out.println("Loading data bins...");
         ArrayList<Class<? extends DataBin>> binTypes = new ArrayList<>();
@@ -74,10 +94,10 @@ public class FPTSApp extends Application {
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
 
-        setCurrentView(new LoginView(this));
-        mainStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
-        mainStage.setTitle("ThunderForge FPTS");
-        mainStage.show();
+        loadView(new LoginView(this));
+        primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
+        primaryStage.setTitle("ThunderForge FPTS");
+        primaryStage.show();
     }
 
     public static void main(String[] args) {

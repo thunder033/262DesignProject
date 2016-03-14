@@ -1,8 +1,10 @@
 package FPTS.Core;
 
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.LoadException;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -23,18 +25,23 @@ public abstract class View {
     protected Scene _scene;
     protected String _fxmlName;
     protected FPTSApp _app;
+    protected Stage _stage;
 
-    public int width = 800;
-    public int height = 600;
+    protected boolean newWindow = false;
+    public String title = "ThunderForge FPTS";
+    protected int width = 800;
+    protected int height = 600;
+    public static String name;
 
     public View(FPTSApp app)
     {
         _app = app;
+        _stage = app.getStage();
     }
 
     public void Load()
     {
-        _controller.Load(_app, _controller._portfolio);
+        _controller.Load(_app, Controller._portfolio);
     }
 
     public void Exit() {
@@ -65,6 +72,17 @@ public abstract class View {
         } catch (IOException ex) {
             System.out.println("Failed to get scene for " + getClass());
             System.out.println(ex.getMessage());
+            ex.printStackTrace();
+        }
+
+        if(newWindow) {
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(scene);
+            stage.setWidth(width);
+            stage.setHeight(height);
+            stage.show();
+            _stage = stage;
         }
 
         return scene;
