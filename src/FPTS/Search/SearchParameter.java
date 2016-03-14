@@ -2,6 +2,12 @@ package FPTS.Search;
 
 public class SearchParameter{
 
-	private SearchParameter searchParameter;
+	    
+    public enum searchParameter {
+        id,
+        name,
+        index,
+        sector
+    }
 
 }

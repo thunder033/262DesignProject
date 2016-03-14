@@ -6,6 +6,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
 
 <?import javafx.scene.control.Button?>
 <GridPane alignment="center" hgap="10" vgap="10"
@@ -13,10 +16,46 @@
           fx:controller="FPTS.Controllers.SearchController"
           xmlns:fx="http://javafx.com/fxml">
     <padding><Insets top="25" right="25" left="25" bottom="10"/></padding>
-    <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.columnSpan="2"/>
-    <Label text="Holdings" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="holdings-header" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS"/>
-    <Button text="Search" onAction="#handleSearchAction" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-    <TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="2" GridPane.hgrow="ALWAYS">
+    <Label text="Search" GridPane.columnIndex="0" GridPane.rowIndex="0" styleClass="holdings-header" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS"/>
+    
+    <TextField fx:id="id" maxWidth="200" promptText="id" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+    <TextField fx:id="name" maxWidth="200" promptText="name" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+    <TextField fx:id="index" maxWidth="200" promptText="index" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+    <TextField fx:id="sector" maxWidth="200" promptText="sector" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    
+    <Label text="Begins With" GridPane.columnIndex="1" GridPane.rowIndex="0" styleClass="holdings-header" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS"/>
+    <Label text="Contains" GridPane.columnIndex="2" GridPane.rowIndex="0" styleClass="holdings-header" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS"/>
+    <Label text="Exactly Matches" GridPane.columnIndex="3" GridPane.rowIndex="0" styleClass="holdings-header" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS"/>
+    
+    
+    <fx:define>  
+        <ToggleGroup fx:id="RB_Group1" />  
+    </fx:define>
+    <RadioButton toggleGroup="$RB_Group1" fx:id="beginsWith1" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+    <RadioButton toggleGroup="$RB_Group1" fx:id="contains1" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+    <RadioButton toggleGroup="$RB_Group1" fx:id="exactlyMatches1" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+    <fx:define>  
+        <ToggleGroup fx:id="RB_Group2" />  
+    </fx:define>
+    <RadioButton toggleGroup="$RB_Group2" fx:id="beginsWith2" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+    <RadioButton toggleGroup="$RB_Group2" fx:id="contains2" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+    <RadioButton toggleGroup="$RB_Group2" fx:id="exactlyMatches2" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+    <fx:define>  
+        <ToggleGroup fx:id="RB_Group3" />  
+    </fx:define>
+    <RadioButton toggleGroup="$RB_Group3" fx:id="beginsWith3" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <RadioButton toggleGroup="$RB_Group3" fx:id="contains3" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+    <RadioButton toggleGroup="$RB_Group3" fx:id="exactlyMatches3" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+    <fx:define>  
+        <ToggleGroup fx:id="RB_Group4" />  
+    </fx:define>
+    <RadioButton toggleGroup="$RB_Group4" fx:id="beginsWith4" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+    <RadioButton toggleGroup="$RB_Group4" fx:id="contains4" GridPane.columnIndex="2" GridPane.rowIndex="4"/>
+    <RadioButton toggleGroup="$RB_Group4" fx:id="exactlyMatches4" GridPane.columnIndex="3" GridPane.rowIndex="4"/>
+    
+    <Button text="Search" onAction="#handleSearchAction" GridPane.columnIndex="4" GridPane.rowIndex="5"/>
+    <Button text="Select" onAction="#handleSelectAction" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+    <TableView fx:id="searchResultsPane" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS">
         <columns>
             <TableColumn text="Type">
                 <cellValueFactory><PropertyValueFactory property="type" /></cellValueFactory>
