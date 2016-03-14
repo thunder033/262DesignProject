@@ -7,6 +7,8 @@ import FPTS.PortfolioImporter.CSVImporter;
 import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
 import FPTS.Views.AddHoldingView;
+import FPTS.Views.SimulationView;
+import FPTS.Views.TransactionView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -74,5 +76,10 @@ public class PortfolioController extends Controller {
     }
 
     public void handleTransaction(ActionEvent actionEvent) {
+        _app.loadView(new TransactionView(_app));
+    }
+
+    public void handleSimulate(ActionEvent actionEvent) {
+        _app.loadView(new SimulationView(_app));
     }
 }

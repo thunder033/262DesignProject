@@ -13,7 +13,8 @@
           fx:controller="FPTS.Controllers.PortfolioController"
           xmlns:fx="http://javafx.com/fxml">
     <padding><Insets top="25" right="25" left="25" bottom="10"/></padding>
-    <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.columnSpan="5"/>
+    <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.hgrow="ALWAYS" GridPane.columnSpan="4"/>
+    <Button text="Simulate Portfolio" onAction="#handleSimulate" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
 
     <Label text="Holdings" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="holdings-header" GridPane.columnSpan="1" GridPane.hgrow="ALWAYS"/>
     <Button text="Export" onAction="#handleExportAction" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
