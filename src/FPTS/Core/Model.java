@@ -39,6 +39,13 @@ public abstract class Model extends Observable {
         notifyObservers();
     }
 
+    public void save(boolean addInstance){
+        if(addInstance && FPTSData.getDataRoot().getInstanceById(this.getClass(), this.id) == null){
+            FPTSData.getDataRoot().addInstance(this);
+        }
+        save();
+    }
+
     public boolean getIsPersistent() {
         return isPersistent;
     }

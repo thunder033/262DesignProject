@@ -1,8 +1,11 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
+import FPTS.Core.Model;
 import FPTS.Models.*;
+import FPTS.PortfolioImporter.CSVImporter;
 import FPTS.PortfolioImporter.Exporter;
+import FPTS.PortfolioImporter.Importer;
 import FPTS.Views.AddHoldingView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
+import javafx.stage.FileChooser;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -28,6 +32,7 @@ public class PortfolioController extends Controller {
     @FXML private TableView holdingsPane;
 
     final DirectoryChooser directoryChooser = new DirectoryChooser();
+    final FileChooser fileChooser = new FileChooser();
 
     public PortfolioController() {
     }
@@ -55,7 +60,17 @@ public class PortfolioController extends Controller {
         _app.loadView(new AddHoldingView(_app));
     }
 
+    private void addHolding(Holding holding){
+        _portfolio.addHolding(holding);
+        _app.getData().addInstance(Model.class.cast(holding));
+    }
+
     public void handleImport(ActionEvent actionEvent) {
+        Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
+        Importer importer = new Importer(path);
+        importer.setStrategy(new CSVImporter());
+        importer.importData().getHoldings().stream().forEach(this::addHolding);
+        _portfolio.save();
     }
 
     public void handleTransaction(ActionEvent actionEvent) {

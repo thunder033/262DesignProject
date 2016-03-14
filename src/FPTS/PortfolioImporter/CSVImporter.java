@@ -33,7 +33,7 @@ public class CSVImporter implements ImportStrategy {
             MarketEquity marketEquity = FPTSData.getDataRoot().getInstanceById(MarketEquity.class, values[i]);
             if(marketEquity != null) {
                 Equity equity = new Equity(marketEquity);
-                float value = Float.parseFloat(values[i + 1]) / marketEquity.getSharePrice();
+                float value = Float.parseFloat(values[i + 1]) * marketEquity.getSharePrice();
                 equity.addValue(value);
                 portfolio.addHolding(equity);
             }

@@ -14,11 +14,12 @@ import java.nio.file.Path;
  */
 public class Importer {
 
-    Path path;
+    Path _path;
     ImportStrategy parsingStrategy;
 
     public Importer(Path path) {
         parsingStrategy = new CSVImporter();
+        _path = path;
     }
 
     public void setStrategy(ImportStrategy strategy) {
@@ -26,6 +27,6 @@ public class Importer {
     }
 
     public Portfolio importData() {
-        return parsingStrategy.execute(path);
+        return parsingStrategy.execute(_path);
     }
 }
