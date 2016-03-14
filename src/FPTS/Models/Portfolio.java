@@ -22,7 +22,12 @@ public class Portfolio extends Model {
         super(username);
         holdings = new ArrayList<>();
         _passHash = passHash;
-        setChanged();
+    }
+
+    @Override
+    public void save() {
+        holdings.stream().forEach(holding -> Model.class.cast(holding).save());
+        super.save();
     }
 
     public boolean validateHash(String hash){

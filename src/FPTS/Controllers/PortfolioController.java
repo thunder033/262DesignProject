@@ -1,9 +1,9 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
-import FPTS.Data.FPTSData;
 import FPTS.Models.*;
 import FPTS.PortfolioImporter.Exporter;
+import FPTS.Views.AddHoldingView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,5 +49,15 @@ public class PortfolioController extends Controller {
         ObservableList<Holding> holdings = FXCollections.observableArrayList(_portfolio.getHoldings());
         System.out.println(holdings.size());
         holdingsPane.setItems(holdings);
+    }
+
+    public void handleNewHolding(ActionEvent actionEvent) {
+        _app.loadView(new AddHoldingView(_app));
+    }
+
+    public void handleImport(ActionEvent actionEvent) {
+    }
+
+    public void handleTransaction(ActionEvent actionEvent) {
     }
 }
