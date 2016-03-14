@@ -1,0 +1,33 @@
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Button?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<?import FPTS.Controls.*?>
+<?import javafx.scene.control.ChoiceBox?>
+<VBox alignment="TOP_CENTER"
+      fx:controller="FPTS.Controllers.AddHoldingController"
+      xmlns:fx="http://javafx.com/fxml"
+      spacing="10">
+    <Label>
+        <padding>
+            <Insets top="25" right="0" bottom="25" left="0"/>
+        </padding>
+        Add a New Holding to Your Portfolio
+    </Label>
+
+    <Label text="Holding Type" />
+    <ChoiceBox fx:id="holdingTypes" maxWidth="200" />
+
+    <TextField fx:id="holdingName" maxWidth="200" promptText="A Cash Account Name or Ticker Symbol"/>
+    <Text fx:id="holdingInfo" />
+
+    <NumericField fx:id="holdingValue" maxWidth="200" promptText="A value for the holding"/>
+    <Text fx:id="valueInfo" />
+
+    <Text fx:id="errorMessage"/>
+
+    <Button fx:id="addHoldingControl" onAction="#addHolding"> Add Holding </Button>
+</VBox>
