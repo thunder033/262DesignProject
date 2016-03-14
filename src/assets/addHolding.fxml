@@ -1,12 +1,10 @@
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Button?>
+<?import FPTS.Controls.NumericField?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
-
-<?import FPTS.Controls.*?>
-<?import javafx.scene.control.ChoiceBox?>
 <VBox alignment="TOP_CENTER"
       fx:controller="FPTS.Controllers.AddHoldingController"
       xmlns:fx="http://javafx.com/fxml"
@@ -22,6 +20,16 @@
     <ChoiceBox fx:id="holdingTypes" maxWidth="200" />
 
     <TextField fx:id="holdingName" maxWidth="200" promptText="A Cash Account Name or Ticker Symbol"/>
+
+    <fx:define>
+        <Image fx:id="searchIcon" url="/assets/search.png" />
+    </fx:define>
+    <Button fx:id="searchButton" onAction="#handleSearch">
+        <graphic>
+            <ImageView image="$searchIcon">
+            </ImageView>
+        </graphic>
+    </Button>
     <Text fx:id="holdingInfo" />
 
     <NumericField fx:id="holdingValue" maxWidth="200" promptText="A value for the holding"/>

@@ -1,8 +1,8 @@
 package FPTS.Models;
 
+import FPTS.Core.Model;
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Core.Model;
 
 import java.util.ArrayList;
 

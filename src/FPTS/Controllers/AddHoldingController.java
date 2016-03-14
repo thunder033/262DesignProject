@@ -6,20 +6,18 @@ import FPTS.Core.FPTSApp;
 import FPTS.Core.Model;
 import FPTS.Models.*;
 import FPTS.Views.AddHoldingView;
+import FPTS.Views.SearchView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.input.InputEvent;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
 
-import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +32,8 @@ public class AddHoldingController extends Controller {
     @FXML Text valueInfo;
     @FXML ChoiceBox<String> holdingTypes;
     @FXML Button addHoldingControl;
+    @FXML Image searchIcon;
+    @FXML Button searchButton;
 
     Map<String, Class<?>> typesMap;
 
@@ -55,6 +55,7 @@ public class AddHoldingController extends Controller {
 
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
+        searchIcon = new Image(this.getClass().getResourceAsStream("/assets/search.png"));
         super.Load(app, portfolio);
 
         typesMap = new HashMap<>();
@@ -123,5 +124,9 @@ public class AddHoldingController extends Controller {
             _portfolio.save();
             _app.CloseStage(AddHoldingView.class.getSimpleName());
         }
+    }
+
+    public void handleSearch(ActionEvent actionEvent) {
+        _app.loadView(new SearchView(_app));
     }
 }

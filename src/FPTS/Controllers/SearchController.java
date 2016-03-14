@@ -1,20 +1,16 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
-import FPTS.Models.Holding;
 import FPTS.Models.MarketEquity;
-import FPTS.PortfolioImporter.Exporter;
 import FPTS.Search.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.RadioButton;
+import javafx.scene.control.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 //
 //@author: Eric
@@ -23,6 +19,7 @@ import javafx.scene.control.RadioButton;
 //Description: Contains behavior and elements for UI.
 //
 public class SearchController extends Controller {
+
     @FXML private TextField id;
     @FXML private TextField name;
     @FXML private TextField index;
@@ -57,7 +54,7 @@ public class SearchController extends Controller {
     SearchQuery _search2;
     SearchQuery _search3;
     SearchQuery _search4;
-    
+
     @FXML private TableView searchResultsPane;
     
     public SearchController() {
@@ -77,8 +74,18 @@ public class SearchController extends Controller {
     }
     
     @FXML
-    protected void handleSelectAction() {
-        
+    protected void handleSelectAction(ActionEvent actionEvent) {
+        TableView.TableViewSelectionModel selectionModel = searchResultsPane.getSelectionModel();
+        List selectedCells = selectionModel.getSelectedCells();
+        TablePosition tablePosition = (TablePosition) selectedCells.get(0);
+        int row = tablePosition.getRow();
+        Object item = searchResultsPane.getItems().get(row);
+        TableColumn col = (TableColumn)searchResultsPane.getColumns().get(1);
+        String data = (String) col.getCellObservableValue(item).getValue();
+        _app.setSearchResult(data);
+        System.out.println(_app.searchResult);
+
+
     }
     
     @FXML

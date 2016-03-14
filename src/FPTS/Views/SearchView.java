@@ -1,7 +1,7 @@
 package FPTS.Views;
 
-import FPTS.Core.View;
 import FPTS.Core.FPTSApp;
+import FPTS.Core.View;
 
 /**
  * @author: Alexander Kidd
@@ -13,5 +13,8 @@ public class SearchView extends View {
     public SearchView(FPTSApp app) {
         super(app);
         _fxmlName = "search.fxml";
+        width = 700;
+        height = 400;
+        newWindow = true;
     }
 }

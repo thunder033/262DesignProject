@@ -1,8 +1,9 @@
 package FPTS.Search;
 
-import java.util.ArrayList;
-import FPTS.Models.MarketEquity;
 import FPTS.Data.FPTSData;
+import FPTS.Models.MarketEquity;
+
+import java.util.ArrayList;
 
 /**
  * @author: Eric

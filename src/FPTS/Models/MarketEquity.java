@@ -2,8 +2,6 @@ package FPTS.Models;
 
 import FPTS.Core.Model;
 
-import java.util.ArrayList;
-
 /**
  * @author: Greg
  * Created: 3/9/16

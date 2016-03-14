@@ -1,7 +1,7 @@
 package FPTS.Views;
 
-import FPTS.Core.View;
 import FPTS.Core.FPTSApp;
+import FPTS.Core.View;
 
 /**
  * @author: Alexander Kidd

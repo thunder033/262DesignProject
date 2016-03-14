@@ -1,12 +1,7 @@
 package FPTS.Views;
 
-import FPTS.Core.View;
 import FPTS.Core.FPTSApp;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-
-import java.io.IOException;
+import FPTS.Core.View;
 
 /**
  * @author: Alexander Kidd
@@ -22,6 +17,7 @@ public class LoginView extends View {
         _fxmlName = "login.fxml";
         width = 300;
         height = 275;
+        title = "FPTS - Search Equities";
     }
 
 }

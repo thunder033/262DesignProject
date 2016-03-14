@@ -2,11 +2,12 @@ package FPTS.Controllers;
 
 import FPTS.Core.Controller;
 import FPTS.Core.Model;
-import FPTS.Models.*;
+import FPTS.Models.Holding;
 import FPTS.PortfolioImporter.CSVImporter;
 import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
 import FPTS.Views.AddHoldingView;
+import FPTS.Views.LoginView;
 import FPTS.Views.SimulationView;
 import FPTS.Views.TransactionView;
 import javafx.collections.FXCollections;
@@ -81,5 +82,9 @@ public class PortfolioController extends Controller {
 
     public void handleSimulate(ActionEvent actionEvent) {
         _app.loadView(new SimulationView(_app));
+    }
+
+    public void handlelLogOut(ActionEvent actionEvent) {
+        _app.loadView(new LoginView(_app));
     }
 }

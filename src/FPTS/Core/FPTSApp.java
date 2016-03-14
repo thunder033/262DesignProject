@@ -2,7 +2,10 @@ package FPTS.Core;
 
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Models.*;
+import FPTS.Models.CashAccountBin;
+import FPTS.Models.EquityBin;
+import FPTS.Models.MarketEquityBin;
+import FPTS.Models.PortfolioBin;
 import FPTS.Views.LoginView;
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -27,12 +30,20 @@ public class FPTSApp extends Application {
     FPTSData data;
     protected View currentView;
     private Map<String, Stage> stageMap;
+    public String searchResult;
 
     /**
      * @return a reference to the data root
      */
     public FPTSData getData() {
         return data;
+    }
+
+    /**
+     * Set the public Search Result.
+     */
+    public void setSearchResult(String result) {
+        searchResult = result;
     }
 
     /**
