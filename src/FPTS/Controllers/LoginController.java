@@ -1,7 +1,6 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
-import FPTS.Core.View;
 import FPTS.Data.Authenticator;
 import FPTS.Models.Portfolio;
 import FPTS.Views.PortfolioView;
@@ -29,7 +28,7 @@ public class LoginController extends Controller {
         if(portfolio != null){
             if(portfolio.validateHash(Authenticator.makeHash(password.getText()))){
                 _portfolio = portfolio;
-                _app.setCurrentView(new PortfolioView(_app));
+                _app.loadView(new PortfolioView(_app));
             } else {
                 errorMessage.setText("No portfolio found for username and password");
             }
@@ -41,6 +40,6 @@ public class LoginController extends Controller {
 
     @FXML
     protected void registerRedirect() {
-        _app.setCurrentView(new RegisterView(_app));
+        _app.loadView(new RegisterView(_app));
     }
 }

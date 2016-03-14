@@ -1,13 +1,9 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
-import FPTS.Core.View;
 import FPTS.Data.Authenticator;
-import FPTS.Data.CSV;
 import FPTS.Models.Portfolio;
-import FPTS.Views.LoginView;
 import FPTS.Views.PortfolioView;
-import FPTS.Views.RegisterView;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -50,7 +46,7 @@ public class RegisterController extends Controller {
             _app.getData().addInstance(portfolio);
             _portfolio = portfolio;
             portfolio.notifyObservers();
-            _app.setCurrentView(new PortfolioView(_app));
+            _app.loadView(new PortfolioView(_app));
         }
         else {
             errorMessage.setText(error);
