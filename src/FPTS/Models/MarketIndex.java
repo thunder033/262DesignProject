@@ -28,8 +28,9 @@ public class MarketIndex extends MarketEquity {
     @Override
     public float getSharePrice()
     {
-        //TODO: Calculate share price from market equities in index
-        return 0;
+        return equities.stream()
+                .map(MarketEquity::getSharePrice)
+                .reduce(0.0f, (a, b) -> a + b);
     }
 
     /**

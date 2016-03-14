@@ -55,6 +55,10 @@ public class FPTSData implements Observer {
         }
     }
 
+    public <T extends Model> void writeBin(Class<T> type){
+        bins.get(type).writeInstances();
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         bins.get(o.getClass()).writeInstances();

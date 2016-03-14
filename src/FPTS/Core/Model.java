@@ -27,10 +27,12 @@ public abstract class Model extends Observable {
 
     public Model(String _id) {
         id = _id;
+        setChanged();
     }
 
     public Model() {
         id = Integer.toString(autoIncrementId());
+        setChanged();
     }
 
     public void save(){

@@ -36,7 +36,7 @@ public class Equity extends Model implements Holding {
      */
     @Override
     public String getName() {
-        return _marketEquity.getName();
+        return String.format("%s (%s, %.2f)", _marketEquity.getName(), _marketEquity.getTickerSymbol(), _marketEquity.getSharePrice());
     }
 
     /**
