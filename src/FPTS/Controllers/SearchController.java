@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
@@ -21,6 +16,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.RadioButton;
 
+//
+//@author: Eric
+//Created: 3/14/16
+//Revised: 3/14/16
+//Description: Contains behavior and elements for UI.
+//
 public class SearchController extends Controller {
     @FXML private TextField id;
     @FXML private TextField name;
@@ -113,7 +114,9 @@ public class SearchController extends Controller {
         ArrayList<MarketEquity> results2 = _search2.executeStrategy(name.getText(), SearchParameter.searchParameter.name);
         ArrayList<MarketEquity> results3 = _search3.executeStrategy(index.getText(), SearchParameter.searchParameter.index);
         ArrayList<MarketEquity> results4 = _search4.executeStrategy(sector.getText(), SearchParameter.searchParameter.sector);
+        
         ArrayList<MarketEquity> results = new ArrayList<>();
+        
         if(!id.getText().equals(""))
             results.addAll(results1);
         if(!name.getText().equals(""))
@@ -122,6 +125,7 @@ public class SearchController extends Controller {
             results.addAll(results3);
         if(!sector.getText().equals(""))
             results.addAll(results4);
+        
         ObservableList<MarketEquity> observableResults = FXCollections.observableArrayList(results);
         searchResultsPane.setItems(observableResults);
     }

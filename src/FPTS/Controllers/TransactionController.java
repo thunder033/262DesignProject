@@ -11,4 +11,5 @@ import FPTS.Core.Controller;
  * model changes and UI changes that alter the internal model state.
  */
 public class TransactionController extends Controller {
+    //SearchController sc = new SearchController();
 }

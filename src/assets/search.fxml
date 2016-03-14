@@ -9,8 +9,14 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ToggleGroup?>
-
 <?import javafx.scene.control.Button?>
+
+<!--
+@author: Eric
+Created: 3/14/16
+Revised: 3/14/16
+Description: UI component formatting.
+-->
 <GridPane alignment="center" hgap="10" vgap="10"
           maxWidth="Infinity"
           fx:controller="FPTS.Controllers.SearchController"

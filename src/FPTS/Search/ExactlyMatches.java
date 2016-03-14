@@ -1,5 +1,13 @@
 package FPTS.Search;
 
+/**
+ * @author: Eric
+ * Created: 3/12/16
+ * Revised: 3/14/16
+ * Description: Search Method to check
+ * if an equity has a parameter that exactly 
+ * matches a searched parameter.
+ */
 public class ExactlyMatches implements SearchMethod{
 
         @Override
@@ -7,14 +15,5 @@ public class ExactlyMatches implements SearchMethod{
 
 		return cmp.equals(searchTerm);
 
-	}/*
-	public ArrayList doMethod(string searchTerm, ArrayList csvTable){
-		ArrayList results;
-		for(i in csvTable){
-			if(i == searchTerm){
-				results.add(i);
-			}
-		}
-		return results;
-	}*/
+	}
 }
