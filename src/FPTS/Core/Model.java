@@ -35,6 +35,10 @@ public abstract class Model extends Observable {
         setChanged();
     }
 
+    protected <T extends Model> T findById(Class<T> type, String id){
+        return FPTSData.getDataRoot().getInstanceById(type, id);
+    }
+
     public void save(){
         notifyObservers();
     }

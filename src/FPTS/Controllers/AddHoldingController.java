@@ -35,7 +35,7 @@ public class AddHoldingController extends Controller {
     @FXML Image searchIcon;
     @FXML Button searchButton;
 
-    Map<String, Class<?>> typesMap;
+    Map<String, Class<? extends Model>> typesMap;
 
     private void DisplayEquityInfo(){
         holdingInfo.setText("");
@@ -103,26 +103,19 @@ public class AddHoldingController extends Controller {
             value = Float.parseFloat(holdingValue.getText());
         }
 
-        switch(holdingTypes.getValue()){
-            case "Equity":
-                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, holdingName.getText());
-                if(equity != null){
-                    holding = new Equity(equity);
-                    holding.addValue(value * equity.getSharePrice());
-                } else {
-                    error = "No Equity was found for " + holdingName.getText();
-                }
-                break;
-            case "Cash Account":
-                holding = new CashAccount(holdingName.getText(), value);
-                break;
+        if(error.length() == 0){
+            try {
+                holding = _portfolio.addHolding(typesMap.get(holdingTypes.getValue()), holdingName.getText(), value);
+            } catch (UnknownMarketEquityException ex){
+                error = ex.getMessage();
+            }
         }
 
         if(holding != null && error.length() == 0){
-            _app.getData().addInstance(Model.class.cast(holding));
-            _portfolio.addHolding(holding);
-            _portfolio.save();
             _app.CloseStage(AddHoldingView.class.getSimpleName());
+        }
+        else {
+            errorMessage.setText(error);
         }
     }
 

@@ -52,12 +52,45 @@ public class Portfolio extends Model {
     }
 
     /**
-     * Add a new holding to the portfolio
+     * Add a new holding to the portfolio and save the portfolio
      * @param holding the holding to add
      */
     public void addHolding(Holding holding)
     {
-        setChanged();
-        holdings.add(holding);
+        if(holding != null){
+            Model.class.cast(holding).save(true);
+            holdings.add(holding);
+            setChanged();
+            save();
+        }
+    }
+
+    /**
+     * create and add a new holding to the portfolio, saving the portfolio if the holding was successfully added
+     * @param type a type of holding model to create
+     * @param name the name or ticker symbol of cash account or equity
+     * @param value the monetary value of the holding
+     * @param <T> class that extends model and implements holding
+     * @return the holding created or null
+     * @throws UnknownMarketEquityException
+     */
+    public <T extends Model> Holding addHolding(Class<T> type, String name, float value) throws UnknownMarketEquityException {
+        Holding holding = null;
+        //maybe this should be broken into 2 methods...hmm
+        if(type.equals(Equity.class)){
+            MarketEquity equity = findById(MarketEquity.class, name);
+            if(equity != null){
+                holding = new Equity(equity);
+                holding.addValue(value * equity.getSharePrice());
+            } else {
+               throw new UnknownMarketEquityException(name);
+            }
+        } else if(type.equals(CashAccount.class)){
+            holding = new CashAccount(name, value);
+        }
+
+        addHolding(holding);
+
+        return holding;
     }
 }
