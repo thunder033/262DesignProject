@@ -40,7 +40,7 @@ public class AddHoldingController extends Controller {
     private void DisplayEquityInfo(){
         holdingInfo.setText("");
         valueInfo.setText("");
-        if(holdingTypes.getValue().equals("Equity")){
+        if(holdingTypes.getValue().equals(Equity.type)){
             MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, holdingName.getText());
             if(equity != null) {
                 holdingInfo.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
@@ -53,36 +53,34 @@ public class AddHoldingController extends Controller {
         }
     }
 
+    void setInputLabels(String holdingType){
+        switch (holdingType) {
+            case Equity.type:
+                holdingName.promptTextProperty().setValue("Ticker Symbol");
+                holdingValue.promptTextProperty().setValue("Shares");
+                addHoldingControl.setText("Add External Equity");
+                DisplayEquityInfo();
+                break;
+            case CashAccount.type:
+                holdingName.promptTextProperty().setValue("Account Name");
+                holdingValue.promptTextProperty().setValue("Value($)");
+                addHoldingControl.setText("Create Cash Account");
+                holdingInfo.setText("");
+                break;
+        }
+    }
+
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
         searchIcon = new Image(this.getClass().getResourceAsStream("/assets/search.png"));
         super.Load(app, portfolio);
 
         typesMap = new HashMap<>();
-        typesMap.put("Equity", Equity.class);
-        typesMap.put("Cash Account", CashAccount.class);
+        typesMap.put(Equity.type, Equity.class);
+        typesMap.put(CashAccount.type, CashAccount.class);
+
         holdingTypes.getItems().setAll(typesMap.keySet());
-
-        holdingTypes.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                switch(newValue) {
-                    case "Equity":
-                        holdingName.promptTextProperty().setValue("Ticker Symbol");
-                        holdingValue.promptTextProperty().setValue("Shares");
-                        addHoldingControl.setText("Add External Equity");
-                        DisplayEquityInfo();
-                        break;
-                    case "Cash Account":
-                        holdingName.promptTextProperty().setValue("Account Name");
-                        holdingValue.promptTextProperty().setValue("Value($)");
-                        addHoldingControl.setText("Create Cash Account");
-                        holdingInfo.setText("");
-                        break;
-                }
-            }
-        });
-
+        holdingTypes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
         holdingName.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
         holdingValue.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
     }
