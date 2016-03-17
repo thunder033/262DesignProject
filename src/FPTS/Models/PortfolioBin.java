@@ -70,6 +70,8 @@ public class PortfolioBin extends DataBin {
         values.add(portfolio._passHash);
         portfolio.holdings.stream().forEach(holding -> values.add(getHoldingIdHash(holding)));
 
+        System.out.println(values.stream().reduce("Equities in " + portfolio.id, (a, b) -> a + ", " + b));
+
         String[] stringVals = new String[values.size()];
         stringVals = values.toArray(stringVals);
         return stringVals;

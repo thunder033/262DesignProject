@@ -7,6 +7,8 @@ package FPTS.Models;
  * Interface for managing holdings in a portfolio.
  */
 public interface Holding {
+    String type = "Holding";
+
     /**
      * @return name of the holding
      */

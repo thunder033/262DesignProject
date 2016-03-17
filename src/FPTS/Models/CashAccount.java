@@ -13,6 +13,7 @@ public class CashAccount extends Model implements Holding {
 
     protected float _value;
     protected String name;
+    public static final String type = "Cash Account";
 
     public CashAccount(String id){
         super(id);
@@ -62,6 +63,6 @@ public class CashAccount extends Model implements Holding {
      */
     @Override
     public String getType() {
-        return "Cash Account";
+        return type;
     }
 }

@@ -13,6 +13,7 @@ import FPTS.Core.Model;
 public class Equity extends Model implements Holding {
     MarketEquity _marketEquity;
     float shares;
+    public static final String type = "Equity";
 
     public Equity(String id, MarketEquity marketEquity)
     {
@@ -76,7 +77,8 @@ public class Equity extends Model implements Holding {
     /**
      * @return descriptor of the holding type
      */
+    @Override
     public String getType(){
-        return "Equity";
+        return type;
     }
 }

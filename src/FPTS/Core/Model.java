@@ -35,6 +35,10 @@ public abstract class Model extends Observable {
         setChanged();
     }
 
+    protected <T extends Model> T findById(Class<T> type, String id){
+        return FPTSData.getDataRoot().getInstanceById(type, id);
+    }
+
     public void save(){
         notifyObservers();
     }
@@ -57,6 +61,7 @@ public abstract class Model extends Observable {
                 if(Files.isReadable(configFile)){
                     byte[] data = Files.readAllBytes(configFile);
                     incrementId = ByteBuffer.wrap(data).getInt();
+                    System.out.println("Read cached increment ID " + incrementId);
                 }
                 else {
                     incrementId = 1;
@@ -66,10 +71,10 @@ public abstract class Model extends Observable {
                 System.out.println(ex.getMessage());
             }
         }
-        else {
-            incrementId++;
-        }
 
+        incrementId++;
+
+        System.out.println("Create model " + incrementId);
         writeAutoIncrementId(incrementId);
         return incrementId;
     }

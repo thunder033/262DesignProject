@@ -1,4 +1,4 @@
-<?import FPTS.Controls.NumericField?>
+<?import FPTS.Controls.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.Image?>
