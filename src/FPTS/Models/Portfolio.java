@@ -59,6 +59,7 @@ public class Portfolio extends Model {
     {
         if(holding != null){
             Model.class.cast(holding).save(true);
+            System.out.println(String.format("Adding %s %s to %s", holding.getClass().getSimpleName(), Model.class.cast(holding).id, id));
             holdings.add(holding);
             setChanged();
             save();
@@ -76,6 +77,7 @@ public class Portfolio extends Model {
      */
     public <T extends Model> Holding addHolding(Class<T> type, String name, float value) throws UnknownMarketEquityException {
         Holding holding = null;
+        System.out.println(String.format("Add Holding from %s %s and %f", type.getSimpleName(), name, value));
         //maybe this should be broken into 2 methods...hmm
         if(type.equals(Equity.class)){
             MarketEquity equity = findById(MarketEquity.class, name);

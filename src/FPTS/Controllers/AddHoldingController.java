@@ -40,7 +40,7 @@ public class AddHoldingController extends Controller {
     private void DisplayEquityInfo(){
         holdingInfo.setText("");
         valueInfo.setText("");
-        if(holdingTypes.getValue().equals(Equity.type)){
+        if(Equity.type.equals(holdingTypes.getValue())){
             MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, holdingName.getText());
             if(equity != null) {
                 holdingInfo.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
