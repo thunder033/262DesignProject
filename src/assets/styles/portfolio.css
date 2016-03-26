@@ -8,6 +8,13 @@
     -fx-text-fill: #333;
     -fx-font-size: 32px;
 }
+
+#transactionLogHeading {
+    -fx-alignment: center-left;
+    -fx-font-weight: bold;
+    -fx-font-size: 20px;
+}
+
 .holding-name {
     display: block;
 }

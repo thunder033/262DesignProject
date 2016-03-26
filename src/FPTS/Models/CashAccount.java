@@ -47,6 +47,7 @@ public class CashAccount extends Model implements Holding {
     @Override
     public void addValue(float value) {
         _value += value;
+        setChanged();
     }
 
     /**
@@ -56,6 +57,7 @@ public class CashAccount extends Model implements Holding {
     @Override
     public void removeValue(float value) {
         _value -= value;
+        setChanged();
     }
 
     /**

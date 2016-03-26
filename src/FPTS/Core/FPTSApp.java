@@ -2,10 +2,7 @@ package FPTS.Core;
 
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
-import FPTS.Models.CashAccountBin;
-import FPTS.Models.EquityBin;
-import FPTS.Models.MarketEquityBin;
-import FPTS.Models.PortfolioBin;
+import FPTS.Models.*;
 import FPTS.Views.LoginView;
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -101,6 +98,7 @@ public class FPTSApp extends Application {
         binTypes.add(CashAccountBin.class);
         binTypes.add(EquityBin.class);
         binTypes.add(PortfolioBin.class);
+        binTypes.add(TransactionBin.class);
 
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
