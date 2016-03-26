@@ -1,11 +1,15 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
+import FPTS.Core.FPTSApp;
 import FPTS.Core.Model;
 import FPTS.Models.Holding;
+import FPTS.Models.Portfolio;
 import FPTS.PortfolioImporter.CSVImporter;
 import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
+import FPTS.TransactionHistory.Entry;
+import FPTS.TransactionHistory.Log;
 import FPTS.Views.AddHoldingView;
 import FPTS.Views.LoginView;
 import FPTS.Views.SimulationView;
@@ -19,8 +23,11 @@ import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
+import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
 /**
  * @author: Alexander Kidd
@@ -32,12 +39,20 @@ import java.nio.file.Paths;
  */
 public class PortfolioController extends Controller {
     @FXML private Text portfolioName;
-    @FXML private TableView holdingsPane;
+    @FXML private TableView<Holding> holdingsPane;
+    @FXML private TableView<Entry> transactionLogPane;
 
     final DirectoryChooser directoryChooser = new DirectoryChooser();
     final FileChooser fileChooser = new FileChooser();
 
-    public PortfolioController() {
+    Log transactionLog;
+
+    @Override
+    public void Load(FPTSApp app, Portfolio portfolio) {
+        super.Load(app, portfolio);
+        System.out.println("Create txn log");
+        transactionLog = new Log(portfolio);
+        refreshView();
     }
 
     @FXML
@@ -55,8 +70,14 @@ public class PortfolioController extends Controller {
         portfolioName.setText(String.format("%1$s's Portfolio", _portfolio.getUsername()));
 
         ObservableList<Holding> holdings = FXCollections.observableArrayList(_portfolio.getHoldings());
+
         System.out.println(holdings.size());
         holdingsPane.setItems(holdings);
+
+        if(transactionLog != null){
+            ObservableList<Entry> entries = FXCollections.observableArrayList(transactionLog.getEntries());
+            transactionLogPane.setItems(entries);
+        }
     }
 
     public void handleNewHolding(ActionEvent actionEvent) {
@@ -69,11 +90,16 @@ public class PortfolioController extends Controller {
     }
 
     public void handleImport(ActionEvent actionEvent) {
-        Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
-        Importer importer = new Importer(path);
-        importer.setStrategy(new CSVImporter());
-        importer.importData().getHoldings().stream().forEach(this::addHolding);
-        _portfolio.save();
+        File file = fileChooser.showOpenDialog(_app.getStage());
+
+        if(file != null){
+            Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
+            Importer importer = new Importer(path);
+            importer.setStrategy(new CSVImporter());
+            importer.importData().getHoldings().stream().forEach(this::addHolding);
+            _portfolio.save();
+        }
+
     }
 
     public void handleTransaction(ActionEvent actionEvent) {
