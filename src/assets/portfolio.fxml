@@ -18,7 +18,6 @@
     <Button text="Export" onAction="#handleExportAction" GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER_RIGHT"/>
     <Button text="Add Holding" onAction="#handleNewHolding" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
     <Button text="Import Holdings" onAction="#handleImport" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-    <Button text="New Transaction" onAction="#handleTransaction" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.hgrow="ALWAYS"/>
 
     <TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" prefHeight="350">
         <!--<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>-->
@@ -42,6 +41,7 @@
     </TableView>
 
     <Text fx:id="transactionLogHeading" text="Transactions" GridPane.columnIndex="0" GridPane.rowIndex="3" GridPane.columnSpan="5" />
+    <Button text="New Transaction" onAction="#handleTransaction" GridPane.columnIndex="4" GridPane.rowIndex="3" GridPane.hgrow="ALWAYS"/>
 
     <TableView fx:id="transactionLogPane" GridPane.columnIndex="0" GridPane.rowIndex="4" prefHeight="250" GridPane.hgrow="ALWAYS" GridPane.columnSpan="5">
         <columns>
