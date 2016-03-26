@@ -9,20 +9,24 @@ import java.util.Date;
  */
 public class Transaction extends Model {
 
-    Holding source;
-    Holding destination;
-    float value;
-    Date dateTime;
+    private Holding source;
+    private Holding destination;
+    private float value;
+    private float destPrice = 1;
+    private float sourcePrice = 1;
+    private Date dateTime;
 
     public Transaction(Holding source, Holding destination){
         setSource(source);
         setDestination(destination);
     }
 
-    protected Transaction(String id, Holding source, Holding destination, Date date, float value){
+    protected Transaction(String id, Holding source, float sourcePrice, Holding destination, float destPrice, Date date, float value){
         super(id);
         setSource(source);
+        this.sourcePrice = sourcePrice;
         setDestination(destination);
+        this.destPrice = destPrice;
         setDateTime(date);
         this.value = value;
     }
@@ -52,6 +56,22 @@ public class Transaction extends Model {
         }
     }
 
+    public float getSourcePrice(){
+        return sourcePrice;
+    }
+
+    public float getDestinationPrice(){
+        return destPrice;
+    }
+
+    /**
+     * Gets the holding the transaction is indexed on
+     * @return source holding, or destination if source is null
+     */
+    public Holding getIndexHolding(){
+        return source == null ? getDestination() : getSource();
+    }
+
     public float getValue(){
         return value;
     }
@@ -73,18 +93,27 @@ public class Transaction extends Model {
         if(dateTime == null){
             if(source.getValue() >= value){
                 if(source != null){
+                    if(source.getClass() == Equity.class){
+                        sourcePrice = Equity.class.cast(source).getCurrentSharePrice();
+                    }
+
                     source.removeValue(value);
                 }
 
                 if(destination != null){
+                    if(destination.getClass() == Equity.class){
+                        destPrice = Equity.class.cast(destination).getCurrentSharePrice();
+                    }
+
                     destination.addValue(value);
                 }
 
                 setDateTime(date);
 
+                setChanged();
                 saveModels(Equity.class);
                 saveModels(CashAccount.class);
-                save(true);
+                save();
             }
             else {
                 throw new InvalidTransactionException(source, value);
@@ -92,5 +121,9 @@ public class Transaction extends Model {
         } else {
             throw new TransactionReExecutionException(this);
         }
+    }
+
+    public void rollback(){
+
     }
 }

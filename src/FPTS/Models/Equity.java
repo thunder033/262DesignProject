@@ -37,7 +37,11 @@ public class Equity extends Model implements Holding {
      */
     @Override
     public String getName() {
-        return String.format("%s (%s, %.2f)", _marketEquity.getName(), _marketEquity.getTickerSymbol(), _marketEquity.getSharePrice());
+        return String.format("%s (%s, $%.2f)", _marketEquity.getName(), _marketEquity.getTickerSymbol(), _marketEquity.getSharePrice());
+    }
+
+    public float getCurrentSharePrice(){
+        return _marketEquity.getSharePrice();
     }
 
     /**
@@ -63,6 +67,7 @@ public class Equity extends Model implements Holding {
     @Override
     public void addValue(float value) {
         shares += value / _marketEquity.getSharePrice();
+        setChanged();
     }
 
     /**
@@ -72,6 +77,7 @@ public class Equity extends Model implements Holding {
     @Override
     public void removeValue(float value) {
         shares -= value / _marketEquity.getSharePrice();
+        setChanged();
     }
 
     /**
