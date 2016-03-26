@@ -24,34 +24,41 @@ public abstract class Model extends Observable {
 
     private static int incrementId = 0;
     private static String incrementIdCache = "modelId.config";
+    private FPTSData dataRoot;
 
     public Model(String _id) {
+        dataRoot = FPTSData.getDataRoot();
         id = _id;
         setChanged();
     }
 
     public Model() {
+        dataRoot = FPTSData.getDataRoot();
         id = Integer.toString(autoIncrementId());
         setChanged();
     }
 
     protected <T extends Model> T findById(Class<T> type, String id){
-        return FPTSData.getDataRoot().getInstanceById(type, id);
+        return dataRoot.getInstanceById(type, id);
     }
 
     public void save(){
+        Model indexedInstance = findById(this.getClass(), this.id);
+        if(isPersistent && indexedInstance == null){
+            dataRoot.addInstance(this);
+        }
+        else if(!isPersistent && indexedInstance != null){
+            dataRoot.deleteInstance(this);
+        }
         notifyObservers();
     }
 
-    protected void save(boolean addInstance){
-        if(addInstance && FPTSData.getDataRoot().getInstanceById(this.getClass(), this.id) == null){
-            FPTSData.getDataRoot().addInstance(this);
-        }
-        save();
+    public void ignoreChanges(){
+        clearChanged();
     }
 
     public void saveModels(Class<? extends Model> type){
-        FPTSData.getDataRoot().writeBin(type);
+        dataRoot.writeBin(type);
     }
 
     public boolean getIsPersistent() {
