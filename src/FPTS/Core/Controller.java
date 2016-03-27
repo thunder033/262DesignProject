@@ -1,7 +1,11 @@
 package FPTS.Core;
 
 import FPTS.Models.Portfolio;
+import FPTS.Views.SearchView;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.Image;
 
 import java.net.URL;
 import java.util.Observable;
@@ -24,6 +28,9 @@ public class Controller implements Observer, Initializable {
 
     protected FPTSApp _app;
     protected static Portfolio _portfolio;
+
+    @FXML
+    Image searchIcon;
 
     /**
      * Operations to perform when the controller loads. Creates a default portfolio if
@@ -48,6 +55,7 @@ public class Controller implements Observer, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        searchIcon = new Image(this.getClass().getResourceAsStream("/assets/search.png"));
         refreshView();
     }
 
@@ -69,5 +77,9 @@ public class Controller implements Observer, Initializable {
      */
     public void refreshView() {
 
+    }
+
+    public void handleSearch(ActionEvent actionEvent) {
+        _app.loadView(new SearchView(_app));
     }
 }

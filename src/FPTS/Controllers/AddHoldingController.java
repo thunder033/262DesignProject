@@ -32,7 +32,6 @@ public class AddHoldingController extends Controller {
     @FXML Text valueInfo;
     @FXML ChoiceBox<String> holdingTypes;
     @FXML Button addHoldingControl;
-    @FXML Image searchIcon;
     @FXML Button searchButton;
 
     Map<String, Class<? extends Model>> typesMap;
@@ -72,7 +71,7 @@ public class AddHoldingController extends Controller {
 
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
-        searchIcon = new Image(this.getClass().getResourceAsStream("/assets/search.png"));
+        //searchIcon = new Image(this.getClass().getResourceAsStream("/assets/search.png"));
         super.Load(app, portfolio);
 
         typesMap = new HashMap<>();
@@ -115,9 +114,5 @@ public class AddHoldingController extends Controller {
         else {
             errorMessage.setText(error);
         }
-    }
-
-    public void handleSearch(ActionEvent actionEvent) {
-        _app.loadView(new SearchView(_app));
     }
 }
