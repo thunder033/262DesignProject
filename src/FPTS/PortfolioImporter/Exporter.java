@@ -5,7 +5,7 @@ import FPTS.Models.Equity;
 import FPTS.Models.Holding;
 import FPTS.Models.Portfolio;
 import FPTS.Models.Transaction;
-import FPTS.TransactionHistory.Log;
+import FPTS.Transaction.Log;
 
 import java.io.IOException;
 import java.nio.file.Path;

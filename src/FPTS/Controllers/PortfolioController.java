@@ -8,8 +8,8 @@ import FPTS.Models.Portfolio;
 import FPTS.PortfolioImporter.CSVImporter;
 import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
-import FPTS.TransactionHistory.Entry;
-import FPTS.TransactionHistory.Log;
+import FPTS.Transaction.Entry;
+import FPTS.Transaction.Log;
 import FPTS.Views.AddHoldingView;
 import FPTS.Views.LoginView;
 import FPTS.Views.SimulationView;
@@ -24,10 +24,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ResourceBundle;
 
 /**
  * @author: Alexander Kidd

@@ -3,12 +3,14 @@ package FPTS.PortfolioImporter;
 import FPTS.Data.CSV;
 import FPTS.Data.FPTSData;
 import FPTS.Models.*;
+import FPTS.Transaction.Log;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author: Greg
@@ -34,6 +36,8 @@ public class CSVImporter implements ImportStrategy {
         portfolio.isPersistent = false;
         //holdings occupy 2 values each
         parseMode mode = parseMode.HOLDING;
+
+        Log txnLog = new Log(portfolio);
 
         Map<parseMode, Integer> parseIncrements = new HashMap<>();
         parseIncrements.put(parseMode.HOLDING, 2);
@@ -68,16 +72,26 @@ public class CSVImporter implements ImportStrategy {
                     Holding dest = null;
 
                     if(!values[i].equals("")){
-
+                        final String identifier = values[i];
+                        source = portfolio.getHoldings().stream()
+                                .filter(holding -> holding.getExportIdentifier().equals(identifier))
+                                .findFirst().get();
                     }
 
-                    float sourcePrice = Float.parseFloat(values[i + 2]);
+                    if(!values[i + 2].equals("")){
+                        final String identifier = values[i + 2];
+                        dest = portfolio.getHoldings().stream()
+                                .filter(holding -> holding.getExportIdentifier().equals(identifier))
+                                .findFirst().get();
+                    }
 
-                    float destPrice = Float.parseFloat(values[i + 4]);
-                    Date date = new Date(Long.parseLong(values[i + 5]));
-                    float value = Float.parseFloat(values[i + 6]);
+                    float sourcePrice = Float.parseFloat(values[i + 1]);
 
+                    float destPrice = Float.parseFloat(values[i + 3]);
+                    Date date = new Date(Long.parseLong(values[i + 4]));
+                    float value = Float.parseFloat(values[i + 5]);
 
+                    txnLog.addTransaction(new Transaction(source, sourcePrice, dest, destPrice, date, value));
 
                     break;
             }

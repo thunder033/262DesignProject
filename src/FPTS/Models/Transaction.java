@@ -23,6 +23,15 @@ public class Transaction extends Model {
         setDestination(destination);
     }
 
+    public Transaction(Holding source, float sourcePrice, Holding destination, float destPrice, Date date, float value){
+        setSource(source);
+        this.sourcePrice = sourcePrice;
+        setDestination(destination);
+        this.destPrice = destPrice;
+        setDateTime(date);
+        this.value = value;
+    }
+
     protected Transaction(String id, Holding source, float sourcePrice, Holding destination, float destPrice, Date date, float value){
         super(id);
         setSource(source);

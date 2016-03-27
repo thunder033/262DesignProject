@@ -5,6 +5,7 @@ import FPTS.Models.Portfolio;
 import FPTS.Models.Transaction;
 
 import java.util.List;
+import java.util.Stack;
 import java.util.stream.Collectors;
 
 /**
@@ -13,9 +14,11 @@ import java.util.stream.Collectors;
  */
 public class Log {
     private Portfolio portfolio;
+    private Stack<Transaction> transactions;
 
     public Log(Portfolio portfolio){
         this.portfolio = portfolio;
+        transactions = new Stack<>();
     }
 
     /**
@@ -29,6 +32,14 @@ public class Log {
                 //sort transactions by date descending
                 .sorted((a, b) -> Long.compare(b.getDateTime().getTime(), a.getDateTime().getTime()))
                 .collect(Collectors.toList());
+    }
+
+    public void importTransactions(List<Transaction> transactions){
+        this.transactions.addAll(transactions);
+    }
+
+    public void addTransaction(Transaction transaction){
+        transactions.add(transaction);
     }
 
     public List<Entry> getEntries(){
