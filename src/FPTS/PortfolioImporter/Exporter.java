@@ -4,6 +4,8 @@ import FPTS.Data.CSV;
 import FPTS.Models.Equity;
 import FPTS.Models.Holding;
 import FPTS.Models.Portfolio;
+import FPTS.Models.Transaction;
+import FPTS.TransactionHistory.Log;
 
 import java.io.IOException;
 import java.nio.file.Path;
@@ -39,6 +41,20 @@ public class Exporter {
         return values;
     }
 
+    public static String[] serializeTransaction(Transaction transaction) {
+
+        String sourceID = transaction.getSource() == null ? "" : transaction.getSource().getExportIdentifier();
+        String destID = transaction.getDestination() == null ? "" : transaction.getDestination().getExportIdentifier();
+
+        return new String[] {
+                sourceID,
+                Float.toString(transaction.getSourcePrice()),
+                destID,
+                Float.toString(transaction.getDestinationPrice()),
+                Float.toString(transaction.getValue())
+        };
+    }
+
     /**
      * Convert a portfolio to a list of holdings represented as CSV pairs
      * @param portfolio the portfolio to serialize
@@ -50,6 +66,12 @@ public class Exporter {
 
         portfolio.getHoldings().stream()
                 .forEach(holding -> Collections.addAll(values, serializeHolding(holding)));
+
+        values.add("T");
+
+        Log txnLog = new Log(portfolio);
+        txnLog.getTransactions().stream()
+                .forEach(txn -> Collections.addAll(values,  serializeTransaction(txn)));
 
         String[] stringVals = new String[values.size()];
         stringVals = values.toArray(stringVals);
