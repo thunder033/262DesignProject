@@ -11,7 +11,7 @@ import FPTS.Core.Model;
  * market held in a portfolio.
  */
 public class Equity extends Model implements Holding {
-    MarketEquity _marketEquity;
+    private MarketEquity _marketEquity;
     float shares;
     public static final String type = "Equity";
 
@@ -38,6 +38,15 @@ public class Equity extends Model implements Holding {
     @Override
     public String getName() {
         return String.format("%s (%s, $%.2f)", _marketEquity.getName(), _marketEquity.getTickerSymbol(), _marketEquity.getSharePrice());
+    }
+
+    /**
+     * the unique external id of an equity is it's ticker symbol
+     * @return the equity ticker symbol
+     */
+    @Override
+    public String getExportIdentifier() {
+        return _marketEquity.getTickerSymbol();
     }
 
     public float getCurrentSharePrice(){

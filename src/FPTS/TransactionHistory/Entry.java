@@ -16,16 +16,16 @@ public class Entry {
         BUY_EQUITY(txn -> String.format(
                 "Bought %.4f shares of %s at a value of $%.2f from %s",
                 txn.getValue() / txn.getDestinationPrice(),
-                txn.getDestination().getName(),
+                txn.getDestination().getExportIdentifier(),
                 txn.getValue(),
-                txn.getSource().getName()
+                txn.getSource().getExportIdentifier()
         )),
         SELL_EQUITY(txn -> String.format(
                 "Sold %.4f shares of %s at value of $%.2f in %s",
                 txn.getValue() / txn.getSourcePrice(),
-                txn.getSource().getName(),
+                txn.getSource().getExportIdentifier(),
                 txn.getValue(),
-                txn.getDestination().getName()
+                txn.getDestination().getExportIdentifier()
         )),
         TRANSFER_CASH_ACCOUNT(txn -> String.format(
                 "Transferred $%.2f from %s to %s",
@@ -36,22 +36,22 @@ public class Entry {
         IMPORT_EQUITY(txn -> String.format(
                 "Imported %.4f shares of %s",
                 txn.getValue() / txn.getDestinationPrice(),
-                txn.getDestination().getName()
+                txn.getDestination().getExportIdentifier()
         )),
         IMPORT_CASH_ACCOUNT(txn -> String.format(
                 "Imported $%.2f into %s",
                 txn.getValue(),
-                txn.getDestination().getName()
+                txn.getDestination().getExportIdentifier()
         )),
         EXPORT_EQUITY(txn -> String.format(
                 "Exported %.4f shares of %s",
                 txn.getValue() / txn.getSourcePrice(),
-                txn.getSource().getName()
+                txn.getSource().getExportIdentifier()
         )),
         EXPORT_CASH_ACCOUNT(txn -> String.format(
                 "Exported $%.2f from %s",
                 txn.getValue(),
-                txn.getSource().getName()
+                txn.getSource().getExportIdentifier()
         ));
 
         private final Function<Transaction, String> formatter;
