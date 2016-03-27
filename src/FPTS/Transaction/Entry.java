@@ -1,4 +1,4 @@
-package FPTS.TransactionHistory;
+package FPTS.Transaction;
 
 import FPTS.Models.Equity;
 import FPTS.Models.Transaction;
