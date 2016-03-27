@@ -6,6 +6,8 @@ import java.util.Date;
 
 /**
  * Created by gjrwcs on 3/17/2016.
+ * Facilitates transferring liquidity between holdings and
+ * provides a record of actions
  */
 public class Transaction extends Model {
 
@@ -31,7 +33,7 @@ public class Transaction extends Model {
         this.value = value;
     }
 
-    protected void setSource(Holding source){
+    public void setSource(Holding source){
         setChanged();
         this.source = source;
     }

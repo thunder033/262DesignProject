@@ -8,10 +8,11 @@ import java.util.function.Function;
 
 /**
  * Created by Greg on 3/26/2016.
+ * Provides user friendly formatting for a transaction record
  */
 public class Entry {
 
-    enum EntryFormat implements Function<Transaction, String> {
+    private enum EntryFormat implements Function<Transaction, String> {
         BUY_EQUITY(txn -> String.format(
                 "Bought %.4f shares of %s at a value of $%.2f from %s",
                 txn.getValue() / txn.getDestinationPrice(),
@@ -65,7 +66,7 @@ public class Entry {
         }
     }
 
-    Transaction txn;
+    private Transaction txn;
 
     public Entry(Transaction transaction){
         txn = transaction;

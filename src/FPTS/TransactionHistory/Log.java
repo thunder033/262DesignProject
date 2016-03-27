@@ -9,9 +9,10 @@ import java.util.stream.Collectors;
 
 /**
  * Created by Greg on 3/26/2016.
+ * Provides behavior to manage transactions on a portfolio
  */
 public class Log {
-    Portfolio portfolio;
+    private Portfolio portfolio;
 
     public Log(Portfolio portfolio){
         this.portfolio = portfolio;
