@@ -32,6 +32,7 @@ public class MarketEquityBin extends DataBin {
         MarketEquity mEquity = new MarketEquity(values[0]);
         mEquity._name = values[1];
         mEquity._sharePrice = Float.parseFloat(values[2]);
+        mEquity.isPersistent = false;
 
         for (int i = 3; i < values.length; i++) {
             MarketIndex index = MarketIndex.class.cast(FPTSData.getDataRoot().getInstanceById(MarketEquity.class, values[i]));

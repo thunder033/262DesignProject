@@ -58,11 +58,9 @@ public class Portfolio extends Model {
     public void addHolding(Holding holding)
     {
         if(holding != null){
-            Model.class.cast(holding).save(true);
             System.out.println(String.format("Adding %s %s to %s", holding.getClass().getSimpleName(), Model.class.cast(holding).id, id));
             holdings.add(holding);
             setChanged();
-            save();
         }
     }
 

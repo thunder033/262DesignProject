@@ -33,9 +33,7 @@ public class PortfolioBin extends DataBin {
         Portfolio portfolio = new Portfolio(values[0], values[1]);
 
         for (int h = 2; h < values.length; h++) {
-            String id = values[h].substring(1);
-            Class type = values[h].charAt(0) == 'C' ? CashAccount.class : Equity.class;
-            Holding holding = Holding.class.cast(FPTSData.getDataRoot().getInstanceById(type, id));
+            Holding holding = Holding.deserializeHolding(values[h]);
 
             if(holding != null)
             {
@@ -44,16 +42,6 @@ public class PortfolioBin extends DataBin {
         }
 
         return portfolio;
-    }
-
-    /**
-     * Get the type-id hash for a holding
-     * @param holding a holding
-     * @return type-id hash: [Type][ID], ex. C12 or E333
-     */
-    private String getHoldingIdHash(Holding holding) {
-        Model model = Model.class.cast(holding);
-        return holding instanceof CashAccount ? "C" + model.id : "E" + model.id;
     }
 
     /**
@@ -68,7 +56,7 @@ public class PortfolioBin extends DataBin {
         ArrayList<String> values = new ArrayList<>();
         values.add(portfolio.id);
         values.add(portfolio._passHash);
-        portfolio.holdings.stream().forEach(holding -> values.add(getHoldingIdHash(holding)));
+        portfolio.holdings.stream().forEach(holding -> values.add(Holding.serializeHolding(holding)));
 
         System.out.println(values.stream().reduce("Equities in " + portfolio.id, (a, b) -> a + ", " + b));
 
