@@ -30,15 +30,13 @@ public class CSVImporter implements ImportStrategy {
      * @param values [tickerSymbol, shares], [accName, value], ...
      * @return a temporary portfolio
      */
-    private Portfolio deserializeValues(String[] values) {
+    private ImportResult deserializeValues(String[] values) {
         String name = "temp_" + System.currentTimeMillis();
         Portfolio portfolio = new Portfolio(name, "");
         portfolio.isPersistent = false;
-        //holdings occupy 2 values each
-        parseMode mode = parseMode.HOLDING;
-
         Log txnLog = new Log(portfolio);
 
+        parseMode mode = parseMode.HOLDING;
         Map<parseMode, Integer> parseIncrements = new HashMap<>();
         parseIncrements.put(parseMode.HOLDING, 2);
         parseIncrements.put(parseMode.TRANSACTION, 6);
@@ -86,19 +84,25 @@ public class CSVImporter implements ImportStrategy {
                     }
 
                     float sourcePrice = Float.parseFloat(values[i + 1]);
-
                     float destPrice = Float.parseFloat(values[i + 3]);
                     Date date = new Date(Long.parseLong(values[i + 4]));
                     float value = Float.parseFloat(values[i + 5]);
 
-                    txnLog.addTransaction(new Transaction(source, sourcePrice, dest, destPrice, date, value));
+                    txnLog.addTransaction(new Transaction.Builder()
+                            .source(source)
+                            .sourcePrice(sourcePrice)
+                            .destination(dest)
+                            .destinationPrice(destPrice)
+                            .dateTime(date)
+                            .value(value)
+                            .build());
 
                     break;
             }
 
         }
 
-        return portfolio;
+        return new ImportResult(portfolio, txnLog);
     }
 
     /**
@@ -107,9 +111,9 @@ public class CSVImporter implements ImportStrategy {
      * @return a temporary portfolio
      */
     @Override
-    public Portfolio execute(Path path) {
+    public ImportResult execute(Path path) {
 
-        Portfolio portfolio = null;
+        ImportResult result = null;
         String[][] data = null;
         try {
             CSV csv = new CSV(path);
@@ -120,9 +124,9 @@ public class CSVImporter implements ImportStrategy {
         }
 
         if(data != null) {
-            portfolio = deserializeValues(data[0]);
+            result = deserializeValues(data[0]);
         }
 
-        return portfolio;
+        return result;
     }
 }

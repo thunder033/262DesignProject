@@ -40,10 +40,10 @@ public class PortfolioController extends Controller {
     @FXML private TableView<Holding> holdingsPane;
     @FXML private TableView<Entry> transactionLogPane;
 
-    final DirectoryChooser directoryChooser = new DirectoryChooser();
-    final FileChooser fileChooser = new FileChooser();
+    private final DirectoryChooser directoryChooser = new DirectoryChooser();
+    private final FileChooser fileChooser = new FileChooser();
 
-    Log transactionLog;
+    private Log transactionLog;
 
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
@@ -94,7 +94,7 @@ public class PortfolioController extends Controller {
             Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
             Importer importer = new Importer(path);
             importer.setStrategy(new CSVImporter());
-            importer.importData().getHoldings().stream().forEach(this::addHolding);
+            importer.importData().portfolio.getHoldings().stream().forEach(this::addHolding);
             _portfolio.save();
         }
 

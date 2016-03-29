@@ -66,7 +66,7 @@ public class Entry {
         }
     }
 
-    private Transaction txn;
+    private final Transaction txn;
 
     public Entry(Transaction transaction){
         txn = transaction;
@@ -93,5 +93,9 @@ public class Entry {
     public String getDateTime(){
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         return format.format(txn.getDateTime());
+    }
+
+    public Transaction getTransaction(){
+        return txn;
     }
 }

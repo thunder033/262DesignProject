@@ -1,7 +1,5 @@
 package FPTS.PortfolioImporter;
 
-import FPTS.Models.Portfolio;
-
 import java.nio.file.Path;
 
 /**
@@ -13,5 +11,5 @@ import java.nio.file.Path;
  */
 public interface ImportStrategy {
 
-    Portfolio execute(Path path);
+    ImportResult execute(Path path);
 }

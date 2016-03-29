@@ -51,6 +51,7 @@ public class Exporter {
                 Float.toString(transaction.getSourcePrice()),
                 destID,
                 Float.toString(transaction.getDestinationPrice()),
+                Long.toString(transaction.getDateTime().getTime()),
                 Float.toString(transaction.getValue())
         };
     }
