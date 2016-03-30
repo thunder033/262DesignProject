@@ -8,8 +8,8 @@ import FPTS.Models.Portfolio;
 import FPTS.PortfolioImporter.CSVImporter;
 import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
-import FPTS.TransactionHistory.Entry;
-import FPTS.TransactionHistory.Log;
+import FPTS.Transaction.Entry;
+import FPTS.Transaction.Log;
 import FPTS.Views.AddHoldingView;
 import FPTS.Views.LoginView;
 import FPTS.Views.SimulationView;
@@ -24,10 +24,8 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ResourceBundle;
 
 /**
  * @author: Alexander Kidd
@@ -42,10 +40,10 @@ public class PortfolioController extends Controller {
     @FXML private TableView<Holding> holdingsPane;
     @FXML private TableView<Entry> transactionLogPane;
 
-    final DirectoryChooser directoryChooser = new DirectoryChooser();
-    final FileChooser fileChooser = new FileChooser();
+    private final DirectoryChooser directoryChooser = new DirectoryChooser();
+    private final FileChooser fileChooser = new FileChooser();
 
-    Log transactionLog;
+    private Log transactionLog;
 
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
@@ -96,7 +94,7 @@ public class PortfolioController extends Controller {
             Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
             Importer importer = new Importer(path);
             importer.setStrategy(new CSVImporter());
-            importer.importData().getHoldings().stream().forEach(this::addHolding);
+            importer.importData().portfolio.getHoldings().stream().forEach(this::addHolding);
             _portfolio.save();
         }
 
