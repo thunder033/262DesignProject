@@ -5,6 +5,8 @@
 <?import FPTS.Controls.*?>
 <?import javafx.scene.text.Text?>
 <?import FPTS.Controls.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <VBox alignment="TOP_CENTER"
       fx:controller="FPTS.Controllers.TransactionController"
       xmlns:fx="http://javafx.com/fxml"
@@ -53,7 +55,7 @@
     <DatePicker fx:id="transactionDate" promptText="Date of transaction" maxWidth="200"></DatePicker>
     </HBox>
 
-    <NumericField fx:id="holdingValue" maxWidth="200" promptText="The transaction amount"/>
+    <NumericField fx:id="transactionAmount" maxWidth="200" promptText="The transaction amount"/>
 
     <Text fx:id="errorMessage"/>
 

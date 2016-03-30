@@ -5,11 +5,8 @@ import FPTS.Data.FPTSData;
 import FPTS.Models.*;
 import FPTS.Views.LoginView;
 import javafx.application.Application;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;

@@ -10,7 +10,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Text;
+import javafx.util.StringConverter;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +31,7 @@ import java.util.Map;
  */
 public class TransactionController extends Controller {
 
-    @FXML NumericField holdingValue;
+    @FXML NumericField transactionAmount;
     @FXML Text errorMessage;
 
     @FXML Text holdingInfo1;
@@ -42,11 +49,37 @@ public class TransactionController extends Controller {
 
     @FXML DatePicker transactionDate;
 
+    private final String dateTimeFormat = "yyyy-MM-dd";
+
     Map<String, Class<? extends Model>> typesMap;
 
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
+
+        StringConverter converter = new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter =
+                    DateTimeFormatter.ofPattern(dateTimeFormat);
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        };
+
+        transactionDate.setConverter(converter);
+        transactionDate.setPromptText(dateTimeFormat);
 
         typesMap = new HashMap<>();
         for(Holding holding : portfolio.getHoldings()) {
@@ -58,18 +91,18 @@ public class TransactionController extends Controller {
         holdingTypes2.getItems().setAll(typesMap.keySet());
         holdingTypes2.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
 
-        holdingValue.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
+        transactionAmount.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
     }
 
     void setInputLabels(String holdingType){
         switch (holdingType) {
             case Equity.type:
-                holdingValue.promptTextProperty().setValue("Transfer amount in shares");
+                transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
                 transactionControl.setText("Add External Equity");
                 DisplayEquityInfo();
                 break;
             case CashAccount.type:
-                holdingValue.promptTextProperty().setValue("Transfer amount in value($)");
+                transactionAmount.promptTextProperty().setValue("Transfer amount in value($)");
                 transactionControl.setText("Create Cash Account");
                 holdingInfo1.setText("");
                 break;
@@ -83,8 +116,8 @@ public class TransactionController extends Controller {
             MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, holdingTypes.getValue());
             if(equity != null) {
                 holdingInfo1.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
-                if(holdingValue.getText().length() > 0){
-                    float shares = Float.parseFloat(holdingValue.getText());
+                if(transactionAmount.getText().length() > 0){
+                    float shares = Float.parseFloat(transactionAmount.getText());
                     float value = shares * equity.getSharePrice();
                     valueInfo1.setText(String.format("$%.2f", value));
                 }
@@ -93,6 +126,30 @@ public class TransactionController extends Controller {
     }
 
     public void makeTransaction(ActionEvent actionEvent) {
-        System.out.println("Transaction Submitted.");
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = null;
+        try {
+            date = sdf.parse(transactionDate.getValue().toString() + "T" + sdf.format(cal.getTime()).toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Transaction newTxn = new Transaction.Builder()
+            //    .source(_app.getData().getInstanceById(MarketEquity.class, holdingTypes.getValue()))
+                .sourcePrice(Float.parseFloat(valueInfo1.getText()))
+            //    .destination(_app.getData().getInstanceById(MarketEquity.class, holdingTypes2.getValue()))
+                .destinationPrice(Float.parseFloat(valueInfo2.getText()))
+                .dateTime(date)
+                .value(Float.parseFloat(transactionAmount.getText()))
+                .build();
+
+        try {
+            newTxn.execute();
+            errorMessage.setText("Transaction Successful.");
+        } catch (InvalidTransactionException e) {
+            System.err.println(e.getMessage());
+        } catch (TransactionReExecutionException e) {
+            System.err.println(e.getMessage());
+        }
     }
 }
