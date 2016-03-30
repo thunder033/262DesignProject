@@ -18,6 +18,11 @@ public interface Holding {
     String getName();
 
     /**
+     * @return the external facing unique identifier of the holding
+     */
+    String getExportIdentifier();
+
+    /**
      * @return monetary value of holding
      */
     float getValue();

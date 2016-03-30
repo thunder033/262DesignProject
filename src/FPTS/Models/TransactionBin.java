@@ -20,15 +20,14 @@ public class TransactionBin extends DataBin {
 
     @Override
     public Model fromCSV(String[] values) {
-
-        Holding source = Holding.deserializeHolding(values[1]);
-        float sourcePrice = Float.parseFloat(values[2]);
-        Holding dest = Holding.deserializeHolding(values[3]);
-        float destPrice = Float.parseFloat(values[4]);
-        Date date = new Date(Long.parseLong(values[5]));
-        float value = Float.parseFloat(values[6]);
-
-        return new Transaction(values[0], source, sourcePrice, dest, destPrice, date, value);
+       return new Transaction.Builder(values[0])
+                .source(Holding.deserializeHolding(values[1]))
+                .sourcePrice(Float.parseFloat(values[2]))
+                .destination(Holding.deserializeHolding(values[3]))
+                .destinationPrice(Float.parseFloat(values[4]))
+                .dateTime(new Date(Long.parseLong(values[5])))
+                .value(Float.parseFloat(values[6]))
+                .build();
     }
 
     @Override
