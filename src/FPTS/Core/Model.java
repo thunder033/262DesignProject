@@ -28,7 +28,7 @@ public abstract class Model extends Observable {
 
     public Model(String _id) {
         dataRoot = FPTSData.getDataRoot();
-        id = _id;
+        this.id = _id;
         setChanged();
     }
 
