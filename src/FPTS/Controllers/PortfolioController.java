@@ -18,14 +18,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.util.Callback;
 
 import java.io.File;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ResourceBundle;
 
 /**
  * @author: Alexander Kidd
@@ -39,11 +44,18 @@ public class PortfolioController extends Controller {
     @FXML private Text portfolioName;
     @FXML private TableView<Holding> holdingsPane;
     @FXML private TableView<Entry> transactionLogPane;
+    @FXML private TableColumn<Holding, String> holdingActionColumn;
 
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final FileChooser fileChooser = new FileChooser();
 
     private Log transactionLog;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
+        //holdingActionColumn.setCellFactory();
+    }
 
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
