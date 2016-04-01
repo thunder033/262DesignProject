@@ -21,6 +21,7 @@ import java.util.Observable;
 public abstract class Model extends Observable {
     public String id;
     public boolean isPersistent = true;
+    private boolean deleted = false;
 
     private static int incrementId = 0;
     private static String incrementIdCache = "modelId.config";
@@ -51,6 +52,14 @@ public abstract class Model extends Observable {
             dataRoot.deleteInstance(this);
         }
         notifyObservers();
+    }
+
+    public void delete(){
+        deleted = true;
+    }
+
+    public boolean isDeleted(){
+        return deleted;
     }
 
     public void ignoreChanges(){
