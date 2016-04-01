@@ -46,6 +46,10 @@ public abstract class View {
     public void Exit() {
         _controller.Exit();
     }
+    
+    public Controller getController() {
+        return _controller;
+    }
 
     public Scene getScene() {
         Scene scene = null;
