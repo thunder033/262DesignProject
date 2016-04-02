@@ -33,6 +33,15 @@ public class CashAccount extends Model implements Holding {
     }
 
     /**
+     * The unique external id of a cash account is it's name
+     * @return the cash account name
+     */
+    @Override
+    public String getExportIdentifier() {
+        return  name;
+    }
+
+    /**
      * @return the value of the account
      */
     @Override
@@ -47,6 +56,7 @@ public class CashAccount extends Model implements Holding {
     @Override
     public void addValue(float value) {
         _value += value;
+        setChanged();
     }
 
     /**
@@ -56,6 +66,7 @@ public class CashAccount extends Model implements Holding {
     @Override
     public void removeValue(float value) {
         _value -= value;
+        setChanged();
     }
 
     /**

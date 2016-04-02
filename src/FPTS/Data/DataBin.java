@@ -56,7 +56,7 @@ public abstract class DataBin {
             //create a new model instance for each line of the CSV
             for (String[] line : data) {
                 Model instance = fromCSV(line);
-                instance.save();
+                instance.ignoreChanges();
                 addInstance(instance);
             }
         } catch (IOException ex) {
