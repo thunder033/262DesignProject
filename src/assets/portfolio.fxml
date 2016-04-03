@@ -28,13 +28,13 @@
             <TableColumn text="Name" prefWidth="285">
                 <cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory>
             </TableColumn>
-            <TableColumn text="Value (USD)" prefWidth="315">
+            <TableColumn text="Value (USD)" prefWidth="135">
                 <cellValueFactory><PropertyValueFactory property="value" /></cellValueFactory>
             </TableColumn>
             <TableColumn text="Shares" prefWidth="135">
                 <cellValueFactory><PropertyValueFactory property="shares"/></cellValueFactory>
             </TableColumn>
-            <TableColumn fx:id="holdingActionColumn" text="Action" width="60">
+            <TableColumn fx:id="holdingActionColumn" text="Action" prefWidth="65">
 
             </TableColumn>
         </columns>

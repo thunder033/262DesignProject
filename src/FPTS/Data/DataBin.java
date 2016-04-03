@@ -64,7 +64,7 @@ public abstract class DataBin {
 
                 //check if the deleted flag is set to true
                 if(line[line.length - 1].equals(deletedFlag)){
-                    instance.delete();
+                    instance.setDeleted();
                 }
 
                 instance.ignoreChanges();

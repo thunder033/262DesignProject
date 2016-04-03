@@ -46,6 +46,7 @@ public abstract class Model extends Observable {
     public void save(){
         Model indexedInstance = findById(this.getClass(), this.id);
         if(isPersistent && indexedInstance == null){
+            System.out.println("Add instance " + this);
             dataRoot.addInstance(this);
         }
         else if(!isPersistent && indexedInstance != null){
@@ -54,8 +55,15 @@ public abstract class Model extends Observable {
         notifyObservers();
     }
 
+    public void setDeleted()
+    {
+        deleted = true;
+    }
+
     public void delete(){
         deleted = true;
+        setChanged();
+        save();
     }
 
     public boolean isDeleted(){

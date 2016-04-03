@@ -3,6 +3,7 @@ package FPTS.Controllers;
 import FPTS.Core.Controller;
 import FPTS.Core.FPTSApp;
 import FPTS.Core.Model;
+import FPTS.Models.CashAccount;
 import FPTS.Models.Holding;
 import FPTS.Models.Portfolio;
 import FPTS.PortfolioImporter.CSVImporter;
@@ -14,10 +15,12 @@ import FPTS.Views.AddHoldingView;
 import FPTS.Views.LoginView;
 import FPTS.Views.SimulationView;
 import FPTS.Views.TransactionView;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -44,7 +47,7 @@ public class PortfolioController extends Controller {
     @FXML private Text portfolioName;
     @FXML private TableView<Holding> holdingsPane;
     @FXML private TableView<Entry> transactionLogPane;
-    @FXML private TableColumn<Holding, String> holdingActionColumn;
+    @FXML private TableColumn<Holding, Holding> holdingActionColumn;
 
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final FileChooser fileChooser = new FileChooser();
@@ -54,20 +57,46 @@ public class PortfolioController extends Controller {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         super.initialize(location, resources);
-        //holdingActionColumn.setCellFactory();
+        holdingActionColumn.setCellValueFactory(features -> new ReadOnlyObjectWrapper<>(features.getValue()));
+        holdingActionColumn.setCellFactory(actionColumn -> {
+            final Button button = new Button();
+            button.setMinWidth(60);
+            TableCell<Holding, Holding> cell = new TableCell<Holding, Holding>() {
+                @Override protected void updateItem(final Holding holding, boolean empty) {
+                    super.updateItem(holding, empty);
+
+                    if(!empty && holding != null && holding.getClass() == CashAccount.class) {
+                        button.setText("Delete");
+                        setGraphic(button);
+                    }
+                    else {
+                        setGraphic(null);
+                    }
+                }
+            };
+
+            button.setOnAction((e) -> {
+                System.out.println("Delete CA " + cell.getItem().getName());
+                Model instance = Model.class.cast(cell.getItem());
+                _portfolio.removeHolding(cell.getItem());
+                instance.delete();
+                _portfolio.save();
+            });
+
+            return cell;
+        });
     }
 
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
-        System.out.println("Create txn log");
+
         transactionLog = new Log(portfolio);
         refreshView();
     }
 
     @FXML
     protected void handleExportAction(ActionEvent event) {
-        System.out.println(_app);
         Path path = Paths.get(directoryChooser.showDialog(_app.getStage()).getPath());
         Exporter.exportPortfolio(_portfolio, path);
     }
@@ -75,13 +104,8 @@ public class PortfolioController extends Controller {
     @Override
     public void refreshView()
     {
-        System.out.println(super._app);
-        System.out.println("refresh controller");
         portfolioName.setText(String.format("%1$s's Portfolio", _portfolio.getUsername()));
-
         ObservableList<Holding> holdings = FXCollections.observableArrayList(_portfolio.getHoldings());
-
-        System.out.println(holdings.size());
         holdingsPane.setItems(holdings);
 
         if(transactionLog != null){
