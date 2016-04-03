@@ -17,6 +17,7 @@ public class Transaction extends Model {
     private float destPrice = 1;
     private float sourcePrice = 1;
     private Date dateTime;
+    private boolean enabled;
 
     private Transaction(){
 
@@ -78,6 +79,14 @@ public class Transaction extends Model {
         return destPrice;
     }
 
+    public String getStatus(){
+        if (enabled){
+            return "";
+        } else {
+            return "Disabled";
+        }
+    }
+    
     /**
      * Gets the holding the transaction is indexed on
      * @return source holding, or destination if source is null
@@ -105,6 +114,7 @@ public class Transaction extends Model {
 
 
     public void execute(Date date) throws InvalidTransactionException, TransactionReExecutionException {
+        enabled = true;
         if(dateTime == null){
             if(source.getValue() >= value * sourcePrice){
                 if(source != null){
@@ -139,7 +149,42 @@ public class Transaction extends Model {
     }
 
     public void rollback(){
-
+        enabled = false;
+        if(destination.getClass() == Equity.class){
+            destPrice = Equity.class.cast(destination).getCurrentSharePrice();
+        }
+        destination.removeValue(value * destPrice);
+           
+        if(source.getClass() == Equity.class){
+            sourcePrice = Equity.class.cast(source).getCurrentSharePrice();
+        }
+        source.addValue(value * sourcePrice);
+        setDateTime(null);
+        setChanged();
+        saveModels(Equity.class);
+        saveModels(CashAccount.class);
+        save();
+    }
+    public void redo(Date date){
+        if(source.getClass() == Equity.class){
+            sourcePrice = Equity.class.cast(source).getCurrentSharePrice();
+        }
+        source.removeValue(value * sourcePrice);
+        
+        if(destination.getClass() == Equity.class){
+            destPrice = Equity.class.cast(destination).getCurrentSharePrice();
+        }
+        destination.addValue(value * destPrice);
+        
+        setDateTime(date);
+        setChanged();
+        saveModels(Equity.class);
+        saveModels(CashAccount.class);
+        save();
+    }
+    
+    public boolean isEnabled(){
+        return enabled;
     }
 
 }
