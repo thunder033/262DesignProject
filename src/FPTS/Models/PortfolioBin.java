@@ -29,7 +29,7 @@ public class PortfolioBin extends DataBin {
      * @return a portfolio instance
      */
     @Override
-    public Model fromCSV(String[] values) {
+    public Model fromValueArray(String[] values) {
         Portfolio portfolio = new Portfolio(values[0], values[1]);
 
         for (int h = 2; h < values.length; h++) {
@@ -50,7 +50,7 @@ public class PortfolioBin extends DataBin {
      * @return an array of values representing the portfolio
      */
     @Override
-    public String[] toCSV(Model instance) {
+    public String[] toValueArray(Model instance) {
 
         Portfolio portfolio = Portfolio.class.cast(instance);
         ArrayList<String> values = new ArrayList<>();
