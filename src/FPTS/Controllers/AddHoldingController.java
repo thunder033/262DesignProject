@@ -7,6 +7,7 @@ import FPTS.Core.Model;
 import FPTS.Models.*;
 import FPTS.Views.AddHoldingView;
 import FPTS.Views.SearchView;
+import FPTS.Search.SelectSearchListener;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -24,7 +25,7 @@ import java.util.Map;
 /**
  * Created by gjr8050 on 3/13/2016.
  */
-public class AddHoldingController extends Controller {
+public class AddHoldingController extends Controller implements SelectSearchListener{
     @FXML TextField holdingName;
     @FXML NumericField holdingValue;
     @FXML Text errorMessage;
@@ -83,6 +84,8 @@ public class AddHoldingController extends Controller {
         holdingTypes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
         holdingName.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
         holdingValue.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
+        
+        _app.addListener(this);
     }
 
     public void addHolding(ActionEvent actionEvent) {
@@ -119,5 +122,11 @@ public class AddHoldingController extends Controller {
 
     public void handleSearch(ActionEvent actionEvent) {
         _app.loadView(new SearchView(_app));
+    }
+    
+    @Override
+    public void SearchResultSelected() {
+        holdingName.setText(_app.searchResult);
+        System.out.println(_app.searchResult);
     }
 }
