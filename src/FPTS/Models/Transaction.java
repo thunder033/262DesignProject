@@ -168,5 +168,4 @@ public class Transaction extends Model {
             throw new UnsupportedOperationException("Transaction " + id + " cannot be rolled back because it has not been executed.");
         }
     }
-
 }

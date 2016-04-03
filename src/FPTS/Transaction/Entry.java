@@ -12,7 +12,7 @@ import java.util.function.Function;
  */
 public class Entry {
 
-    private enum EntryFormat implements Function<Transaction, String> {
+    public enum EntryFormat implements Function<Transaction, String> {
         BUY_EQUITY(txn -> String.format(
                 "Bought %.4f shares of %s at a value of $%.2f from %s",
                 txn.getValue() / txn.getDestinationPrice(),

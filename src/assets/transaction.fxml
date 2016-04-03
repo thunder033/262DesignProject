@@ -27,8 +27,9 @@
     </HBox>
 
     <HBox alignment="CENTER">
-    <Text fx:id="holdingInfo1"/>
-    <Text fx:id="valueInfo1"/>
+        <TextField fx:id="holdingField1"></TextField>
+        <Text fx:id="holdingInfo1"/>
+        <Text fx:id="valueInfo1"/>
     </HBox>
 
     <fx:define>
@@ -44,8 +45,9 @@
     </HBox>
 
     <HBox alignment="CENTER">
-    <Text fx:id="holdingInfo2"/>
-    <Text fx:id="valueInfo2"/>
+        <TextField fx:id="holdingField2"></TextField>
+        <Text fx:id="holdingInfo2"/>
+        <Text fx:id="valueInfo2"/>
     </HBox>
 
     <HBox alignment="CENTER">
