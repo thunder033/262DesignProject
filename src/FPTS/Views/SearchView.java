@@ -14,7 +14,7 @@ public class SearchView extends View {
         super(app);
         _fxmlName = "search.fxml";
         width = 700;
-        height = 400;
+        height = 730;
         newWindow = true;
     }
 }
