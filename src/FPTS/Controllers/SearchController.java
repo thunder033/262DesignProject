@@ -5,6 +5,8 @@ import FPTS.Models.MarketEquity;
 import FPTS.Search.*;
 import FPTS.Data.FPTSData;
 
+import FPTS.Views.AddHoldingView;
+import FPTS.Views.SearchView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -90,6 +92,7 @@ public class SearchController extends Controller {
         for (SelectSearchListener hl : selectSearchListeners)
             hl.SearchResultSelected();
 
+        _app.CloseStage(SearchView.class.getSimpleName());
     }
     
     @FXML

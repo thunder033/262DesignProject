@@ -129,6 +129,7 @@ public class AddHoldingController extends Controller implements SelectSearchList
     @Override
     public void SearchResultSelected() {
         holdingName.setText(_app.searchResult);
+        DisplayEquityInfo();
         System.out.println(_app.searchResult);
     }
 }
