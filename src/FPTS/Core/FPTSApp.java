@@ -10,7 +10,6 @@ import FPTS.Controllers.AddHoldingController;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,6 +124,8 @@ public class FPTSApp extends Application implements SelectSearchListener {
         loadView(new LoginView(this));
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
+        primaryStage.setX(100);
+        primaryStage.setY(100);
         primaryStage.show();
     }
 

@@ -47,6 +47,7 @@
     <Button text="New Transaction" onAction="#handleTransaction" GridPane.columnIndex="4" GridPane.rowIndex="3" GridPane.hgrow="ALWAYS"/>
     <Button text="Undo" onAction="#handleUndo" GridPane.columnIndex="3" GridPane.rowIndex="5" GridPane.hgrow="ALWAYS"/>
     <Button text="Redo" onAction="#handleRedo" GridPane.columnIndex="4" GridPane.rowIndex="5" GridPane.hgrow="ALWAYS"/>
+    <Text fx:id="errorMessage" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
 
     <TableView fx:id="transactionLogPane" GridPane.columnIndex="0" GridPane.rowIndex="4" prefHeight="250" GridPane.hgrow="ALWAYS" GridPane.columnSpan="5">
         <columns>

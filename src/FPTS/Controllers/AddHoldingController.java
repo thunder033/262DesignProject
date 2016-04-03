@@ -33,8 +33,8 @@ public class AddHoldingController extends Controller implements SelectSearchList
     @FXML Text valueInfo;
     @FXML ChoiceBox<String> holdingTypes;
     @FXML Button addHoldingControl;
-    @FXML Image searchIcon;
     @FXML Button searchButton;
+    @FXML Image searchIcon;
 
     Map<String, Class<? extends Model>> typesMap;
 
@@ -129,6 +129,7 @@ public class AddHoldingController extends Controller implements SelectSearchList
     @Override
     public void SearchResultSelected() {
         holdingName.setText(_app.searchResult);
+        DisplayEquityInfo();
         System.out.println(_app.searchResult);
     }
 }

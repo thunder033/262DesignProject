@@ -17,7 +17,8 @@ public class Transaction extends Model {
     private float destPrice = 1;
     private float sourcePrice = 1;
     private Date dateTime;
-    private boolean enabled;
+
+    private boolean rolledBack = false;
 
     private Transaction(){
 
@@ -80,7 +81,7 @@ public class Transaction extends Model {
     }
 
     public String getStatus(){
-        if (enabled){
+        if (true){
             return "";
         } else {
             return "Disabled";
@@ -114,11 +115,10 @@ public class Transaction extends Model {
 
 
     public void execute(Date date) throws InvalidTransactionException, TransactionReExecutionException {
-        enabled = true;
-        if(dateTime == null){
+        if(dateTime == null || rolledBack){
             if(source.getValue() >= value * sourcePrice){
                 if(source != null){
-                    if(source.getClass() == Equity.class){
+                    if(source.getClass() == Equity.class && !rolledBack){
                         sourcePrice = Equity.class.cast(source).getCurrentSharePrice();
                     }
 
@@ -126,14 +126,17 @@ public class Transaction extends Model {
                 }
 
                 if(destination != null){
-                    if(destination.getClass() == Equity.class){
+                    if(destination.getClass() == Equity.class && !rolledBack){
                         destPrice = Equity.class.cast(destination).getCurrentSharePrice();
                     }
 
                     destination.addValue(value * destPrice);
                 }
 
-                setDateTime(date);
+                setDateTime(rolledBack ? dateTime : date);
+
+                rolledBack = false;
+                isPersistent = true;
 
                 setChanged();
                 saveModels(Equity.class);
@@ -148,43 +151,34 @@ public class Transaction extends Model {
         }
     }
 
-    public void rollback(){
-        enabled = false;
-        if(destination.getClass() == Equity.class){
-            destPrice = Equity.class.cast(destination).getCurrentSharePrice();
-        }
-        destination.removeValue(value * destPrice);
-           
-        if(source.getClass() == Equity.class){
-            sourcePrice = Equity.class.cast(source).getCurrentSharePrice();
-        }
-        source.addValue(value * sourcePrice);
-        setDateTime(null);
-        setChanged();
-        saveModels(Equity.class);
-        saveModels(CashAccount.class);
-        save();
-    }
-    public void redo(Date date){
-        if(source.getClass() == Equity.class){
-            sourcePrice = Equity.class.cast(source).getCurrentSharePrice();
-        }
-        source.removeValue(value * sourcePrice);
-        
-        if(destination.getClass() == Equity.class){
-            destPrice = Equity.class.cast(destination).getCurrentSharePrice();
-        }
-        destination.addValue(value * destPrice);
-        
-        setDateTime(date);
-        setChanged();
-        saveModels(Equity.class);
-        saveModels(CashAccount.class);
-        save();
-    }
-    
-    public boolean isEnabled(){
-        return enabled;
+    public boolean isRolledBack()
+    {
+        return rolledBack;
     }
 
+    public void rollback() throws InvalidTransactionException {
+        if(dateTime != null){
+            if(destination.getValue() >= value * destPrice){
+                if(source != null){
+                    source.addValue(value * sourcePrice);
+                }
+
+                if(destination != null){
+                    destination.removeValue(value * destPrice);
+                }
+                rolledBack = true;
+                isPersistent = false;
+
+                setChanged();
+                saveModels(Equity.class);
+                saveModels(CashAccount.class);
+                save();
+            }
+            else {
+                throw new InvalidTransactionException(source, value);
+            }
+        } else {
+            throw new UnsupportedOperationException("Transaction " + id + " cannot be rolled back because it has not been executed.");
+        }
+    }
 }

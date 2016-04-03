@@ -3,9 +3,7 @@ package FPTS.Controllers;
 import FPTS.Core.Controller;
 import FPTS.Core.FPTSApp;
 import FPTS.Core.Model;
-import FPTS.Models.CashAccount;
-import FPTS.Models.Holding;
-import FPTS.Models.Portfolio;
+import FPTS.Models.*;
 import FPTS.PortfolioImporter.CSVImporter;
 import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
@@ -48,6 +46,7 @@ public class PortfolioController extends Controller {
     @FXML private TableView<Holding> holdingsPane;
     @FXML private TableView<Entry> transactionLogPane;
     @FXML private TableColumn<Holding, Holding> holdingActionColumn;
+    @FXML private  Text errorMessage;
 
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final FileChooser fileChooser = new FileChooser();
@@ -150,24 +149,38 @@ public class PortfolioController extends Controller {
     
     public void handleUndo(ActionEvent actionevent) {
         int i=0;
+        errorMessage.setText("");
         if(transactionLog.getTransactions().isEmpty()) {return;}
-        while(transactionLog.getTransactions().get(i).isEnabled()){
+        while(!transactionLog.getTransactions().get(i).isRolledBack()){
             if (++i==transactionLog.getTransactions().size()){
                 break;
             }
         }
-        if(i>0)
-            transactionLog.getTransactions().get(i-1).rollback();
+        if(i>0){
+            try {
+                transactionLog.getTransactions().get(i-1).rollback();
+            } catch (InvalidTransactionException ex) {
+                errorMessage.setText(ex.getMessage());
+                ex.printStackTrace();
+            }
+
+        }
     }
     
     public void handleRedo(ActionEvent actionevent) {
         int i=0;
+        errorMessage.setText("");
         if(transactionLog.getTransactions().isEmpty()) {return;}
-        while(transactionLog.getTransactions().get(i).isEnabled()){
+        while(!transactionLog.getTransactions().get(i).isRolledBack()){
             if (++i==transactionLog.getTransactions().size()){
                 break;
             }
         }
-        transactionLog.getTransactions().get(i).redo(new Date());
+        try {
+            transactionLog.getTransactions().get(i).execute();
+        } catch (InvalidTransactionException|TransactionReExecutionException ex) {
+            errorMessage.setText(ex.getMessage());
+            ex.printStackTrace();
+        }
     }
 }
