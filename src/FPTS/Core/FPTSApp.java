@@ -124,6 +124,8 @@ public class FPTSApp extends Application implements SelectSearchListener {
         loadView(new LoginView(this));
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
+        primaryStage.setX(100);
+        primaryStage.setY(100);
         primaryStage.show();
     }
 

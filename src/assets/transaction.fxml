@@ -5,8 +5,6 @@
 <?import FPTS.Controls.*?>
 <?import javafx.scene.text.Text?>
 <?import FPTS.Controls.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <VBox alignment="TOP_CENTER"
       fx:controller="FPTS.Controllers.TransactionController"
       xmlns:fx="http://javafx.com/fxml"
@@ -19,7 +17,7 @@
     </Label>
 
     <Label text="Source Holding" />
-    <ChoiceBox fx:id="holdingTypes" minWidth="200" />
+    <ChoiceBox fx:id="holdingTypes" maxWidth="200" />
     <HBox alignment="CENTER">
         <Button fx:id="searchButton1Transaction" onAction="#handleSearch">
             New Equity
@@ -27,17 +25,19 @@
     </HBox>
 
     <HBox alignment="CENTER">
-        <TextField fx:id="holdingField1"></TextField>
+        <TextField fx:id="sharePriceField1" promptText="Share Amount"></TextField>
         <Text fx:id="holdingInfo1"/>
-        <Text fx:id="valueInfo1"/>
     </HBox>
 
-    <fx:define>
-        <ToggleGroup fx:id="internExternSource" />
-    </fx:define>
+    <HBox alignment="CENTER">
+        <padding>
+            <Insets top="10" right="0" bottom="10" left="0"/>
+        </padding>
+        <NumericField fx:id="transactionAmount" minWidth="200" promptText="The transaction amount"/>
+    </HBox>
 
     <Label text="Destination Holding" />
-    <ChoiceBox fx:id="holdingTypes2" minWidth="200" />
+    <ChoiceBox fx:id="holdingTypes2" maxWidth="200" />
     <HBox alignment="CENTER">
         <Button fx:id="searchButton2Transaction" onAction="#handleSearch">
             New Equity
@@ -45,9 +45,7 @@
     </HBox>
 
     <HBox alignment="CENTER">
-        <TextField fx:id="holdingField2"></TextField>
-        <Text fx:id="holdingInfo2"/>
-        <Text fx:id="valueInfo2"/>
+        <TextField fx:id="sharePriceField2" promptText="Share Amount"></TextField>
     </HBox>
 
     <HBox alignment="CENTER">
@@ -56,8 +54,6 @@
         </padding>
     <DatePicker fx:id="transactionDate" promptText="Date of transaction" maxWidth="200"></DatePicker>
     </HBox>
-
-    <NumericField fx:id="transactionAmount" maxWidth="200" promptText="The transaction amount"/>
 
     <Text fx:id="errorMessage"/>
 
