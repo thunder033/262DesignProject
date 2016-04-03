@@ -10,8 +10,7 @@ public class SearchParameter{
     public enum searchParameter {
         id,
         name,
-        index,
-        sector
+        marketAverage
     }
 
 }

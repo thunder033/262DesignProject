@@ -4,11 +4,15 @@ import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 import FPTS.Models.*;
 import FPTS.Views.LoginView;
+import FPTS.Search.SelectSearchListener;
+import FPTS.Controllers.AddHoldingController;
+
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,13 +25,19 @@ import java.util.Map;
  * and CSV file data is loaded into respective bins.
  */
 
-public class FPTSApp extends Application {
+public class FPTSApp extends Application implements SelectSearchListener {
 
     FPTSData data;
     protected View currentView;
     private Map<String, Stage> stageMap;
     public String searchResult;
 
+    private ArrayList<SelectSearchListener> selectSearchListeners = new ArrayList<SelectSearchListener>();
+        
+    public void addListener(SelectSearchListener toAdd) {
+        selectSearchListeners.add(toAdd);
+    }
+    
     /**
      * @return a reference to the data root
      */
@@ -42,6 +52,15 @@ public class FPTSApp extends Application {
         searchResult = result;
     }
 
+    @Override
+    public void SearchResultSelected() {
+        
+        for (SelectSearchListener hl : selectSearchListeners)
+            hl.SearchResultSelected();
+    }
+    
+    
+    
     /**
      * @return the current view
      */

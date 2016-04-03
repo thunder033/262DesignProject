@@ -27,7 +27,7 @@ public class MarketEquityBin extends DataBin {
      * @return a market equity index
      */
     @Override
-    public Model fromCSV(String[] values) {
+    public Model fromValueArray(String[] values) {
 
         MarketEquity mEquity = new MarketEquity(values[0]);
         mEquity._name = values[1];
@@ -49,7 +49,7 @@ public class MarketEquityBin extends DataBin {
     }
 
     @Override
-    public String[] toCSV(Model instance) {
+    public String[] toValueArray(Model instance) {
         return new String[0];
     }
 }

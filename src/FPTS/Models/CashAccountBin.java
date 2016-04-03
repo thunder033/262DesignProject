@@ -23,7 +23,7 @@ public class CashAccountBin extends DataBin {
      * @return a values array instance
      */
     @Override
-    public Model fromCSV(String[] values) {
+    public Model fromValueArray(String[] values) {
         CashAccount cashAccount = new CashAccount(values[0]);
         cashAccount.name = values[1];
         cashAccount._value = Float.parseFloat(values[2]);
@@ -37,7 +37,7 @@ public class CashAccountBin extends DataBin {
      * @return values [id, name, amount]
      */
     @Override
-    public String[] toCSV(Model instance) {
+    public String[] toValueArray(Model instance) {
         CashAccount cashAccount = CashAccount.class.cast(instance);
         String[] values = new String[3];
         values[0] = cashAccount.id;

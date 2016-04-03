@@ -19,7 +19,7 @@ public class TransactionBin extends DataBin {
     }
 
     @Override
-    public Model fromCSV(String[] values) {
+    public Model fromValueArray(String[] values) {
        return new Transaction.Builder(values[0])
                 .source(Holding.deserializeHolding(values[1]))
                 .sourcePrice(Float.parseFloat(values[2]))
@@ -31,7 +31,7 @@ public class TransactionBin extends DataBin {
     }
 
     @Override
-    public String[] toCSV(Model instance) {
+    public String[] toValueArray(Model instance) {
         Transaction transaction = Transaction.class.cast(instance);
         return new String[] {
                 transaction.id,

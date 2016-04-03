@@ -80,6 +80,14 @@ public class Transaction extends Model {
         return destPrice;
     }
 
+    public String getStatus(){
+        if (true){
+            return "";
+        } else {
+            return "Disabled";
+        }
+    }
+    
     /**
      * Gets the holding the transaction is indexed on
      * @return source holding, or destination if source is null
@@ -141,6 +149,11 @@ public class Transaction extends Model {
         } else {
             throw new TransactionReExecutionException(this);
         }
+    }
+
+    public boolean isRolledBack()
+    {
+        return rolledBack;
     }
 
     public void rollback() throws InvalidTransactionException {
