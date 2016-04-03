@@ -26,6 +26,7 @@ import javafx.stage.FileChooser;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 
 /**
  * @author: Alexander Kidd
@@ -110,5 +111,28 @@ public class PortfolioController extends Controller {
 
     public void handlelLogOut(ActionEvent actionEvent) {
         _app.loadView(new LoginView(_app));
+    }
+    
+    public void handleUndo(ActionEvent actionevent) {
+        int i=0;
+        if(transactionLog.getTransactions().isEmpty()) {return;}
+        while(transactionLog.getTransactions().get(i).isEnabled()){
+            if (++i==transactionLog.getTransactions().size()){
+                break;
+            }
+        }
+        if(i>0)
+            transactionLog.getTransactions().get(i-1).rollback();
+    }
+    
+    public void handleRedo(ActionEvent actionevent) {
+        int i=0;
+        if(transactionLog.getTransactions().isEmpty()) {return;}
+        while(transactionLog.getTransactions().get(i).isEnabled()){
+            if (++i==transactionLog.getTransactions().size()){
+                break;
+            }
+        }
+        transactionLog.getTransactions().get(i).redo(new Date());
     }
 }
