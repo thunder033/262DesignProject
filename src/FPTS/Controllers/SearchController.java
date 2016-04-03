@@ -2,6 +2,7 @@ package FPTS.Controllers;
 
 import FPTS.Core.Controller;
 import FPTS.Models.MarketEquity;
+import FPTS.Models.MarketIndex;
 import FPTS.Search.*;
 import FPTS.Data.FPTSData;
 
@@ -83,12 +84,9 @@ public class SearchController extends Controller {
         Object item = searchResultsPane.getItems().get(row);
         TableColumn col = (TableColumn)searchResultsPane.getColumns().get(0);
         String data = (String) col.getCellObservableValue(item).getValue();
-        
-        _app.setSearchResult(data);
-        System.out.println(_app.searchResult);
 
         for (SelectSearchListener hl : selectSearchListeners)
-            hl.SearchResultSelected();
+            hl.SearchResultSelected(data);
 
     }
     
@@ -112,13 +110,18 @@ public class SearchController extends Controller {
             _search3 = new SearchQuery(new Contains());
         if(exactlyMatches3.isSelected())
             _search3 = new SearchQuery(new ExactlyMatches());
-        
-        
-        ArrayList<MarketEquity> marketEquities = FPTSData.getDataRoot().getInstances(MarketEquity.class);
+        ArrayList marketEquities = FPTSData.getDataRoot().getInstances(MarketEquity.class);
+        if(!"".equals(marketAverage.getText())){
+            ArrayList<MarketIndex> marketIndecies = _search3.executeStrategy(marketEquities, marketAverage.getText(), SearchParameter.searchParameter.marketAverage);
+            marketEquities = marketIndecies.get(0).getEquities();
+            for (int i = 1; i < marketIndecies.size();i++){
+                marketEquities.addAll(marketIndecies.get(i).getEquities());
+            }
+            marketEquities.addAll(marketIndecies);
+        }
         
         marketEquities = _search1.executeStrategy(marketEquities, id.getText(),SearchParameter.searchParameter.id);
         marketEquities = _search2.executeStrategy(marketEquities, name.getText(), SearchParameter.searchParameter.name);
-        marketEquities = _search3.executeStrategy(marketEquities, marketAverage.getText(), SearchParameter.searchParameter.marketAverage);
         
 
         ObservableList<MarketEquity> observableResults = FXCollections.observableArrayList(marketEquities);

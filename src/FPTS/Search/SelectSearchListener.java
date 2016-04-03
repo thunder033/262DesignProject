@@ -10,5 +10,5 @@ package FPTS.Search;
  * @author Eric
  */
 public interface SelectSearchListener {
-  public void SearchResultSelected();
+  public void SearchResultSelected(String searchResult);
 }
