@@ -2,6 +2,7 @@ package FPTS.Search;
 
 import FPTS.Data.FPTSData;
 import FPTS.Models.MarketEquity;
+import FPTS.Models.MarketIndex;
 
 import java.util.ArrayList;
 
@@ -38,8 +39,10 @@ public class SearchQuery{
             });
         }
         if (f == SearchParameter.searchParameter.marketAverage){
-            marketEquities.stream().filter((i) -> (searchMethod.compare(searchTerm.toUpperCase(), "" +(i.getSharePrice())))).forEach((i) -> {
-                results.add(i);
+            marketEquities.stream().filter((i) -> (searchMethod.compare(searchTerm.toUpperCase(), "" +(i.getName())))).forEach((i) -> {
+                if(i.getClass() == MarketIndex.class) {
+                    results.add(i);
+                }
             });
         }
 
