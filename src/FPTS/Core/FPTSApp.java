@@ -8,7 +8,9 @@ import FPTS.Search.SelectSearchListener;
 import FPTS.Controllers.AddHoldingController;
 
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -124,9 +126,10 @@ public class FPTSApp extends Application implements SelectSearchListener {
         loadView(new LoginView(this));
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
-        primaryStage.setX(100);
-        primaryStage.setY(100);
         primaryStage.show();
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
+        primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);
     }
 
     public static void main(String[] args) {

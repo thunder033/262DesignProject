@@ -86,7 +86,6 @@ public class PortfolioController extends Controller {
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
-
         transactionLog = new Log(portfolio);
         refreshView();
     }
@@ -182,7 +181,7 @@ public class PortfolioController extends Controller {
     }
 
     @FXML
-    private void handleWatchList() {
+    public void handleWatchList() {
         _app.loadView(new WatchListView(_app));
     }
 }

@@ -19,5 +19,7 @@
     display: block;
 }
 .holdings-header {
+    -fx-alignment: center-left;
+    -fx-font-weight: bold;
     -fx-font-size: 20px;
 }

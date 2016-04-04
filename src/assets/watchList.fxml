@@ -10,13 +10,15 @@
           fx:controller="FPTS.Controllers.WatchListController"
           xmlns:fx="http://javafx.com/fxml">
     <padding><Insets top="25" right="25" left="25" bottom="10"/></padding>
-    <Text fx:id="watchListName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="4"/>
-    <NumericField fx:id="minutes" maxWidth="100" promptText="Minutes" GridPane.columnIndex="1" GridPane.rowIndex="0"></NumericField>
-    <Text text=":" GridPane.columnIndex="2" GridPane.rowIndex="0"></Text>
-    <NumericField fx:id="seconds" maxWidth="100" promptText="Seconds" GridPane.columnIndex="3" GridPane.rowIndex="0"></NumericField>
-    <Button fx:id="setTimer" text="Set Timer Interval" onAction="#handleTimer" GridPane.rowIndex="0" GridPane.columnIndex="4" prefWidth="150"/>
+    <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="4"/>
 
-    <Label text="Holdings" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="holdings-header" GridPane.columnSpan="1"/>
+    <NumericField fx:id="minutesInterval" maxWidth="100" promptText="Minutes" GridPane.rowIndex="1" GridPane.columnIndex="1"></NumericField>
+    <Text text=":" GridPane.rowIndex="1" GridPane.columnIndex="2"></Text>
+    <NumericField fx:id="secondsInterval" maxWidth="100" promptText="Seconds" GridPane.rowIndex="1" GridPane.columnIndex="3"></NumericField>
+
+    <Button fx:id="setTimer" text="Set Update Interval" onAction="#handleTimer" GridPane.rowIndex="1" GridPane.columnIndex="4" prefWidth="150"/>
+
+    <Label text="Watched Holdings" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="holdings-header" GridPane.columnSpan="1"/>
 
     <TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" prefHeight="350">
         <!--<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>-->
@@ -38,6 +40,7 @@
             </TableColumn>
         </columns>
         <items>
+
         </items>
     </TableView>
 

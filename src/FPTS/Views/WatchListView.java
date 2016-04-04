@@ -16,8 +16,8 @@ import FPTS.Core.View;
 public class WatchListView extends View {
     public WatchListView(FPTSApp app) {
         super(app);
-        width = 800;
-        height = 800;
+        width = 820;
+        height = 500;
         _fxmlName = "watchList.fxml";
         newWindow = true;
     }
