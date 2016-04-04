@@ -1,9 +1,6 @@
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 <GridPane fx:id="grid" fx:controller="FPTS.Controllers.ImportHoldingsController"
           xmlns:fx="http://javafx.com/fxml" gridLinesVisible="true">
@@ -32,6 +29,7 @@
     </columns>
 
 </TableView>
+
 <stylesheets>
     <URL value="@styles/importHoldings.css"/>
 </stylesheets>

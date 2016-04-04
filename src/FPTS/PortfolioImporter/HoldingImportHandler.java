@@ -119,6 +119,9 @@ public class HoldingImportHandler {
     private static void separateCases(GridPane boxes) throws InvalidChoiceException{
         Object choice;
         ComboBox CBox;
+        CAMergeList.clear();
+        CAReplaceList.clear();
+        CAIgnoreList.clear();
         for(int i = 0; i < boxes.getChildren().size() - 1; i++) {
             if (hasDuplCA[i]) {
                 CBox = ((ComboBox) boxes.getChildren().get(i + 1));
