@@ -49,8 +49,8 @@ public class MarketEquity extends Model {
         try {
 
             String stockParameter = "%22" + this.getTickerSymbol() + "%22";
-            String mainURL = "http://query.yahooapis.com/v1/public/yql?q=select%20LastTradePriceOnly," +
-                    "Symbol%20from%20yahoo.finance.quotes%20where%20symbol%20in%20" +
+            String mainURL = "http://query.yahooapis.com/v1/public/yql?q=select%20LastTradePriceOnly" +
+                    "%20from%20yahoo.finance.quotes%20where%20symbol%20in%20" +
                     "(" + stockParameter + ")&env=store://datatables.org/alltableswithkeys";
             // Create a URL and open a connection
             URL YahooURL = new URL(mainURL);
@@ -87,7 +87,10 @@ public class MarketEquity extends Model {
             } finally {
                 con.getInputStream().close();
             }
-        } catch (IOException e) {
+        } catch (MalformedURLException e){
+            e.printStackTrace();
+        }catch (IOException e) {
+            sharePrice = _sharePrice;
             e.printStackTrace();
         }
         return sharePrice;
