@@ -9,10 +9,7 @@ import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
 import FPTS.Transaction.Entry;
 import FPTS.Transaction.Log;
-import FPTS.Views.AddHoldingView;
-import FPTS.Views.LoginView;
-import FPTS.Views.SimulationView;
-import FPTS.Views.TransactionView;
+import FPTS.Views.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -182,5 +179,10 @@ public class PortfolioController extends Controller {
             errorMessage.setText(ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+    @FXML
+    private void handleWatchList() {
+        _app.loadView(new WatchListView(_app));
     }
 }

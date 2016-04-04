@@ -12,7 +12,7 @@
     <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="4"/>
     <Button fx:id="logout" text="Log Out" onAction="#handlelLogOut" GridPane.rowIndex="0" GridPane.columnIndex="3" prefWidth="80"/>
     <Button text="Simulate Portfolio" onAction="#handleSimulate" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
-
+    <Button text="Watch List" onAction="#handleWatchList" GridPane.columnIndex="5" GridPane.rowIndex="0"/>
 
     <Label text="Holdings" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="holdings-header" GridPane.columnSpan="1"/>
     <Button text="Export" onAction="#handleExportAction" GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER_RIGHT"/>
