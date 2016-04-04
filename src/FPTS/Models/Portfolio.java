@@ -64,6 +64,14 @@ public class Portfolio extends Model {
         }
     }
 
+    public void removeHolding(Holding holding)
+    {
+        if(holding != null){
+            holdings.remove(holding);
+            setChanged();
+        }
+    }
+
     /**
      * create and add a new holding to the portfolio, saving the portfolio if the holding was successfully added
      * @param type a type of holding model to create
