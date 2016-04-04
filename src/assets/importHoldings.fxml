@@ -3,13 +3,16 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
-<GridPane fx:controller="FPTS.Controllers.ImportHoldingsController"
-          xmlns:fx="http://javafx.com/fxml">
+<?import javafx.scene.control.ComboBox?>
+<?import java.net.URL?>
+<GridPane fx:id="grid" fx:controller="FPTS.Controllers.ImportHoldingsController"
+          xmlns:fx="http://javafx.com/fxml" gridLinesVisible="true">
     <Button text="Choose Import File" onAction="#fileSelected" GridPane.columnIndex="1" GridPane.rowIndex="0" />
     <Button fx:id="importButton" text="Import Holdings" onAction="#importHoldings" GridPane.columnIndex="2"
             GridPane.rowIndex="0" visible="false"/>
-    <Button text="Return to Portfolio" onAction="#returnToPortfolio" GridPane.columnIndex="9" GridPane.rowIndex="0"/>
-<TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="9"
+    <Button text="Return to Portfolio" onAction="#returnToPortfolio" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+    <Button text="Long text that acts as to set the table size" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+<TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="5"
            GridPane.hgrow="ALWAYS">
     <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
     <columns>
@@ -25,12 +28,11 @@
         <TableColumn text="Shares" prefWidth="30.0">
             <cellValueFactory><PropertyValueFactory property="shares"/></cellValueFactory>
         </TableColumn>
-        <TableColumn fx:id="duplicateCol" text="Duplicate Options" prefWidth="30.0">
 
-        </TableColumn>
     </columns>
-    <items>
 
-    </items>
 </TableView>
+<stylesheets>
+    <URL value="@styles/importHoldings.css"/>
+</stylesheets>
 </GridPane>
