@@ -3,6 +3,8 @@ package FPTS.Controllers;
 import FPTS.Core.Controller;
 import FPTS.Models.MarketEquity;
 import FPTS.Search.*;
+import FPTS.Data.FPTSData;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +13,8 @@ import javafx.scene.control.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Observable;
 
 //
 //@author: Eric
@@ -22,8 +26,7 @@ public class SearchController extends Controller {
 
     @FXML private TextField id;
     @FXML private TextField name;
-    @FXML private TextField index;
-    @FXML private TextField sector;
+    @FXML private TextField marketAverage;
     
     @FXML
     RadioButton beginsWith1;        
@@ -43,25 +46,23 @@ public class SearchController extends Controller {
     RadioButton contains3;        
     @FXML
     RadioButton exactlyMatches3;
-    @FXML
-    RadioButton beginsWith4;        
-    @FXML
-    RadioButton contains4;        
-    @FXML
-    RadioButton exactlyMatches4;
     
     SearchQuery _search1;
     SearchQuery _search2;
     SearchQuery _search3;
-    SearchQuery _search4;
 
     @FXML private TableView searchResultsPane;
+    
+    private ArrayList<SelectSearchListener> selectSearchListeners = new ArrayList<>();
+        
+    public void addListener(SelectSearchListener toAdd) {
+        selectSearchListeners.add(toAdd);
+    }
     
     public SearchController() {
         _search1 = new SearchQuery(new BeginsWith());
         _search2 = new SearchQuery(new BeginsWith());
         _search3 = new SearchQuery(new BeginsWith());
-        _search4 = new SearchQuery(new BeginsWith());
     }
     
     @Override
@@ -70,21 +71,24 @@ public class SearchController extends Controller {
         contains1.setSelected(true);
         contains2.setSelected(true);
         contains3.setSelected(true);
-        contains4.setSelected(true);
     }
     
     @FXML
     protected void handleSelectAction(ActionEvent actionEvent) {
+        addListener(_app);
         TableView.TableViewSelectionModel selectionModel = searchResultsPane.getSelectionModel();
         List selectedCells = selectionModel.getSelectedCells();
         TablePosition tablePosition = (TablePosition) selectedCells.get(0);
         int row = tablePosition.getRow();
         Object item = searchResultsPane.getItems().get(row);
-        TableColumn col = (TableColumn)searchResultsPane.getColumns().get(1);
+        TableColumn col = (TableColumn)searchResultsPane.getColumns().get(0);
         String data = (String) col.getCellObservableValue(item).getValue();
+        
         _app.setSearchResult(data);
         System.out.println(_app.searchResult);
 
+        for (SelectSearchListener hl : selectSearchListeners)
+            hl.SearchResultSelected();
 
     }
     
@@ -108,32 +112,19 @@ public class SearchController extends Controller {
             _search3 = new SearchQuery(new Contains());
         if(exactlyMatches3.isSelected())
             _search3 = new SearchQuery(new ExactlyMatches());
-        if(beginsWith4.isSelected())
-            _search4 = new SearchQuery(new BeginsWith());
-        if(contains4.isSelected())
-            _search4 = new SearchQuery(new Contains());
-        if(exactlyMatches4.isSelected())
-            _search4 = new SearchQuery(new ExactlyMatches());
+        
+        
+        ArrayList<MarketEquity> marketEquities = FPTSData.getDataRoot().getInstances(MarketEquity.class);
+        
+        marketEquities = _search1.executeStrategy(marketEquities, id.getText(),SearchParameter.searchParameter.id);
+        marketEquities = _search2.executeStrategy(marketEquities, name.getText(), SearchParameter.searchParameter.name);
+        marketEquities = _search3.executeStrategy(marketEquities, marketAverage.getText(), SearchParameter.searchParameter.marketAverage);
+        
+
+        ObservableList<MarketEquity> observableResults = FXCollections.observableArrayList(marketEquities);
         
         
         
-        ArrayList<MarketEquity> results1 = _search1.executeStrategy(id.getText(),SearchParameter.searchParameter.id);
-        ArrayList<MarketEquity> results2 = _search2.executeStrategy(name.getText(), SearchParameter.searchParameter.name);
-        ArrayList<MarketEquity> results3 = _search3.executeStrategy(index.getText(), SearchParameter.searchParameter.index);
-        ArrayList<MarketEquity> results4 = _search4.executeStrategy(sector.getText(), SearchParameter.searchParameter.sector);
-        
-        ArrayList<MarketEquity> results = new ArrayList<>();
-        
-        if(!id.getText().equals(""))
-            results.addAll(results1);
-        if(!name.getText().equals(""))
-            results.addAll(results2);
-        if(!index.getText().equals(""))
-            results.addAll(results3);
-        if(!sector.getText().equals(""))
-            results.addAll(results4);
-        
-        ObservableList<MarketEquity> observableResults = FXCollections.observableArrayList(results);
         searchResultsPane.setItems(observableResults);
     }
     

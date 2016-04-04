@@ -21,9 +21,9 @@ public class SearchQuery{
     /**
      * Performs the search
      */
-    public ArrayList<MarketEquity> executeStrategy(String searchTerm, SearchParameter.searchParameter f) {
+    public ArrayList<MarketEquity> executeStrategy(ArrayList<MarketEquity> marketEquities, String searchTerm, SearchParameter.searchParameter f) {
         
-        ArrayList<MarketEquity> marketEquities = FPTSData.getDataRoot().getInstances(MarketEquity.class);
+        
         ArrayList<MarketEquity> results = new ArrayList<>();
         
         //Iterate through Equities for each parameter to find if the searchTerm (not case sensitive) matches the Fields
@@ -37,13 +37,8 @@ public class SearchQuery{
                 results.add(i);
             });
         }
-        if (f == SearchParameter.searchParameter.index){
-            marketEquities.stream().filter((i) -> (searchMethod.compare(searchTerm.toUpperCase(), i.id.toUpperCase()))).forEach((i) -> {
-                results.add(i);
-            });
-        }
-        if (f == SearchParameter.searchParameter.sector){
-            marketEquities.stream().filter((i) -> (searchMethod.compare(searchTerm.toUpperCase(), i.id.toUpperCase()))).forEach((i) -> {
+        if (f == SearchParameter.searchParameter.marketAverage){
+            marketEquities.stream().filter((i) -> (searchMethod.compare(searchTerm.toUpperCase(), "" +(i.getSharePrice())))).forEach((i) -> {
                 results.add(i);
             });
         }

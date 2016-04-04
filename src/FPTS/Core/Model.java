@@ -21,6 +21,7 @@ import java.util.Observable;
 public abstract class Model extends Observable {
     public String id;
     public boolean isPersistent = true;
+    private boolean deleted = false;
 
     private static int incrementId = 0;
     private static String incrementIdCache = "modelId.config";
@@ -28,7 +29,7 @@ public abstract class Model extends Observable {
 
     public Model(String _id) {
         dataRoot = FPTSData.getDataRoot();
-        id = _id;
+        this.id = _id;
         setChanged();
     }
 
@@ -45,12 +46,28 @@ public abstract class Model extends Observable {
     public void save(){
         Model indexedInstance = findById(this.getClass(), this.id);
         if(isPersistent && indexedInstance == null){
+            System.out.println("Add instance " + this);
             dataRoot.addInstance(this);
         }
         else if(!isPersistent && indexedInstance != null){
             dataRoot.deleteInstance(this);
         }
         notifyObservers();
+    }
+
+    public void setDeleted()
+    {
+        deleted = true;
+    }
+
+    public void delete(){
+        deleted = true;
+        setChanged();
+        save();
+    }
+
+    public boolean isDeleted(){
+        return deleted;
     }
 
     public void ignoreChanges(){

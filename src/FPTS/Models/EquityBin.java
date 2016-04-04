@@ -20,7 +20,7 @@ public class EquityBin extends DataBin {
     }
 
     @Override
-    public Model fromCSV(String[] values) {
+    public Model fromValueArray(String[] values) {
         MarketEquity marketEquity = FPTSData.getDataRoot().getInstanceById(MarketEquity.class, values[1]);
         Equity equity = new Equity(values[0], marketEquity);
         equity.shares = Float.parseFloat(values[2]);
@@ -28,7 +28,7 @@ public class EquityBin extends DataBin {
     }
 
     @Override
-    public String[] toCSV(Model instance) {
+    public String[] toValueArray(Model instance) {
         Equity equity = Equity.class.cast(instance);
 
         String[] values = new String[3];
