@@ -22,11 +22,10 @@ public class TransactionBin extends DataBin {
     public Model fromValueArray(String[] values) {
        return new Transaction.Builder(values[0])
                 .source(Holding.deserializeHolding(values[1]))
-                .sourcePrice(Float.parseFloat(values[2]))
-                .destination(Holding.deserializeHolding(values[3]))
-                .destinationPrice(Float.parseFloat(values[4]))
-                .dateTime(new Date(Long.parseLong(values[5])))
-                .value(Float.parseFloat(values[6]))
+                .destination(Holding.deserializeHolding(values[2]))
+                .sharePrice(Float.parseFloat(values[3]))
+                .dateTime(new Date(Long.parseLong(values[4])))
+                .value(Float.parseFloat(values[5]))
                 .build();
     }
 
@@ -36,9 +35,8 @@ public class TransactionBin extends DataBin {
         return new String[] {
                 transaction.id,
                 Holding.serializeHolding(transaction.getSource()),
-                Float.toString(transaction.getSourcePrice()),
                 Holding.serializeHolding(transaction.getDestination()),
-                Float.toString(transaction.getDestinationPrice()),
+                Float.toString(transaction.getSharePrice()),
                 Long.toString(transaction.getDateTime().getTime()),
                 Float.toString(transaction.getValue())
         };

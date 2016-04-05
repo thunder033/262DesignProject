@@ -1,6 +1,8 @@
 package FPTS.Core;
 
 import FPTS.Models.Portfolio;
+import FPTS.Views.SearchView;
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 
 import java.net.URL;
@@ -69,5 +71,9 @@ public class Controller implements Observer, Initializable {
      */
     public void refreshView() {
 
+    }
+
+    public void handleSearch(ActionEvent actionEvent) {
+        _app.loadView(new SearchView(_app));
     }
 }
