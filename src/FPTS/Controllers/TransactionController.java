@@ -100,7 +100,8 @@ public class TransactionController extends Controller implements SelectSearchLis
             }
             @Override
             public Holding fromString(String string) {
-                System.err.println("Do Not Attempt Conversion From String In This Manner.");
+                String eid = string.split(" \\(")[0];
+                _portfolio.getHoldingByExportID(eid);
                 return null;
             }
         };
@@ -260,8 +261,8 @@ public class TransactionController extends Controller implements SelectSearchLis
             }
 
             Transaction newTxn = new Transaction.Builder()
-                    .source(holdingsArrayList.get(sourceHoldingField.getSelectionModel().getSelectedIndex()))
-                    .destination(holdingsArrayList.get(destHoldingField.getSelectionModel().getSelectedIndex()))
+                    .source(sourceHoldingField.getValue())
+                    .destination(destHoldingField.getValue())
                     .sharePrice(Float.parseFloat(sharePriceField.getText()))
                     .value(Float.parseFloat(transactionAmount.getText()))
                     .build();
