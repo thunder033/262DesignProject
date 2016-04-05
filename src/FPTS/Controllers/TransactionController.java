@@ -33,8 +33,7 @@ import java.util.*;
 public class TransactionController extends Controller {
     @FXML Text errorMessage;
 
-    @FXML TextField sharePriceField1;
-    @FXML TextField sharePriceField2;
+    @FXML TextField sharePriceField;
 
     @FXML ChoiceBox<Holding> holdingTypes;
     @FXML ChoiceBox<Holding> holdingTypes2;
@@ -140,59 +139,23 @@ public class TransactionController extends Controller {
                     transactionDate.setDisable(false);
                     break;
                 case TRANSFER_CASH_ACCOUNT:
-                    transactionAmount.promptTextProperty().setValue("Transfer amount in value($)");
-                    if (holdingTypes.getSelectionModel().getSelectedItem() != null) {
-                        if (holdingTypes.getSelectionModel().getSelectedItem().getType().equals(CashAccount.type)) {
-                            sharePriceField1.setDisable(true);
-                            sharePriceField1.setText("1");
-                        } else {
-                            sharePriceField1.setDisable(false);
-                        }
-                    }
-                    if (holdingTypes2.getSelectionModel().getSelectedItem() != null) {
-                        if (holdingTypes2.getSelectionModel().getSelectedItem().getType().equals(CashAccount.type)) {
-                            sharePriceField2.setDisable(true);
-                            sharePriceField2.setText("1");
-                        } else {
-                            sharePriceField2.setDisable(false);
-                        }
-                    }
-                    transactionDate.setDisable(false);
-                    break;
-                case TRANSFER_EQUITIES:
-                    transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
-                    transactionDate.setDisable(false);
+                transactionAmount.promptTextProperty().setValue("Transfer amount in USD($)");
+                sharePriceField.setVisible(false);
+                sharePriceField.setText("1");
                     break;
                 case IMPORT_EQUITY:
                     transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
                     transactionDate.setDisable(true);
                     break;
                 case IMPORT_CASH_ACCOUNT:
-                    transactionAmount.promptTextProperty().setValue("Transfer amount in value($)");
-                    if (holdingTypes2.getSelectionModel().getSelectedItem() != null) {
-                        if (holdingTypes2.getSelectionModel().getSelectedItem().getType().equals(CashAccount.type)) {
-                            sharePriceField2.setDisable(true);
-                            sharePriceField2.setText("1");
-                        } else {
-                            sharePriceField2.setDisable(false);
-                        }
-                    }
+            case EXPORT_CASH_ACCOUNT:
+                transactionAmount.promptTextProperty().setValue("Transfer amount in USD($)");
+                sharePriceField.setVisible(false);
+                sharePriceField.setText("1");
                     break;
                 case EXPORT_EQUITY:
                     transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
-                    transactionDate.setDisable(false);
-                    break;
-                case EXPORT_CASH_ACCOUNT:
-                    transactionAmount.promptTextProperty().setValue("Transfer amount in value($)");
-                    if (holdingTypes.getSelectionModel().getSelectedItem() != null) {
-                        if (holdingTypes.getSelectionModel().getSelectedItem().getType().equals(CashAccount.type)) {
-                            sharePriceField1.setDisable(true);
-                            sharePriceField1.setText("1");
-                        } else {
-                            sharePriceField1.setDisable(false);
-                        }
-                    }
-                    transactionDate.setDisable(false);
+                sharePriceField.setVisible(true);
                     break;
                 default:
                     System.err.println("This case should not be possible or null fields.");
@@ -214,11 +177,11 @@ public class TransactionController extends Controller {
             if (Equity.type.equals(holdingTypes.getValue().getType())) {
                 MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, Model.class.cast(holdingTypes.getValue()).id);
                 if (equity != null) {
-                    sharePriceField1.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
+                    sharePriceField.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
                     if (transactionAmount.getText().length() > 0) {
                         float shares = Float.parseFloat(transactionAmount.getText());
                         float value = shares * equity.getSharePrice();
-                        sharePriceField1.setText(String.format("$%.2f", value));
+                        sharePriceField.setText(String.format("%.2f", value));
                     }
                 }
             }
@@ -227,11 +190,11 @@ public class TransactionController extends Controller {
             if(Equity.type.equals(holdingTypes2.getValue().getType())) {
                 MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, Model.class.cast(holdingTypes2.getValue()).id);
                 if(equity != null) {
-                    sharePriceField2.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
+                    sharePriceField.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
                     if(transactionAmount.getText().length() > 0) {
                         float shares = Float.parseFloat(transactionAmount.getText());
                         float value = shares * equity.getSharePrice();
-                        sharePriceField2.setText(String.format("$%.2f", value));
+                        sharePriceField.setText(String.format("%.2f", value));
                     }
                 }
             }
@@ -251,9 +214,8 @@ public class TransactionController extends Controller {
 
             Transaction newTxn = new Transaction.Builder()
                     .source(holdingsArrayList.get(holdingTypes.getSelectionModel().getSelectedIndex()))
-                    .sourcePrice(Float.parseFloat(sharePriceField1.getText()))
                     .destination(holdingsArrayList.get(holdingTypes2.getSelectionModel().getSelectedIndex()))
-                    .destinationPrice(Float.parseFloat(sharePriceField2.getText()))
+                    .sharePrice(Float.parseFloat(sharePriceField.getText()))
                     .dateTime(date)
                     .value(Float.parseFloat(transactionAmount.getText()))
                     .build();

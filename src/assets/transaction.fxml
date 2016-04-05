@@ -25,14 +25,12 @@
     </HBox>
 
     <HBox alignment="CENTER">
-        <TextField fx:id="sharePriceField1" promptText="Share Amount"></TextField>
-        <Text fx:id="holdingInfo1"/>
-    </HBox>
-
-    <HBox alignment="CENTER">
         <padding>
             <Insets top="10" right="0" bottom="10" left="0"/>
         </padding>
+        <NumericField fx:id="sharePriceField" promptText="Share Amount" maxWidth="100">
+            <HBox.margin><Insets right="10" /></HBox.margin>
+        </NumericField>
         <NumericField fx:id="transactionAmount" minWidth="200" promptText="The transaction amount"/>
     </HBox>
 
@@ -42,10 +40,6 @@
         <Button fx:id="searchButton2Transaction" onAction="#handleSearch">
             New Equity
         </Button>
-    </HBox>
-
-    <HBox alignment="CENTER">
-        <TextField fx:id="sharePriceField2" promptText="Share Amount"></TextField>
     </HBox>
 
     <HBox alignment="CENTER">

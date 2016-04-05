@@ -77,22 +77,20 @@ public class CSVImporter implements ImportStrategy {
                     }
 
                     if(!values[i + 2].equals("")){
-                        final String identifier = values[i + 2];
+                        final String identifier = values[i + 1];
                         dest = portfolio.getHoldings().stream()
                                 .filter(holding -> holding.getExportIdentifier().equals(identifier))
                                 .findFirst().get();
                     }
 
-                    float sourcePrice = Float.parseFloat(values[i + 1]);
-                    float destPrice = Float.parseFloat(values[i + 3]);
-                    Date date = new Date(Long.parseLong(values[i + 4]));
-                    float value = Float.parseFloat(values[i + 5]);
+                    float sharePrice = Float.parseFloat(values[i + 2]);
+                    Date date = new Date(Long.parseLong(values[i + 3]));
+                    float value = Float.parseFloat(values[i + 4]);
 
                     txnLog.addTransaction(new Transaction.Builder()
                             .source(source)
-                            .sourcePrice(sourcePrice)
                             .destination(dest)
-                            .destinationPrice(destPrice)
+                            .sharePrice(sharePrice)
                             .dateTime(date)
                             .value(value)
                             .build());

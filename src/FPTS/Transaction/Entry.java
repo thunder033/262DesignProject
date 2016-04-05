@@ -16,16 +16,16 @@ public class Entry {
     public enum EntryFormat implements Function<Transaction, String> {
         BUY_EQUITY(txn -> String.format(
                 "Bought %.4f shares of %s at a value of $%.2f from %s",
-                txn.getValue() / txn.getDestinationPrice(),
-                txn.getDestination().getExportIdentifier(),
                 txn.getValue(),
+                txn.getDestination().getExportIdentifier(),
+                txn.getValue() * txn.getSharePrice(),
                 txn.getSource().getExportIdentifier()
         )),
         SELL_EQUITY(txn -> String.format(
                 "Sold %.4f shares of %s at value of $%.2f in %s",
-                txn.getValue() / txn.getSourcePrice(),
-                txn.getSource().getExportIdentifier(),
                 txn.getValue(),
+                txn.getSource().getExportIdentifier(),
+                txn.getValue() * txn.getSharePrice(),
                 txn.getDestination().getExportIdentifier()
         )),
         TRANSFER_CASH_ACCOUNT(txn -> String.format(
@@ -34,15 +34,9 @@ public class Entry {
                 txn.getSource(),
                 txn.getValue()
         )),
-        TRANSFER_EQUITIES(txn -> String.format(
-                "Transferred $%.2f from %s to %s",
-                txn.getValue(),
-                txn.getSource(),
-                txn.getValue()
-        )),
         IMPORT_EQUITY(txn -> String.format(
                 "Imported %.4f shares of %s",
-                txn.getValue() / txn.getDestinationPrice(),
+                txn.getValue() * txn.getSharePrice(),
                 txn.getDestination().getExportIdentifier()
         )),
         IMPORT_CASH_ACCOUNT(txn -> String.format(
@@ -51,9 +45,10 @@ public class Entry {
                 txn.getDestination().getExportIdentifier()
         )),
         EXPORT_EQUITY(txn -> String.format(
-                "Exported %.4f shares of %s",
-                txn.getValue() / txn.getSourcePrice(),
-                txn.getSource().getExportIdentifier()
+                "Sold %.4f shares of %s at value of %.2f to an external account",
+                txn.getValue(),
+                txn.getSource().getExportIdentifier(),
+                txn.getValue() * txn.getSharePrice()
         )),
         EXPORT_CASH_ACCOUNT(txn -> String.format(
                 "Exported $%.2f from %s",
