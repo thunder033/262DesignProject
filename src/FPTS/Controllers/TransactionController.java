@@ -5,7 +5,9 @@ import FPTS.Core.Controller;
 import FPTS.Core.FPTSApp;
 import FPTS.Core.Model;
 import FPTS.Models.*;
+import FPTS.Search.SelectSearchListener;
 import FPTS.Transaction.Entry;
+import FPTS.Views.SearchView;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -19,6 +21,7 @@ import javafx.util.StringConverter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -30,29 +33,28 @@ import java.util.*;
  * to alternate the transaction UI based on internal
  * model changes and UI changes that alter the internal model state.
  */
-public class TransactionController extends Controller {
+public class TransactionController extends Controller implements SelectSearchListener {
     @FXML Text errorMessage;
 
     @FXML TextField sharePriceField;
 
-    @FXML ChoiceBox<Holding> holdingTypes;
-    @FXML ChoiceBox<Holding> holdingTypes2;
+    @FXML ChoiceBox<Holding> sourceHoldingField;
+    @FXML ChoiceBox<Holding> destHoldingField;
 
     @FXML NumericField transactionAmount;
 
     @FXML Button transactionControl;
 
-    @FXML Button searchButton1Transaction;
     @FXML Button searchButton2Transaction;
 
     @FXML DatePicker transactionDate;
 
     private final String dateTimeFormat = "yyyy-MM-dd";
 
-    ArrayList<Holding> holdingsArrayList = new ArrayList<>();
-    ObservableList<Holding> holdingsObservableList = FXCollections.observableList(holdingsArrayList);
+    private ArrayList<Holding> holdingsArrayList = new ArrayList<>();
+    private ObservableList<Holding> holdingsObservableList = FXCollections.observableList(holdingsArrayList);
 
-    Entry.EntryFormat txnFormat = null;
+    private Entry.EntryFormat txnFormat = null;
 
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
@@ -81,14 +83,14 @@ public class TransactionController extends Controller {
             }
         };
 
-        StringConverter holdingConverter = new StringConverter<Holding>() {
+        StringConverter<Holding> holdingConverter = new StringConverter<Holding>() {
             @Override
             public String toString(Holding holding) {
                 if(holding == null) {
                     return "External Holding";
                 }
                 if(holding.getType().equals(CashAccount.type)) {
-                    return holding.getName() + " (" + holding.getValue() + ")";
+                    return holding.getName() + " ($" + holding.getValue() + ")";
                 }
                 return holding.getName();
             }
@@ -99,8 +101,8 @@ public class TransactionController extends Controller {
             }
         };
 
-        holdingTypes.setConverter(holdingConverter);
-        holdingTypes2.setConverter(holdingConverter);
+        sourceHoldingField.setConverter(holdingConverter);
+        destHoldingField.setConverter(holdingConverter);
 
         transactionDate.setConverter(dateConverter);
         transactionDate.setPromptText(dateTimeFormat);
@@ -109,14 +111,36 @@ public class TransactionController extends Controller {
         holdingsObservableList.addAll(portfolio.getHoldings());
 
         for(Holding holding : holdingsObservableList) {
-            holdingTypes.getItems().add(holding);
-            holdingTypes2.getItems().add(holding);
+            sourceHoldingField.getItems().add(holding);
+            destHoldingField.getItems().add(holding);
         }
 
-        holdingTypes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
-        holdingTypes2.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
+        sourceHoldingField.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
+        destHoldingField.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
 
         transactionAmount.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
+
+        LocalDate now = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        transactionDate.setValue(now);
+    }
+
+    private void setSharePriceField(Holding holding) {
+        if(holding == null){
+            return;
+        }
+
+        sharePriceField.setText("0");
+        if(holding.getClass() == Equity.class){
+            String tickerSymbol = Equity.class.cast(holding).getTickerSymbol();
+            MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, tickerSymbol);
+            if (equity != null) {
+                sharePriceField.setText(Float.toString(equity.getSharePrice()));
+            }
+        }
+        else {
+            sharePriceField.setText("1");
+        }
+
     }
 
     /**
@@ -125,42 +149,49 @@ public class TransactionController extends Controller {
        user input based on the transaction type.
      */
     void setInputLabels(Holding holding) {
-        txnFormat = Entry.getType(holdingTypes.getSelectionModel().getSelectedItem(),
-                holdingTypes2.getSelectionModel().getSelectedItem());
+        Holding source = sourceHoldingField.getSelectionModel().getSelectedItem();
+        Holding destination = destHoldingField.getSelectionModel().getSelectedItem();
 
-        if(txnFormat != null) {
-            switch (txnFormat) {
-                case BUY_EQUITY:
-                    transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
-                    transactionDate.setDisable(false);
-                    break;
-                case SELL_EQUITY:
-                    transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
-                    transactionDate.setDisable(false);
-                    break;
-                case TRANSFER_CASH_ACCOUNT:
+        txnFormat = Entry.getType(source, destination);
+
+        searchButton2Transaction.setDisable(false);
+
+        switch (txnFormat) {
+            case BUY_EQUITY:
+                transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
+                sharePriceField.setVisible(true);
+                setSharePriceField(destination);
+                break;
+            case SELL_EQUITY:
+                transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
+                sharePriceField.setVisible(true);
+                setSharePriceField(source);
+                searchButton2Transaction.setDisable(true);
+                break;
+            case TRANSFER_CASH_ACCOUNT:
                 transactionAmount.promptTextProperty().setValue("Transfer amount in USD($)");
                 sharePriceField.setVisible(false);
                 sharePriceField.setText("1");
-                    break;
-                case IMPORT_EQUITY:
-                    transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
-                    transactionDate.setDisable(true);
-                    break;
-                case IMPORT_CASH_ACCOUNT:
+                break;
+            case IMPORT_EQUITY:
+                transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
+                sharePriceField.setVisible(true);
+                setSharePriceField(destination);
+                break;
+            case IMPORT_CASH_ACCOUNT:
             case EXPORT_CASH_ACCOUNT:
                 transactionAmount.promptTextProperty().setValue("Transfer amount in USD($)");
                 sharePriceField.setVisible(false);
                 sharePriceField.setText("1");
-                    break;
-                case EXPORT_EQUITY:
-                    transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
+                break;
+            case EXPORT_EQUITY:
+                transactionAmount.promptTextProperty().setValue("Transfer amount in shares");
                 sharePriceField.setVisible(true);
-                    break;
-                default:
-                    System.err.println("This case should not be possible or null fields.");
-                    break;
-            }
+                setSharePriceField(source);
+                break;
+            default:
+                System.err.println("This case should not be possible or null fields.");
+                break;
         }
 
         DisplayEquityInfo();
@@ -173,9 +204,9 @@ public class TransactionController extends Controller {
      * should display the current share price for equities.
      */
     private void DisplayEquityInfo() {
-        if(holdingTypes.getSelectionModel().getSelectedItem() != null) {
-            if (Equity.type.equals(holdingTypes.getValue().getType())) {
-                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, Model.class.cast(holdingTypes.getValue()).id);
+        if(sourceHoldingField.getSelectionModel().getSelectedItem() != null) {
+            if (Equity.type.equals(sourceHoldingField.getValue().getType())) {
+                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, Model.class.cast(sourceHoldingField.getValue()).id);
                 if (equity != null) {
                     sharePriceField.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
                     if (transactionAmount.getText().length() > 0) {
@@ -186,9 +217,9 @@ public class TransactionController extends Controller {
                 }
             }
         }
-        if(holdingTypes2.getSelectionModel().getSelectedItem() != null) {
-            if(Equity.type.equals(holdingTypes2.getValue().getType())) {
-                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, Model.class.cast(holdingTypes2.getValue()).id);
+        if(destHoldingField.getSelectionModel().getSelectedItem() != null) {
+            if(Equity.type.equals(destHoldingField.getValue().getType())) {
+                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, Model.class.cast(destHoldingField.getValue()).id);
                 if(equity != null) {
                     sharePriceField.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
                     if(transactionAmount.getText().length() > 0) {
@@ -204,17 +235,18 @@ public class TransactionController extends Controller {
     public void makeTransaction(ActionEvent actionEvent) {
         if (txnFormat != null) {
             Calendar cal = Calendar.getInstance();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+            SimpleDateFormat time = new SimpleDateFormat("HH:mm:sss");
             Date date = null;
             try {
-                date = sdf.parse(transactionDate.getValue().toString() + "T" + sdf.format(cal.getTime()).toString());
+                date = ISO8601.parse(transactionDate.getValue().toString() + "T" + time.format(cal.getTime()));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
             Transaction newTxn = new Transaction.Builder()
-                    .source(holdingsArrayList.get(holdingTypes.getSelectionModel().getSelectedIndex()))
-                    .destination(holdingsArrayList.get(holdingTypes2.getSelectionModel().getSelectedIndex()))
+                    .source(holdingsArrayList.get(sourceHoldingField.getSelectionModel().getSelectedIndex()))
+                    .destination(holdingsArrayList.get(destHoldingField.getSelectionModel().getSelectedIndex()))
                     .sharePrice(Float.parseFloat(sharePriceField.getText()))
                     .dateTime(date)
                     .value(Float.parseFloat(transactionAmount.getText()))
@@ -231,5 +263,19 @@ public class TransactionController extends Controller {
                 errorMessage.setText("Transaction Re-executed.");
             }
         }
+    }
+
+    public void handleSearch(ActionEvent actionEvent) {
+        SearchView view = new SearchView(_app);
+
+        _app.loadView(view);
+    }
+
+    @Override
+    public void SearchResultSelected() {
+        Holding holding = new Equity(_app.getData().getInstanceById(MarketEquity.class, _app.searchResult));
+        holdingsObservableList.add(holding);
+        DisplayEquityInfo();
+        System.out.println(_app.searchResult);
     }
 }
