@@ -106,6 +106,10 @@ public class Transaction extends Model {
                 throw new InvalidTransactionException(source, cashValue);
             }
 
+            if(source != null && destination != null && source.getExportIdentifier().equals(destination.getExportIdentifier())){
+                throw new InvalidTransactionException(source, destination);
+            }
+
             if(destination != null){
                 destination.addValue(cashValue);
             }
