@@ -8,6 +8,7 @@ import FPTS.Models.*;
 import FPTS.Search.SelectSearchListener;
 import FPTS.Transaction.Entry;
 import FPTS.Views.SearchView;
+import FPTS.Views.TransactionView;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -66,7 +67,7 @@ public class TransactionController extends Controller implements SelectSearchLis
             destHoldingField.setItems(holdingsObservableList);
         });
 
-        StringConverter dateConverter = new StringConverter<LocalDate>() {
+        StringConverter<LocalDate> dateConverter = new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter =
                     DateTimeFormatter.ofPattern(dateTimeFormat);
             @Override
@@ -93,10 +94,8 @@ public class TransactionController extends Controller implements SelectSearchLis
                 if(holding == null) {
                     return "External Holding";
                 }
-                if(holding.getType().equals(CashAccount.type)) {
-                    return holding.getName() + " ($" + holding.getValue() + ")";
-                }
-                return holding.getName();
+
+                return String.format("%s ($%.2f)", holding.getExportIdentifier(), holding.getValue());
             }
             @Override
             public Holding fromString(String string) {
@@ -154,7 +153,7 @@ public class TransactionController extends Controller implements SelectSearchLis
        Responsible for responding to a change in the input, namely ChoiceBoxes to guide
        user input based on the transaction type.
      */
-    void setInputLabels() {
+    private void setInputLabels() {
         Holding source = sourceHoldingField.getSelectionModel().getSelectedItem();
         Holding destination = destHoldingField.getSelectionModel().getSelectedItem();
 
@@ -252,12 +251,20 @@ public class TransactionController extends Controller implements SelectSearchLis
         if (txnFormat != null) {
             Calendar cal = Calendar.getInstance();
             SimpleDateFormat ISO8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-            SimpleDateFormat time = new SimpleDateFormat("HH:mm:sss");
+            SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
             Date date = null;
             try {
                 date = ISO8601.parse(transactionDate.getValue().toString() + "T" + time.format(cal.getTime()));
             } catch (ParseException e) {
                 e.printStackTrace();
+            }
+
+            //ensure a new holding is persisted in the portfolio
+            Holding destHolding = destHoldingField.getValue();
+            if(_portfolio.getHoldingByExportID(destHolding.getExportIdentifier()) == null){
+                Model.class.cast(destHolding).isPersistent = true;
+                _portfolio.addHolding(destHolding);
+                _portfolio.save();
             }
 
             Transaction newTxn = new Transaction.Builder()
@@ -270,12 +277,10 @@ public class TransactionController extends Controller implements SelectSearchLis
             try {
                 newTxn.execute(date);
                 errorMessage.setText("Transaction Successful.");
-            } catch (InvalidTransactionException e) {
+                _app.CloseStage(TransactionView.class.getSimpleName());
+            } catch (InvalidTransactionException|TransactionReExecutionException e) {
                 System.err.println(e.getMessage());
                 errorMessage.setText(e.getMessage());
-            } catch (TransactionReExecutionException e) {
-                System.err.println(e.getMessage());
-                errorMessage.setText("Transaction Re-executed.");
             }
         }
     }
@@ -289,8 +294,13 @@ public class TransactionController extends Controller implements SelectSearchLis
 
     @Override
     public void SearchResultSelected(String result) {
-        Holding holding = new Equity(_app.getData().getInstanceById(MarketEquity.class, result));
-        holdingsObservableList.add(holding);
+        Holding holding = _portfolio.getHoldingByExportID(result);
+        if(holding == null){
+            holding = new Equity(_app.getData().getInstanceById(MarketEquity.class, result));
+            Model.class.cast(holding).isPersistent = false;
+            holdingsObservableList.add(holding);
+        }
+
         destHoldingField.setValue(holding);
         DisplayEquityInfo();
         refreshView();

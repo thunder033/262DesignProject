@@ -106,10 +106,12 @@ public class PortfolioController extends Controller {
         portfolioName.setText(String.format("%1$s's Portfolio", _portfolio.getUsername()));
         ObservableList<Holding> holdings = FXCollections.observableArrayList(_portfolio.getHoldings());
         holdingsPane.setItems(holdings);
+        holdingsPane.refresh();
 
         if(transactionLog != null){
             ObservableList<Entry> entries = FXCollections.observableArrayList(transactionLog.getEntries());
             transactionLogPane.setItems(entries);
+            transactionLogPane.refresh();
         }
     }
 
