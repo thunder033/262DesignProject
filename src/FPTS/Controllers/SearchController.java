@@ -50,11 +50,11 @@ public class SearchController extends Controller {
     @FXML
     RadioButton exactlyMatches3;
     
-    SearchQuery _search1;
-    SearchQuery _search2;
-    SearchQuery _search3;
+    private SearchQuery _search1;
+    private SearchQuery _search2;
+    private SearchQuery _search3;
 
-    @FXML private TableView searchResultsPane;
+    @FXML private TableView<MarketEquity> searchResultsPane;
     
     private ArrayList<SelectSearchListener> selectSearchListeners = new ArrayList<>();
         
@@ -78,7 +78,7 @@ public class SearchController extends Controller {
     
     @FXML
     protected void handleSelectAction(ActionEvent actionEvent) {
-        addListener(_app);
+
         TableView.TableViewSelectionModel selectionModel = searchResultsPane.getSelectionModel();
         List selectedCells = selectionModel.getSelectedCells();
         TablePosition tablePosition = (TablePosition) selectedCells.get(0);
@@ -113,24 +113,20 @@ public class SearchController extends Controller {
             _search3 = new SearchQuery(new Contains());
         if(exactlyMatches3.isSelected())
             _search3 = new SearchQuery(new ExactlyMatches());
-        ArrayList marketEquities = FPTSData.getDataRoot().getInstances(MarketEquity.class);
+        ArrayList<MarketEquity> marketEquities = FPTSData.getDataRoot().getInstances(MarketEquity.class);
         if(!"".equals(marketAverage.getText())){
-            ArrayList<MarketIndex> marketIndecies = _search3.executeStrategy(marketEquities, marketAverage.getText(), SearchParameter.searchParameter.marketAverage);
-            marketEquities = marketIndecies.get(0).getEquities();
-            for (int i = 1; i < marketIndecies.size();i++){
-                marketEquities.addAll(marketIndecies.get(i).getEquities());
+            ArrayList<MarketEquity> marketIndecies = _search3.executeStrategy(marketEquities, marketAverage.getText(), SearchParameter.searchParameter.marketAverage);
+            for (int i = 0; i < marketIndecies.size();i++){
+                marketEquities.addAll(MarketIndex.class.cast(marketIndecies.get(i)).getEquities());
             }
-            marketEquities.addAll(marketIndecies);
+            //marketEquities.addAll(marketIndecies);
         }
         
         marketEquities = _search1.executeStrategy(marketEquities, id.getText(),SearchParameter.searchParameter.id);
         marketEquities = _search2.executeStrategy(marketEquities, name.getText(), SearchParameter.searchParameter.name);
-        
 
         ObservableList<MarketEquity> observableResults = FXCollections.observableArrayList(marketEquities);
-        
-        
-        
+
         searchResultsPane.setItems(observableResults);
     }
     

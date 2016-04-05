@@ -84,8 +84,7 @@ public class AddHoldingController extends Controller implements SelectSearchList
         holdingTypes.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
         holdingName.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
         holdingValue.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
-        
-        _app.addListener(this);
+
     }
 
     public void addHolding(ActionEvent actionEvent) {
@@ -127,9 +126,9 @@ public class AddHoldingController extends Controller implements SelectSearchList
     }
     
     @Override
-    public void SearchResultSelected() {
-        holdingName.setText(_app.searchResult);
+    public void SearchResultSelected(String result) {
+        holdingName.setText(result);
         DisplayEquityInfo();
-        System.out.println(_app.searchResult);
+        System.out.println(result);
     }
 }

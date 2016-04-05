@@ -60,7 +60,10 @@ public class TransactionController extends Controller implements SelectSearchLis
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
 
-        holdingsObservableList.addListener((ListChangeListener<Holding>) c -> System.out.println("Holdings List Changed."));
+        holdingsObservableList.addListener((ListChangeListener<Holding>) c -> {
+            sourceHoldingField.setItems(holdingsObservableList);
+            destHoldingField.setItems(holdingsObservableList);
+        });
 
         StringConverter dateConverter = new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter =
@@ -110,10 +113,11 @@ public class TransactionController extends Controller implements SelectSearchLis
         holdingsObservableList.add(0, null);
         holdingsObservableList.addAll(portfolio.getHoldings());
 
-        for(Holding holding : holdingsObservableList) {
-            sourceHoldingField.getItems().add(holding);
-            destHoldingField.getItems().add(holding);
-        }
+        sourceHoldingField.setItems(holdingsObservableList);
+        destHoldingField.setItems(holdingsObservableList);
+
+        sourceHoldingField.getSelectionModel().select(0);
+        destHoldingField.getSelectionModel().select(0);
 
         sourceHoldingField.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
         destHoldingField.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
@@ -267,15 +271,17 @@ public class TransactionController extends Controller implements SelectSearchLis
 
     public void handleSearch(ActionEvent actionEvent) {
         SearchView view = new SearchView(_app);
-
         _app.loadView(view);
+        SearchController cntrl = SearchController.class.cast(view.getController());
+        cntrl.addListener(this);
     }
 
     @Override
-    public void SearchResultSelected() {
-        Holding holding = new Equity(_app.getData().getInstanceById(MarketEquity.class, _app.searchResult));
+    public void SearchResultSelected(String result) {
+        Holding holding = new Equity(_app.getData().getInstanceById(MarketEquity.class, result));
         holdingsObservableList.add(holding);
+        destHoldingField.setValue(holding);
         DisplayEquityInfo();
-        System.out.println(_app.searchResult);
+        refreshView();
     }
 }
