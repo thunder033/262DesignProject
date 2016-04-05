@@ -38,7 +38,7 @@
         </NumericField>
         <NumericField fx:id="transactionAmount" minWidth="200" promptText="The transaction amount"/>
     </HBox>
-
+    <Text fx:id="transactionInfo" />
     <HBox alignment="CENTER">
         <padding>
             <Insets top="10" right="0" bottom="0" left="0"/>
@@ -46,7 +46,7 @@
     <DatePicker fx:id="transactionDate" promptText="Date of transaction" maxWidth="200"/>
     </HBox>
 
-    <Text fx:id="errorMessage"/>
+    <Text fx:id="errorMessage" wrappingWidth="400"/>
 
     <Button fx:id="transactionControl" onAction="#makeTransaction"> Make Transaction </Button>
 

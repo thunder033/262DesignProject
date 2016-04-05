@@ -35,6 +35,7 @@ import java.util.*;
  */
 public class TransactionController extends Controller implements SelectSearchListener {
     @FXML Text errorMessage;
+    @FXML Text transactionInfo;
 
     @FXML TextField sharePriceField;
 
@@ -119,10 +120,11 @@ public class TransactionController extends Controller implements SelectSearchLis
         sourceHoldingField.getSelectionModel().select(0);
         destHoldingField.getSelectionModel().select(0);
 
-        sourceHoldingField.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
-        destHoldingField.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels(newVal));
+        sourceHoldingField.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels());
+        destHoldingField.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> setInputLabels());
 
-        transactionAmount.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
+        transactionAmount.addEventHandler(KeyEvent.KEY_RELEASED, event -> setInputLabels());
+        sharePriceField.addEventHandler(KeyEvent.KEY_RELEASED, event -> setInputLabels());
 
         LocalDate now = new Date().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         transactionDate.setValue(now);
@@ -144,7 +146,6 @@ public class TransactionController extends Controller implements SelectSearchLis
         else {
             sharePriceField.setText("1");
         }
-
     }
 
     /**
@@ -152,7 +153,7 @@ public class TransactionController extends Controller implements SelectSearchLis
        Responsible for responding to a change in the input, namely ChoiceBoxes to guide
        user input based on the transaction type.
      */
-    void setInputLabels(Holding holding) {
+    void setInputLabels() {
         Holding source = sourceHoldingField.getSelectionModel().getSelectedItem();
         Holding destination = destHoldingField.getSelectionModel().getSelectedItem();
 
@@ -199,7 +200,17 @@ public class TransactionController extends Controller implements SelectSearchLis
         }
 
         DisplayEquityInfo();
+        SetTransactionInfo(txnFormat);
         refreshView();
+    }
+
+    private void SetTransactionInfo(Entry.EntryFormat format) {
+        transactionInfo.setText("");
+        if(format != null && transactionAmount.getText().length() > 0){
+            float value = Float.valueOf(transactionAmount.getText());
+            float sharePrice = Float.valueOf(sharePriceField.getText());
+            transactionInfo.setText(String.format("Total amount: $%.2f", value * sharePrice));
+        }
     }
 
     /**
@@ -252,16 +263,15 @@ public class TransactionController extends Controller implements SelectSearchLis
                     .source(holdingsArrayList.get(sourceHoldingField.getSelectionModel().getSelectedIndex()))
                     .destination(holdingsArrayList.get(destHoldingField.getSelectionModel().getSelectedIndex()))
                     .sharePrice(Float.parseFloat(sharePriceField.getText()))
-                    .dateTime(date)
                     .value(Float.parseFloat(transactionAmount.getText()))
                     .build();
 
             try {
-                newTxn.execute();
+                newTxn.execute(date);
                 errorMessage.setText("Transaction Successful.");
             } catch (InvalidTransactionException e) {
                 System.err.println(e.getMessage());
-                errorMessage.setText("Invalid Transaction.");
+                errorMessage.setText(e.getMessage());
             } catch (TransactionReExecutionException e) {
                 System.err.println(e.getMessage());
                 errorMessage.setText("Transaction Re-executed.");
