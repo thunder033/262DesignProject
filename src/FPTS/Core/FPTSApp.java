@@ -27,18 +27,11 @@ import java.util.Map;
  * and CSV file data is loaded into respective bins.
  */
 
-public class FPTSApp extends Application implements SelectSearchListener {
+public class FPTSApp extends Application {
 
-    FPTSData data;
-    protected View currentView;
+    private FPTSData data;
+    private View currentView;
     private Map<String, Stage> stageMap;
-    public String searchResult;
-
-    private ArrayList<SelectSearchListener> selectSearchListeners = new ArrayList<SelectSearchListener>();
-        
-    public void addListener(SelectSearchListener toAdd) {
-        selectSearchListeners.add(toAdd);
-    }
     
     /**
      * @return a reference to the data root
@@ -46,22 +39,6 @@ public class FPTSApp extends Application implements SelectSearchListener {
     public FPTSData getData() {
         return data;
     }
-
-    /**
-     * Set the public Search Result.
-     */
-    public void setSearchResult(String result) {
-        searchResult = result;
-    }
-
-    @Override
-    public void SearchResultSelected() {
-        
-        for (SelectSearchListener hl : selectSearchListeners)
-            hl.SearchResultSelected();
-    }
-    
-    
     
     /**
      * @return the current view

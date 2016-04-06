@@ -48,9 +48,8 @@ public class Exporter {
 
         return new String[] {
                 sourceID,
-                Float.toString(transaction.getSourcePrice()),
                 destID,
-                Float.toString(transaction.getDestinationPrice()),
+                Float.toString(transaction.getSharePrice()),
                 Long.toString(transaction.getDateTime().getTime()),
                 Float.toString(transaction.getValue())
         };

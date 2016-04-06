@@ -14,8 +14,7 @@ public class Transaction extends Model {
     private Holding source;
     private Holding destination;
     private float value;
-    private float destPrice = 1;
-    private float sourcePrice = 1;
+    private float sharePrice = 1;
     private Date dateTime;
 
     private boolean rolledBack = false;
@@ -45,11 +44,8 @@ public class Transaction extends Model {
         public Builder destination(Holding destination){
             txn.destination = destination; return this;}
 
-        public Builder sourcePrice(float price){
-            txn.sourcePrice = price; return this;}
-
-        public Builder destinationPrice(float price){
-            txn.destPrice = price; return this;}
+        public Builder sharePrice(float price){
+            txn.sharePrice = price; return this;}
 
         public Builder value(float value){
             txn.value = value; return this;}
@@ -72,20 +68,8 @@ public class Transaction extends Model {
         return destination;
     }
 
-    public float getSourcePrice(){
-        return sourcePrice;
-    }
-
-    public float getDestinationPrice(){
-        return destPrice;
-    }
-
-    public String getStatus(){
-        if (true){
-            return "";
-        } else {
-            return "Disabled";
-        }
+    public float getSharePrice(){
+        return sharePrice;
     }
     
     /**
@@ -113,39 +97,36 @@ public class Transaction extends Model {
         execute(new Date());
     }
 
-
     public void execute(Date date) throws InvalidTransactionException, TransactionReExecutionException {
         if(dateTime == null || rolledBack){
-            if(source.getValue() >= value * sourcePrice){
-                if(source != null){
-                    if(source.getClass() == Equity.class && !rolledBack){
-                        sourcePrice = Equity.class.cast(source).getCurrentSharePrice();
-                    }
 
-                    source.removeValue(value * sourcePrice);
-                }
+            float cashValue = value * sharePrice;
 
-                if(destination != null){
-                    if(destination.getClass() == Equity.class && !rolledBack){
-                        destPrice = Equity.class.cast(destination).getCurrentSharePrice();
-                    }
-
-                    destination.addValue(value * destPrice);
-                }
-
-                setDateTime(rolledBack ? dateTime : date);
-
-                rolledBack = false;
-                isPersistent = true;
-
-                setChanged();
-                saveModels(Equity.class);
-                saveModels(CashAccount.class);
-                save();
+            if(source == null && destination == null || source != null && source.getValue() < cashValue){
+                throw new InvalidTransactionException(source, cashValue);
             }
-            else {
-                throw new InvalidTransactionException(source, value);
+
+            if(source != null && destination != null && source.getExportIdentifier().equals(destination.getExportIdentifier())){
+                throw new InvalidTransactionException(source, destination);
             }
+
+            if(destination != null){
+                destination.addValue(cashValue);
+            }
+
+            if(source != null) {
+                source.removeValue(cashValue);
+            }
+
+            setDateTime(rolledBack ? dateTime : date);
+
+            rolledBack = false;
+            isPersistent = true;
+
+            setChanged();
+            saveModels(Equity.class);
+            saveModels(CashAccount.class);
+            save();
         } else {
             throw new TransactionReExecutionException(this);
         }
@@ -158,25 +139,28 @@ public class Transaction extends Model {
 
     public void rollback() throws InvalidTransactionException {
         if(dateTime != null){
-            if(destination.getValue() >= value * destPrice){
-                if(source != null){
-                    source.addValue(value * sourcePrice);
-                }
 
-                if(destination != null){
-                    destination.removeValue(value * destPrice);
-                }
-                rolledBack = true;
-                isPersistent = false;
-
-                setChanged();
-                saveModels(Equity.class);
-                saveModels(CashAccount.class);
-                save();
-            }
-            else {
+            float cashValue = value * sharePrice;
+            if(destination.getValue() < cashValue) {
                 throw new InvalidTransactionException(source, value);
             }
+
+            if(source != null){
+                source.addValue(cashValue);
+            }
+
+            if(destination != null){
+                destination.removeValue(cashValue);
+            }
+
+            rolledBack = true;
+            isPersistent = false;
+
+            setChanged();
+            saveModels(Equity.class);
+            saveModels(CashAccount.class);
+            save();
+
         } else {
             throw new UnsupportedOperationException("Transaction " + id + " cannot be rolled back because it has not been executed.");
         }
