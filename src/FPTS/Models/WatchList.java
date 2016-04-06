@@ -54,8 +54,8 @@ public class WatchList extends Model {
      * @param interval number of seconds between updates
      */
     public void setUpdateInterval(int interval){
-        updateInterval = interval;
-        YFSClient.instance().setMaxCacheAge(interval);
+        updateInterval = interval * 1000;
+        YFSClient.instance().setMaxCacheAge(interval * 1000);
     }
 
     /**
