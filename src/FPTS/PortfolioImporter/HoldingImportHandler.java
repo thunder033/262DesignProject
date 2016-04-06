@@ -38,6 +38,7 @@ public class HoldingImportHandler {
         Importer importer = new Importer(path);
         importer.setStrategy(new CSVImporter());
         holdings = FXCollections.observableArrayList(importer.importData().portfolio.getHoldings());
+        System.out.println(holdings.size());
         return holdings;
 
 

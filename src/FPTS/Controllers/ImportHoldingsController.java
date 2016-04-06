@@ -48,6 +48,7 @@ public class ImportHoldingsController extends Controller{
         box.setVisible(false);
         newGrid.addColumn(0, box);
         for (boolean duplCAIndex : duplCAIndices) {
+            System.out.println("Here");
             box = new ComboBox(HoldingImportHandler.getDuplOpts());
             box.setPrefHeight(18);
             box.setVisible(duplCAIndex);
