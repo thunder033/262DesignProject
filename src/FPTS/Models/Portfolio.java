@@ -4,6 +4,7 @@ import FPTS.Core.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author: Greg
@@ -62,6 +63,16 @@ public class Portfolio extends Model {
             holdings.add(holding);
             setChanged();
         }
+    }
+
+    public Holding getHoldingByExportID(String eid){
+        Optional<Holding> holdingOptional = getHoldings().stream().
+        filter(holding -> holding.getExportIdentifier().equals(eid)).
+        findFirst();
+        if(holdingOptional.isPresent()){
+            return holdingOptional.get();
+        }
+        return null;
     }
 
     public void removeHolding(Holding holding)

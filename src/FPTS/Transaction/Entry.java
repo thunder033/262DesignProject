@@ -1,6 +1,7 @@
 package FPTS.Transaction;
 
 import FPTS.Models.Equity;
+import FPTS.Models.Holding;
 import FPTS.Models.Transaction;
 
 import java.text.SimpleDateFormat;
@@ -12,19 +13,19 @@ import java.util.function.Function;
  */
 public class Entry {
 
-    private enum EntryFormat implements Function<Transaction, String> {
+    public enum EntryFormat implements Function<Transaction, String> {
         BUY_EQUITY(txn -> String.format(
                 "Bought %.4f shares of %s at a value of $%.2f from %s",
-                txn.getValue() / txn.getDestinationPrice(),
-                txn.getDestination().getExportIdentifier(),
                 txn.getValue(),
+                txn.getDestination().getExportIdentifier(),
+                txn.getValue() * txn.getSharePrice(),
                 txn.getSource().getExportIdentifier()
         )),
         SELL_EQUITY(txn -> String.format(
                 "Sold %.4f shares of %s at value of $%.2f in %s",
-                txn.getValue() / txn.getSourcePrice(),
-                txn.getSource().getExportIdentifier(),
                 txn.getValue(),
+                txn.getSource().getExportIdentifier(),
+                txn.getValue() * txn.getSharePrice(),
                 txn.getDestination().getExportIdentifier()
         )),
         TRANSFER_CASH_ACCOUNT(txn -> String.format(
@@ -35,7 +36,7 @@ public class Entry {
         )),
         IMPORT_EQUITY(txn -> String.format(
                 "Imported %.4f shares of %s",
-                txn.getValue() / txn.getDestinationPrice(),
+                txn.getValue() * txn.getSharePrice(),
                 txn.getDestination().getExportIdentifier()
         )),
         IMPORT_CASH_ACCOUNT(txn -> String.format(
@@ -44,9 +45,10 @@ public class Entry {
                 txn.getDestination().getExportIdentifier()
         )),
         EXPORT_EQUITY(txn -> String.format(
-                "Exported %.4f shares of %s",
-                txn.getValue() / txn.getSourcePrice(),
-                txn.getSource().getExportIdentifier()
+                "Sold %.4f shares of %s at value of %.2f to an external account",
+                txn.getValue(),
+                txn.getSource().getExportIdentifier(),
+                txn.getValue() * txn.getSharePrice()
         )),
         EXPORT_CASH_ACCOUNT(txn -> String.format(
                 "Exported $%.2f from %s",
@@ -73,15 +75,22 @@ public class Entry {
     }
 
     private EntryFormat getType(){
+        return getType(txn.getSource(), txn.getDestination());
+    }
+
+    public static EntryFormat getType(Holding src, Holding dest) {
         EntryFormat type = EntryFormat.TRANSFER_CASH_ACCOUNT;
-        if(txn.getSource() == null){
-            type = txn.getDestination().getClass() == Equity.class ? EntryFormat.IMPORT_EQUITY : EntryFormat.IMPORT_CASH_ACCOUNT;
+        if(src == null && dest == null) {
+            return type;
         }
-        else if(txn.getDestination() == null){
-            type = txn.getSource().getClass() == Equity.class ? EntryFormat.EXPORT_EQUITY : EntryFormat.EXPORT_CASH_ACCOUNT;
+        if(src == null){
+            type = dest.getClass() == Equity.class ? EntryFormat.IMPORT_EQUITY : EntryFormat.IMPORT_CASH_ACCOUNT;
         }
-        else if(txn.getSource().getClass() != txn.getDestination().getClass()) {
-            type = txn.getSource().getClass() == Equity.class ? EntryFormat.SELL_EQUITY : EntryFormat.BUY_EQUITY;
+        else if(dest == null){
+            type = src.getClass() == Equity.class ? EntryFormat.EXPORT_EQUITY : EntryFormat.EXPORT_CASH_ACCOUNT;
+        }
+        else if(src.getClass() != dest.getClass()) {
+            type = src.getClass() == Equity.class ? EntryFormat.SELL_EQUITY : EntryFormat.BUY_EQUITY;
         }
         return type;
     }

@@ -10,7 +10,6 @@ import FPTS.Controllers.AddHoldingController;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,18 +25,11 @@ import java.util.Map;
  * and CSV file data is loaded into respective bins.
  */
 
-public class FPTSApp extends Application implements SelectSearchListener {
+public class FPTSApp extends Application {
 
-    FPTSData data;
-    protected View currentView;
+    private FPTSData data;
+    private View currentView;
     private Map<String, Stage> stageMap;
-    public String searchResult;
-
-    private ArrayList<SelectSearchListener> selectSearchListeners = new ArrayList<SelectSearchListener>();
-        
-    public void addListener(SelectSearchListener toAdd) {
-        selectSearchListeners.add(toAdd);
-    }
     
     /**
      * @return a reference to the data root
@@ -45,22 +37,6 @@ public class FPTSApp extends Application implements SelectSearchListener {
     public FPTSData getData() {
         return data;
     }
-
-    /**
-     * Set the public Search Result.
-     */
-    public void setSearchResult(String result) {
-        searchResult = result;
-    }
-
-    @Override
-    public void SearchResultSelected() {
-        
-        for (SelectSearchListener hl : selectSearchListeners)
-            hl.SearchResultSelected();
-    }
-    
-    
     
     /**
      * @return the current view
@@ -125,6 +101,8 @@ public class FPTSApp extends Application implements SelectSearchListener {
         loadView(new LoginView(this));
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
+        primaryStage.setX(100);
+        primaryStage.setY(100);
         primaryStage.show();
     }
 
