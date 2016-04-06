@@ -3,8 +3,6 @@ package FPTS.Models;
 import FPTS.Core.Model;
 import FPTS.Data.YFSClient;
 import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyListProperty;
-import javafx.collections.ObservableList;
 
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -25,6 +23,10 @@ public class WatchList extends Model {
         equities = new HashMap<>();
     }
 
+    /**
+     * Adds an equity to the watchlist if it is not already being watched
+     * @param equity a market equity to watch
+     */
     public void addEquity(MarketEquity equity) {
         if(!equities.containsKey(equity.getTickerSymbol())){
             equities.put(equity.getTickerSymbol(), new WatchedEquity(equity));
@@ -32,11 +34,18 @@ public class WatchList extends Model {
         }
     }
 
+    /**
+     * Removes the equity from the watch list
+     * @param equity equity to stop watching
+     */
     public void removeEquity(MarketEquity equity) {
         equities.remove(equity.getTickerSymbol());
     }
 
-    public List<WatchedEquity> getList(){
+    /**
+     * @return List of all watched equities
+     */
+    public List<WatchedEquity> getWatchedEquities(){
         return new ArrayList<>(equities.values());
     }
 
@@ -50,21 +59,41 @@ public class WatchList extends Model {
     }
 
     /**
+     * Returns the count of watched equities that are currently triggered
+     * @return number of triggered watches
+     */
+    public int getTriggeredCount(){
+        return (int) getWatchedEquities().stream()
+                .filter(WatchedEquity::isTriggered)
+                .count();
+    }
+
+    /**
+     * Resets the trigger state of all equities in the watch list
+     */
+    public void resetTriggers(){
+        getWatchedEquities().stream().forEach(WatchedEquity::resetTriggers);
+    }
+
+    /**
+     * A method to be executed when equity prices are updated. There
+     * can only be ONE subscriber at a time
+     * @param callback a method
+     */
+    public void subscribe(Callable callback){
+        subscriber = callback;
+    }
+
+    /**
      * Begins monitoring the equities in the watch list
      */
-    public void Begin(){
+    public void beginWatch(){
         Timer timer = new Timer();
 
         timer.schedule(new TimerTask() {
             public void run() {
                 Platform.runLater(() -> {
-
-                    equities.values().stream()
-                            .map(WatchedEquity::getEquity)
-                            .forEach(MarketEquity::getSharePrice);
-
-                    //TODO: check for triggers
-
+                    equities.values().stream().forEach(WatchedEquity::checkPrice);
                     if(subscriber != null){
                         try {
                             subscriber.call();
