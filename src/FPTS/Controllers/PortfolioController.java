@@ -88,6 +88,7 @@ public class PortfolioController extends Controller {
         super.Load(app, portfolio);
 
         transactionLog = new Log(portfolio);
+        app.getData().getInstanceById(WatchList.class, portfolio.id).subscribe(() -> {refreshView(); return null;});
         refreshView();
     }
 
