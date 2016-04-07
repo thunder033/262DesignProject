@@ -38,7 +38,12 @@ public class MarketEquityBin extends DataBin {
             MarketIndex index = MarketIndex.class.cast(FPTSData.getDataRoot().getInstanceById(MarketEquity.class, values[i]));
 
             if(index == null) {
-                index = new MarketIndex(values[i]);
+                String indexName = values[i];
+                if(values[i].equals("DOW")){
+                    index = new DJIA(indexName);
+                }else {
+                    index = new MarketIndex(values[i]);
+                }
                 addInstance(index);
             }
 
