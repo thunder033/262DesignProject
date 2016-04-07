@@ -39,7 +39,7 @@ public class CSVImporter implements ImportStrategy {
         parseMode mode = parseMode.HOLDING;
         Map<parseMode, Integer> parseIncrements = new HashMap<>();
         parseIncrements.put(parseMode.HOLDING, 2);
-        parseIncrements.put(parseMode.TRANSACTION, 6);
+        parseIncrements.put(parseMode.TRANSACTION, 5);
 
         for(int i = 0; i < values.length; i += parseIncrements.get(mode)) {
 
