@@ -42,7 +42,7 @@ public class MarketEquityBin extends DataBin {
                 if(values[i].equals("DOW")){
                     index = new DJIA(indexName);
                 }else {
-                    index = new MarketIndex(values[i]);
+                    index = new MarketIndex(indexName);
                 }
                 addInstance(index);
             }

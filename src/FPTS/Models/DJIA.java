@@ -4,6 +4,9 @@ import java.util.ArrayList;
 
 /**
  * Created by traub_000 on 4/6/2016.
+ *
+ * Description: Represents the Dow Jones Industrial Average
+ * The same as a MarketIndex except for how its value is calculated
  */
 public class DJIA extends MarketIndex {
 
@@ -16,7 +19,8 @@ public class DJIA extends MarketIndex {
     }
 
     /**
-     * Calculates the share price of the index based on equities it contains
+     * Calculates the share price of the DJIA based on equities it contains
+     * and the current DJIA divisor
      * @return the aggregate share price
      */
     @Override
