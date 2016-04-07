@@ -15,11 +15,16 @@ import java.util.concurrent.Callable;
 public class WatchList extends Model {
 
     private Map<String, WatchedEquity> equities;
-    private Callable subscriber;
+    private Callable<Void> subscriber;
     private int updateInterval;
 
     public WatchList(Portfolio portfolio) {
         super(portfolio.id);
+        equities = new HashMap<>();
+    }
+
+    WatchList(String id) {
+        super(id);
         equities = new HashMap<>();
     }
 
@@ -32,6 +37,10 @@ public class WatchList extends Model {
             equities.put(equity.getTickerSymbol(), new WatchedEquity(equity));
             setChanged();
         }
+    }
+
+    void loadWatchedEquity(WatchedEquity watchedEquity) {
+        equities.put(watchedEquity.getEquity().getTickerSymbol(), watchedEquity);
     }
 
     /**
@@ -47,6 +56,10 @@ public class WatchList extends Model {
      */
     public List<WatchedEquity> getWatchedEquities(){
         return new ArrayList<>(equities.values());
+    }
+
+    public int getUpdateInterval(){
+        return updateInterval;
     }
 
     /**
@@ -80,7 +93,7 @@ public class WatchList extends Model {
      * can only be ONE subscriber at a time
      * @param callback a method
      */
-    public void subscribe(Callable callback){
+    public void subscribe(Callable<Void> callback){
         subscriber = callback;
     }
 
@@ -89,6 +102,7 @@ public class WatchList extends Model {
      */
     public void beginWatch(){
         Timer timer = new Timer();
+        YFSClient.instance().setMaxCacheAge(updateInterval);
 
         timer.schedule(new TimerTask() {
             public void run() {
@@ -96,6 +110,7 @@ public class WatchList extends Model {
                     equities.values().stream().forEach(WatchedEquity::checkPrice);
                     if(subscriber != null){
                         try {
+                            System.out.println("Call subscriber");
                             subscriber.call();
                         } catch (Exception ex) {
                             ex.printStackTrace();

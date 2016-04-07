@@ -78,6 +78,7 @@ public class YFSClient {
     public float getSharePrice(MarketEquity equity) {
         String ticker = equity.getTickerSymbol();
         if(cache.containsKey(ticker) && !cache.get(ticker).isExpired()){
+            System.out.println("Return cached " + ticker + ":" + cache.get(ticker).getSharePrice());
             return cache.get(ticker).getSharePrice();
         }
 
@@ -133,6 +134,9 @@ public class YFSClient {
 
             e.printStackTrace();
         }
+
+        CachedPrice price = new CachedPrice(sharePrice);
+        cache.put(ticker, price);
 
         return sharePrice;
     }
