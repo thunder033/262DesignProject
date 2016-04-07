@@ -93,7 +93,7 @@ public class Exporter {
             csv.Write(line);
         } catch (IOException ex) {
             System.out.println("Warning Portfolio:" + portfolio.id + " export to " + path + " failed");
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 }

@@ -47,6 +47,7 @@ public class CSVImporter implements ImportStrategy {
             if(values[i].equals("T")){
                 mode = parseMode.TRANSACTION;
                 i++;
+                continue;
             }
 
             switch (mode){
