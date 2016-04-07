@@ -76,9 +76,8 @@ public class PortfolioController extends Controller {
 
             button.setOnAction((e) -> {
                 System.out.println("Delete CA " + cell.getItem().getName());
-                Model instance = Model.class.cast(cell.getItem());
                 _portfolio.removeHolding(cell.getItem());
-                instance.delete();
+                cell.getItem().delete();
                 _portfolio.save();
             });
 
@@ -122,7 +121,7 @@ public class PortfolioController extends Controller {
 
     private void addHolding(Holding holding){
         _portfolio.addHolding(holding);
-        _app.getData().addInstance(Model.class.cast(holding));
+        _app.getData().addInstance(holding);
     }
 
     public void handleImport(ActionEvent actionEvent) {

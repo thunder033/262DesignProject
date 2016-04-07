@@ -221,7 +221,7 @@ public class TransactionController extends Controller implements SelectSearchLis
     private void DisplayEquityInfo() {
         if(sourceHoldingField.getSelectionModel().getSelectedItem() != null) {
             if (Equity.type.equals(sourceHoldingField.getValue().getType())) {
-                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, Model.class.cast(sourceHoldingField.getValue()).id);
+                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, sourceHoldingField.getValue().id);
                 if (equity != null) {
                     sharePriceField.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
                     if (transactionAmount.getText().length() > 0) {
@@ -234,7 +234,7 @@ public class TransactionController extends Controller implements SelectSearchLis
         }
         if(destHoldingField.getSelectionModel().getSelectedItem() != null) {
             if(Equity.type.equals(destHoldingField.getValue().getType())) {
-                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, Model.class.cast(destHoldingField.getValue()).id);
+                MarketEquity equity = _app.getData().getInstanceById(MarketEquity.class, destHoldingField.getValue().id);
                 if(equity != null) {
                     sharePriceField.setText(equity.getTickerSymbol() + " - " + equity.getName() + " $" + equity.getSharePrice());
                     if(transactionAmount.getText().length() > 0) {
@@ -262,7 +262,7 @@ public class TransactionController extends Controller implements SelectSearchLis
             //ensure a new holding is persisted in the portfolio
             Holding destHolding = destHoldingField.getValue();
             if(_portfolio.getHoldingByExportID(destHolding.getExportIdentifier()) == null){
-                Model.class.cast(destHolding).isPersistent = true;
+                destHolding.isPersistent = true;
                 _portfolio.addHolding(destHolding);
                 _portfolio.save();
             }
@@ -297,7 +297,7 @@ public class TransactionController extends Controller implements SelectSearchLis
         Holding holding = _portfolio.getHoldingByExportID(result);
         if(holding == null){
             holding = new Equity(_app.getData().getInstanceById(MarketEquity.class, result));
-            Model.class.cast(holding).isPersistent = false;
+            holding.isPersistent = false;
             holdingsObservableList.add(holding);
         }
 
