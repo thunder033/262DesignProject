@@ -80,6 +80,7 @@ public class MarketEquity extends Model {
                     i++;
                 } while (node.getNodeType() != Node.ELEMENT_NODE);
                 Element eElement = (Element) node;
+                System.out.println(stockParameter);
                 sharePrice = Float.valueOf(eElement.getElementsByTagName("LastTradePriceOnly").item(0).getTextContent());
 
             } catch (IOException | ParserConfigurationException | SAXException e) {

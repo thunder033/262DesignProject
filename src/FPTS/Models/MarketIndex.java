@@ -28,9 +28,8 @@ public class MarketIndex extends MarketEquity {
     @Override
     public float getSharePrice()
     {
-        return equities.stream()
-                .map(MarketEquity::getSharePrice)
-                .reduce(0.0f, (a, b) -> a + b);
+        return (float) equities.stream()
+                .mapToDouble(MarketEquity::getSharePrice).average().getAsDouble();
     }
 
     /**
