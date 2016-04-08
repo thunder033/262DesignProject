@@ -25,7 +25,7 @@ public class ImportHoldingsController extends Controller{
     @FXML private TableView holdingsPane;
     @FXML private Button importButton;
     @FXML private GridPane grid;
-    @FXML private Label errorMessage;
+    @FXML private Label CAerrorMessage;
     @FXML private TextField newCAName;
     @FXML private TextField newCAValue;
     private ArrayList<ComboBox> duplicateBoxes;
@@ -49,9 +49,9 @@ public class ImportHoldingsController extends Controller{
             holdingsPane.setItems(HoldingImportHandler.getNewHoldings(newCAName.getText(), newCAValue.getText()));
             showHoldings();
         }catch (NumberFormatException e){
-            errorMessage.setText("Invalid value for new cash account.");
+            CAerrorMessage.setText("Invalid value for new cash account.");
         }catch (IOException e) {
-            errorMessage.setText("Invalid cash account name.");
+            CAerrorMessage.setText("Invalid cash account name.");
         }
     }
 

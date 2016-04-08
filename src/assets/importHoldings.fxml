@@ -34,7 +34,7 @@
     <TextField fx:id="newCAValue" promptText="Value" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
     <Button text="Add new Cash Account" GridPane.columnIndex="3" GridPane.rowIndex="3"
             onAction="#addCashAccount"/>
-    <Label fx:id="errorMessage" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+    <Label fx:id="CAerrorMessage" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
 <stylesheets>
     <URL value="@styles/importHoldings.css"/>
