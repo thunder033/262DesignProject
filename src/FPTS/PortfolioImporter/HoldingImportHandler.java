@@ -2,6 +2,7 @@ package FPTS.PortfolioImporter;
 
 import FPTS.Core.FPTSApp;
 import FPTS.Core.Model;
+import FPTS.Models.CashAccount;
 import FPTS.Models.Equity;
 import FPTS.Models.Holding;
 import FPTS.Models.Portfolio;
@@ -10,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,7 +26,7 @@ import java.util.Map;
  */
 public class HoldingImportHandler {
 
-    private static ObservableList<Holding> holdings;
+    private static ObservableList<Holding> holdings = FXCollections.observableArrayList();
     private static boolean[] hasDuplCA;
     private static ArrayList<Holding> equityMergeList;
     private static Portfolio _portfolio;
@@ -37,13 +39,24 @@ public class HoldingImportHandler {
 
         Importer importer = new Importer(path);
         importer.setStrategy(new CSVImporter());
-        holdings = FXCollections.observableArrayList(importer.importData().portfolio.getHoldings());
+        holdings.addAll(FXCollections.observableArrayList(importer.importData().portfolio.getHoldings()));
         System.out.println(holdings.size());
         return holdings;
 
+    }
 
+    public static ObservableList getNewHoldings(String newCAName, String newCAValue) throws IOException{
 
+        if(newCAName.equals("")){
+            throw new IOException();
+        }
+        float value = Float.parseFloat(newCAValue);
 
+        CashAccount newCA = new CashAccount(newCAName,value);
+        holdings.add(newCA);
+        System.out.println(holdings.size());
+
+        return holdings;
     }
 
     public static void determineConflicts(Portfolio _portfolio){
@@ -91,6 +104,7 @@ public class HoldingImportHandler {
             replaceHoldings();
             holdings.stream().forEach(HoldingImportHandler::addHolding);
             _portfolio.save();
+            holdings.clear();
         } catch (InvalidChoiceException e){
             e.printStackTrace();
         }
@@ -138,12 +152,12 @@ public class HoldingImportHandler {
                 } else {
                     throw new InvalidChoiceException(holdings.get(i).getName());
                 }
-                holdings.removeAll(CAIgnoreList);
-                holdings.removeAll(CAMergeList);
-                holdings.removeAll(equityMergeList);
+
             }
         }
+        holdings.removeAll(CAIgnoreList);
+        holdings.removeAll(CAMergeList);
+        holdings.removeAll(equityMergeList);
     }
-
 
 }

@@ -6,12 +6,11 @@ import FPTS.Views.ImportHoldingsView;
 import FPTS.Views.PortfolioView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -26,6 +25,9 @@ public class ImportHoldingsController extends Controller{
     @FXML private TableView holdingsPane;
     @FXML private Button importButton;
     @FXML private GridPane grid;
+    @FXML private Label errorMessage;
+    @FXML private TextField newCAName;
+    @FXML private TextField newCAValue;
     private ArrayList<ComboBox> duplicateBoxes;
     final FileChooser fileChooser = new FileChooser();
     private GridPane newGrid = new GridPane();
@@ -38,6 +40,22 @@ public class ImportHoldingsController extends Controller{
     public void fileSelected(ActionEvent event) {
         Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
         holdingsPane.setItems(HoldingImportHandler.getNewHoldings(path));
+        showHoldings();
+    }
+
+    public void addCashAccount(ActionEvent event) {
+
+        try {
+            holdingsPane.setItems(HoldingImportHandler.getNewHoldings(newCAName.getText(), newCAValue.getText()));
+            showHoldings();
+        }catch (NumberFormatException e){
+            errorMessage.setText("Invalid value for new cash account.");
+        }catch (IOException e) {
+            errorMessage.setText("Invalid cash account name.");
+        }
+    }
+
+    private void showHoldings(){
         importButton.setVisible(true);
 
         HoldingImportHandler.determineConflicts(_portfolio);
@@ -46,9 +64,9 @@ public class ImportHoldingsController extends Controller{
 
         ComboBox box = new ComboBox();
         box.setVisible(false);
+        newGrid = new GridPane();
         newGrid.addColumn(0, box);
         for (boolean duplCAIndex : duplCAIndices) {
-            System.out.println("Here");
             box = new ComboBox(HoldingImportHandler.getDuplOpts());
             box.setPrefHeight(18);
             box.setVisible(duplCAIndex);
@@ -75,4 +93,6 @@ public class ImportHoldingsController extends Controller{
     public void returnToPortfolio(ActionEvent event) {
         _app.loadView(new PortfolioView(_app));
     }
+
+
 }
