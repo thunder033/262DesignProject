@@ -26,6 +26,22 @@ public class WatchedEquity {
     public MarketEquity getEquity(){
         return equity;
     }
+    
+    public float getLowerTrigger() {
+        return lowerTrigger;
+    }
+    
+    public void setLowerTrigger(float lowerTrigger) {
+        this.lowerTrigger = lowerTrigger;
+    }
+    
+    public float getUpperTrigger() {
+        return upperTrigger;
+    }
+    
+    public void setUpperTrigger(float upperTrigger) {
+        this.upperTrigger = upperTrigger;
+    }
 
     public void checkPrice(){
         float price = equity.getSharePrice();
