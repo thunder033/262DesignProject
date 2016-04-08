@@ -9,10 +9,7 @@ import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
 import FPTS.Transaction.Entry;
 import FPTS.Transaction.Log;
-import FPTS.Views.AddHoldingView;
-import FPTS.Views.LoginView;
-import FPTS.Views.SimulationView;
-import FPTS.Views.TransactionView;
+import FPTS.Views.*;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -115,27 +112,8 @@ public class PortfolioController extends Controller {
         }
     }
 
-    public void handleNewHolding(ActionEvent actionEvent) {
-        _app.loadView(new AddHoldingView(_app));
-    }
+    public void handleImport(ActionEvent actionEvent) { _app.loadView(new ImportHoldingsView(_app)); }
 
-    private void addHolding(Holding holding){
-        _portfolio.addHolding(holding);
-        _app.getData().addInstance(holding);
-    }
-
-    public void handleImport(ActionEvent actionEvent) {
-        File file = fileChooser.showOpenDialog(_app.getStage());
-
-        if(file != null){
-            Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
-            Importer importer = new Importer(path);
-            importer.setStrategy(new CSVImporter());
-            importer.importData().portfolio.getHoldings().stream().forEach(this::addHolding);
-            _portfolio.save();
-        }
-
-    }
 
     public void handleTransaction(ActionEvent actionEvent) {
         _app.loadView(new TransactionView(_app));
