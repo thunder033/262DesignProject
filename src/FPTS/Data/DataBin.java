@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -19,6 +20,17 @@ import java.util.stream.Collectors;
  * for persistence and retrieval.
  */
 public abstract class DataBin {
+
+    public final class ModelInitializer {
+        public final Date dateCreated;
+        public final Date dateDeleted;
+
+        ModelInitializer(long dateCreated, long dateDeleted) {
+            this.dateCreated = dateCreated == 0 ? null : new Date(dateCreated);
+            this.dateDeleted = dateDeleted == 0 ? null : new Date(dateDeleted);
+        }
+    }
+
     protected String fileName;
     protected Class<?> dataClass;
 
@@ -62,10 +74,9 @@ public abstract class DataBin {
             for (String[] line : data) {
                 Model instance = fromValueArray(line);
 
-                //check if the deleted flag is set to true
-                if(line[line.length - 1].equals(deletedFlag)){
-                    instance.setDeleted();
-                }
+                long createdDate = Long.parseLong(line[line.length - 2]);
+                long deletedDate = Long.parseLong(line[line.length - 1]);
+                instance.Load(new ModelInitializer(createdDate, deletedDate));
 
                 instance.ignoreChanges();
                 addInstance(instance);
@@ -80,7 +91,8 @@ public abstract class DataBin {
         String[] values =  toValueArray(model);
         String[] modelValues = new String[values.length + 1];
         System.arraycopy(values, 0, modelValues, 0, values.length);
-        modelValues[values.length] = model.isDeleted() ? deletedFlag : "0";
+        modelValues[values.length] = Long.toString(model.getDateCreated().getTime());
+        modelValues[values.length] = model.isDeleted() ? Long.toString(model.getDateDeleted().getTime()) : "0";
         return modelValues;
     }
 
