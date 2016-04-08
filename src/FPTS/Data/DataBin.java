@@ -92,10 +92,10 @@ public abstract class DataBin {
 
     private String[] buildValueArray(Model model){
         String[] values =  toValueArray(model);
-        String[] modelValues = new String[values.length + 1];
+        String[] modelValues = new String[values.length + 2];
         System.arraycopy(values, 0, modelValues, 0, values.length);
         modelValues[values.length] = Long.toString(model.getDateCreated().getTime());
-        modelValues[values.length] = model.isDeleted() ? Long.toString(model.getDateDeleted().getTime()) : "0";
+        modelValues[values.length + 1] = model.isDeleted() ? Long.toString(model.getDateDeleted().getTime()) : "0";
         return modelValues;
     }
 
