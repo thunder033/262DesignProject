@@ -19,6 +19,7 @@ public class MarketEquity extends Model {
     protected MarketEquity(String tickerSymbol)
     {
         super(tickerSymbol);
+        isPersistent = false;
     }
 
     public String getTickerSymbol() {

@@ -5,10 +5,7 @@ import FPTS.Core.Model;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -33,6 +30,7 @@ public abstract class DataBin {
 
     protected String fileName;
     protected Class<?> dataClass;
+    protected boolean useFullValueArray = false;
 
     private Map<String, Model> instanceMap;
 
@@ -72,11 +70,16 @@ public abstract class DataBin {
             String[][] data = csv.Read();
             //create a new model instance for each line of the CSV
             for (String[] line : data) {
-                Model instance = fromValueArray(line);
 
-                long createdDate = Long.parseLong(line[line.length - 2]);
-                long deletedDate = Long.parseLong(line[line.length - 1]);
-                instance.Load(new ModelInitializer(createdDate, deletedDate));
+                int size = useFullValueArray ? line.length : line.length - 2;
+                Model instance = fromValueArray(Arrays.copyOf(line, size));
+
+                //If a model is initialized as not persistent, don't look for created/deleted dates
+                if(instance.isPersistent){
+                    long createdDate = Long.parseLong(line[line.length - 2]);
+                    long deletedDate = Long.parseLong(line[line.length - 1]);
+                    instance.Load(new ModelInitializer(createdDate, deletedDate));
+                }
 
                 instance.ignoreChanges();
                 addInstance(instance);
