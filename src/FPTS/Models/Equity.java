@@ -10,7 +10,7 @@ import FPTS.Core.Model;
  * share of an equity on the
  * market held in a portfolio.
  */
-public class Equity extends Model implements Holding {
+public class Equity extends Holding {
     private MarketEquity _marketEquity;
     float shares;
     public static final String type = "Equity";

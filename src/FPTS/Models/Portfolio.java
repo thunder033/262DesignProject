@@ -27,7 +27,7 @@ public class Portfolio extends Model {
 
     @Override
     public void save() {
-        holdings.stream().forEach(holding -> Model.class.cast(holding).save());
+        holdings.stream().forEach(Holding::save);
         super.save();
     }
 
@@ -59,7 +59,7 @@ public class Portfolio extends Model {
     public void addHolding(Holding holding)
     {
         if(holding != null){
-            System.out.println(String.format("Adding %s %s to %s", holding.getClass().getSimpleName(), Model.class.cast(holding).id, id));
+            System.out.println(String.format("Adding %s %s to %s", holding.getClass().getSimpleName(), holding.id, id));
             holdings.add(holding);
             setChanged();
         }

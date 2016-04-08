@@ -73,9 +73,8 @@ public class PortfolioController extends Controller {
 
             button.setOnAction((e) -> {
                 System.out.println("Delete CA " + cell.getItem().getName());
-                Model instance = Model.class.cast(cell.getItem());
                 _portfolio.removeHolding(cell.getItem());
-                instance.delete();
+                cell.getItem().delete();
                 _portfolio.save();
             });
 
@@ -87,6 +86,7 @@ public class PortfolioController extends Controller {
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
         transactionLog = new Log(portfolio);
+        app.getData().getInstanceById(WatchList.class, portfolio.id).subscribe(() -> {refreshView(); return null;});
         refreshView();
     }
 
@@ -117,7 +117,7 @@ public class PortfolioController extends Controller {
 
     private void addHolding(Holding holding){
         _portfolio.addHolding(holding);
-        _app.getData().addInstance(Model.class.cast(holding));
+        _app.getData().addInstance(holding);
     }
 
     public void handleImport(ActionEvent actionEvent) {

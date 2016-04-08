@@ -112,7 +112,7 @@ public class AddHoldingController extends Controller implements SelectSearchList
         }
 
         if(holding != null && error.length() == 0){
-            Model.class.cast(holding).save();
+            holding.save();
             _portfolio.save();
             _app.CloseStage(AddHoldingView.class.getSimpleName());
         }
