@@ -61,6 +61,11 @@ public abstract class Model extends Observable {
         else if(!isPersistent && indexedInstance != null){
             dataRoot.deleteInstance(this);
         }
+
+        if(dateCreated == null){
+            dateCreated = new Date();
+        }
+
         notifyObservers();
     }
 
