@@ -74,9 +74,9 @@ public class PortfolioController extends Controller {
             button.setOnAction((e) -> {
                 System.out.println("Delete CA " + cell.getItem().getName());
                 Model instance = Model.class.cast(cell.getItem());
-                _portfolio.removeHolding(cell.getItem());
                 instance.delete();
                 _portfolio.save();
+                refreshView();
             });
 
             return cell;
@@ -88,6 +88,7 @@ public class PortfolioController extends Controller {
         super.Load(app, portfolio);
 
         transactionLog = new Log(portfolio);
+        app.getData().getInstanceById(WatchList.class, portfolio.id).subscribe(() -> {refreshView(); return null;});
         refreshView();
     }
 

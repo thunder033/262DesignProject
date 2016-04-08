@@ -28,7 +28,7 @@ public class Log {
     public List<Transaction> getTransactions(){
         return FPTSData.getDataRoot().getInstances(Transaction.class).stream()
                 //get transactions for the portfolio based on their source holding
-                .filter(transaction -> portfolio.getHoldings().contains(transaction.getIndexHolding()))
+                .filter(transaction -> portfolio.getHoldings(true).contains(transaction.getIndexHolding()))
                 //sort transactions by date descending
                 .sorted((a, b) -> Long.compare(b.getDateTime().getTime(), a.getDateTime().getTime()))
                 .collect(Collectors.toList());

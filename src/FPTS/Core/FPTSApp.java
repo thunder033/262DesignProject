@@ -94,6 +94,7 @@ public class FPTSApp extends Application {
         binTypes.add(EquityBin.class);
         binTypes.add(PortfolioBin.class);
         binTypes.add(TransactionBin.class);
+        binTypes.add(WatchListBin.class);
 
         data = FPTSData.getDataRoot();
         data.loadBins(binTypes);
