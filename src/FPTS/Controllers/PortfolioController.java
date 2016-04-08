@@ -15,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -22,6 +23,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Screen;
 
 import java.io.File;
 import java.net.URL;
@@ -43,7 +45,8 @@ public class PortfolioController extends Controller {
     @FXML private TableView<Holding> holdingsPane;
     @FXML private TableView<Entry> transactionLogPane;
     @FXML private TableColumn<Holding, Holding> holdingActionColumn;
-    @FXML private  Text errorMessage;
+    @FXML private Text errorMessage;
+    @FXML private Text alertHoldings;
 
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final FileChooser fileChooser = new FileChooser();
@@ -85,6 +88,8 @@ public class PortfolioController extends Controller {
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        _app.centerWindow(_app.getStage());
         transactionLog = new Log(portfolio);
         app.getData().getInstanceById(WatchList.class, portfolio.id).subscribe(() -> {refreshView(); return null;});
         refreshView();
@@ -115,7 +120,7 @@ public class PortfolioController extends Controller {
         _app.loadView(new AddHoldingView(_app));
     }
 
-    private void addHolding(Holding holding){
+    private void addHolding(Holding holding) {
         _portfolio.addHolding(holding);
         _app.getData().addInstance(holding);
     }

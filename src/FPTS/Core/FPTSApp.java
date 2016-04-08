@@ -84,6 +84,12 @@ public class FPTSApp extends Application {
 
     }
 
+    public void centerWindow(Stage stage) {
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         stageMap = new HashMap<>();
@@ -105,9 +111,7 @@ public class FPTSApp extends Application {
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
         primaryStage.show();
-        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
-        primaryStage.setX((primScreenBounds.getWidth() - primaryStage.getWidth()) / 2);
-        primaryStage.setY((primScreenBounds.getHeight() - primaryStage.getHeight()) / 2);
+        centerWindow(primaryStage);
     }
 
     public static void main(String[] args) {
