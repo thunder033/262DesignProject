@@ -9,40 +9,48 @@ import FPTS.Data.FPTSData;
  * Revised: 3/13/16
  * Interface for managing holdings in a portfolio.
  */
-public interface Holding {
+public abstract class Holding extends Model {
     String type = "Holding";
+
+    protected Holding(String id){
+        super(id);
+    }
+
+    protected Holding(){
+        super();
+    }
 
     /**
      * @return name of the holding
      */
-    String getName();
+    public abstract String getName();
 
     /**
      * @return the external facing unique identifier of the holding
      */
-    String getExportIdentifier();
+    public abstract String getExportIdentifier();
 
     /**
      * @return monetary value of holding
      */
-    float getValue();
+    public abstract float getValue();
 
     /**
      * increase the value of the holding
      * @param value the amount of monetary value to add
      */
-    void addValue(float value);
+    public abstract void addValue(float value);
 
     /**
      * decrease the value of the holding
      * @param value the amount of monetary value to remove
      */
-    void removeValue(float value);
+    public abstract void removeValue(float value);
 
     /**
      * @return a descriptor of the holding type;
      */
-    String getType();
+    public abstract String getType();
 
     /**
      * Get the type-id hash for a holding
@@ -50,8 +58,7 @@ public interface Holding {
      * @return type-id hash: [Type][ID], ex. C12 or E333
      */
     static String serializeHolding(Holding holding){
-        Model model = Model.class.cast(holding);
-        return holding instanceof CashAccount ? "C" + model.id : "E" + model.id;
+        return holding instanceof CashAccount ? "C" + holding.id : "E" + holding.id;
     }
 
     /**

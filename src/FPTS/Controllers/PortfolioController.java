@@ -9,7 +9,10 @@ import FPTS.PortfolioImporter.Exporter;
 import FPTS.PortfolioImporter.Importer;
 import FPTS.Transaction.Entry;
 import FPTS.Transaction.Log;
-import FPTS.Views.*;
+import FPTS.Views.AddHoldingView;
+import FPTS.Views.LoginView;
+import FPTS.Views.SimulationView;
+import FPTS.Views.TransactionView;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -73,10 +76,9 @@ public class PortfolioController extends Controller {
 
             button.setOnAction((e) -> {
                 System.out.println("Delete CA " + cell.getItem().getName());
-                Model instance = Model.class.cast(cell.getItem());
-                instance.delete();
+                _portfolio.removeHolding(cell.getItem());
+                cell.getItem().delete();
                 _portfolio.save();
-                refreshView();
             });
 
             return cell;
@@ -117,7 +119,23 @@ public class PortfolioController extends Controller {
         _app.loadView(new AddHoldingView(_app));
     }
 
-    public void handleImport(ActionEvent actionEvent) { _app.loadView(new ImportHoldingsView(_app)); }
+    private void addHolding(Holding holding){
+        _portfolio.addHolding(holding);
+        _app.getData().addInstance(holding);
+    }
+
+    public void handleImport(ActionEvent actionEvent) {
+        File file = fileChooser.showOpenDialog(_app.getStage());
+
+        if(file != null){
+            Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
+            Importer importer = new Importer(path);
+            importer.setStrategy(new CSVImporter());
+            importer.importData().portfolio.getHoldings().stream().forEach(this::addHolding);
+            _portfolio.save();
+        }
+
+    }
 
     public void handleTransaction(ActionEvent actionEvent) {
         _app.loadView(new TransactionView(_app));
@@ -130,7 +148,7 @@ public class PortfolioController extends Controller {
     public void handlelLogOut(ActionEvent actionEvent) {
         _app.loadView(new LoginView(_app));
     }
-
+    
     public void handleUndo(ActionEvent actionevent) {
         int i=0;
         errorMessage.setText("");
@@ -150,7 +168,7 @@ public class PortfolioController extends Controller {
 
         }
     }
-
+    
     public void handleRedo(ActionEvent actionevent) {
         int i=0;
         errorMessage.setText("");
