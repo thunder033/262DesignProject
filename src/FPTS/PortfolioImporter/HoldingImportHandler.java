@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +28,7 @@ import java.util.Map;
 public class HoldingImportHandler {
 
     private static ObservableList<Holding> holdings = FXCollections.observableArrayList();
+    private static List<Holding> CSVHoldings;
     private static boolean[] hasDuplCA;
     private static ArrayList<Holding> equityMergeList;
     private static Portfolio _portfolio;
@@ -37,9 +39,14 @@ public class HoldingImportHandler {
 
     public static ObservableList getNewHoldings(Path path){
 
+
         Importer importer = new Importer(path);
         importer.setStrategy(new CSVImporter());
-        holdings.addAll(FXCollections.observableArrayList(importer.importData().portfolio.getHoldings()));
+        if(CSVHoldings != null){
+            holdings.removeAll(CSVHoldings);
+        }
+        CSVHoldings = importer.importData().portfolio.getHoldings();
+        holdings.addAll(FXCollections.observableArrayList(CSVHoldings));
         System.out.println(holdings.size());
         return holdings;
 
@@ -95,19 +102,17 @@ public class HoldingImportHandler {
     }
 
 
-    public static void importHoldings(FPTSApp _app, GridPane boxes){
+    public static void importHoldings(FPTSApp _app, GridPane boxes) throws InvalidChoiceException{
         HoldingImportHandler._app = _app;
         // Method to separate out merge, replace, ignore
-        try{
+
             separateCases(boxes);
             mergeHoldings();
             replaceHoldings();
             holdings.stream().forEach(HoldingImportHandler::addHolding);
             _portfolio.save();
             holdings.clear();
-        } catch (InvalidChoiceException e){
-            e.printStackTrace();
-        }
+
 
     }
 

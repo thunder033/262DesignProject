@@ -2,6 +2,7 @@ package FPTS.Controllers;
 
 import FPTS.Core.Controller;
 import FPTS.PortfolioImporter.HoldingImportHandler;
+import FPTS.PortfolioImporter.InvalidChoiceException;
 import FPTS.Views.ImportHoldingsView;
 import FPTS.Views.PortfolioView;
 import javafx.event.ActionEvent;
@@ -28,6 +29,7 @@ public class ImportHoldingsController extends Controller{
     @FXML private Label CAerrorMessage;
     @FXML private TextField newCAName;
     @FXML private TextField newCAValue;
+    @FXML private Label choiceError;
     private ArrayList<ComboBox> duplicateBoxes;
     final FileChooser fileChooser = new FileChooser();
     private GridPane newGrid = new GridPane();
@@ -82,8 +84,13 @@ public class ImportHoldingsController extends Controller{
      */
     public void importHoldings(ActionEvent event){
         // Pass newGrid into below
-        HoldingImportHandler.importHoldings(_app, newGrid);
-        _app.loadView(new ImportHoldingsView(_app));
+        try {
+            HoldingImportHandler.importHoldings(_app, newGrid);
+            _app.loadView(new ImportHoldingsView(_app));
+        } catch (InvalidChoiceException e) {
+            choiceError.setText("Invalid choice for " + e.getMessage());
+        }
+
     }
 
     /**
