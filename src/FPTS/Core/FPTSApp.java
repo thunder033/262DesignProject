@@ -39,6 +39,12 @@ public class FPTSApp extends Application {
     public FPTSData getData() {
         return data;
     }
+
+    private static FPTSApp instance = null;
+
+    public static FPTSApp getInstance(){
+        return instance;
+    }
     
     /**
      * @return the current view
@@ -92,6 +98,7 @@ public class FPTSApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        instance = this;
         stageMap = new HashMap<>();
         stageMap.put("Main", primaryStage);
 
