@@ -30,6 +30,7 @@ public abstract class DataBin {
 
     protected String fileName;
     protected Class<?> dataClass;
+    protected boolean readOnly = false;
     protected boolean useFullValueArray = false;
 
     private Map<String, Model> instanceMap;
@@ -104,6 +105,10 @@ public abstract class DataBin {
      */
     final void writeInstances()
     {
+        if(readOnly){
+            return;
+        }
+
         Path filePath = Paths.get(FPTSData.dataPath, fileName);
         System.out.println("Write instances from " + getClass().toString() + " to " + filePath.toString());
         try {

@@ -3,6 +3,8 @@ package FPTS.Core;
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 import FPTS.Models.*;
+import FPTS.Transaction.Entry;
+import FPTS.Transaction.Log;
 import FPTS.Views.LoginView;
 import FPTS.Search.SelectSearchListener;
 import FPTS.Controllers.AddHoldingController;
@@ -105,6 +107,26 @@ public class FPTSApp extends Application {
         primaryStage.setX(100);
         primaryStage.setY(100);
         primaryStage.show();
+
+        List<String> params = this.getParameters().getRaw();
+        if(params.size() == 2 && params.get(0).equals("delete")){
+            System.out.println("Delete portfolio " + params.get(1));
+            Portfolio portfolio = data.getInstanceById(Portfolio.class, params.get(1));
+            if(portfolio != null){
+                new Log(portfolio).getEntries().stream()
+                        .map(Entry::getTransaction)
+                        .forEach(Model::hardDelete);
+                portfolio.getHoldings().stream().forEach(Model::hardDelete);
+                data.getInstanceById(WatchList.class, portfolio.id).hardDelete();
+                portfolio.hardDelete();
+
+                data.writeBin(Transaction.class);
+                data.writeBin(CashAccount.class);
+                data.writeBin(Equity.class);
+                data.writeBin(WatchList.class);
+                data.writeBin(Portfolio.class);
+            }
+        }
     }
 
     public static void main(String[] args) {
