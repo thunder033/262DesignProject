@@ -85,6 +85,8 @@ public class AddHoldingController extends Controller implements SelectSearchList
         holdingName.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
         holdingValue.addEventHandler(KeyEvent.KEY_RELEASED, event -> DisplayEquityInfo());
 
+        _app.addListener(this);
+        
     }
 
     public void addHolding(ActionEvent actionEvent) {

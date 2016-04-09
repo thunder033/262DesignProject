@@ -106,12 +106,12 @@ public class PortfolioController extends Controller {
         portfolioName.setText(String.format("%1$s's Portfolio", _portfolio.getUsername()));
         ObservableList<Holding> holdings = FXCollections.observableArrayList(_portfolio.getHoldings());
         holdingsPane.setItems(holdings);
-        holdingsPane.refresh();
+        //holdingsPane.refresh();
 
         if(transactionLog != null){
             ObservableList<Entry> entries = FXCollections.observableArrayList(transactionLog.getEntries());
             transactionLogPane.setItems(entries);
-            transactionLogPane.refresh();
+            //transactionLogPane. .refresh();
         }
     }
 
@@ -153,36 +153,36 @@ public class PortfolioController extends Controller {
         int i=0;
         errorMessage.setText("");
         if(transactionLog.getTransactions().isEmpty()) {return;}
-        while(!transactionLog.getTransactions().get(i).isRolledBack()){
+        while(transactionLog.getTransactions().get(i).isRolledBack()){
             if (++i==transactionLog.getTransactions().size()){
                 break;
             }
         }
-        if(i>0){
+        if(i<transactionLog.getTransactions().size()){
             try {
-                transactionLog.getTransactions().get(i-1).rollback();
+                transactionLog.getTransactions().get(i).rollback();
             } catch (InvalidTransactionException ex) {
                 errorMessage.setText(ex.getMessage());
                 ex.printStackTrace();
             }
-
-        }
+		}
     }
     
-    public void handleRedo(ActionEvent actionevent) {
+    public void handleRedo(ActionEvent actionevent){
         int i=0;
         errorMessage.setText("");
         if(transactionLog.getTransactions().isEmpty()) {return;}
-        while(!transactionLog.getTransactions().get(i).isRolledBack()){
+        while(transactionLog.getTransactions().get(i).isRolledBack()){
             if (++i==transactionLog.getTransactions().size()){
                 break;
             }
         }
         try {
-            transactionLog.getTransactions().get(i).execute();
+            transactionLog.getTransactions().get(i-1).execute();
         } catch (InvalidTransactionException|TransactionReExecutionException ex) {
             errorMessage.setText(ex.getMessage());
             ex.printStackTrace();
         }
+        refreshView();
     }
 }

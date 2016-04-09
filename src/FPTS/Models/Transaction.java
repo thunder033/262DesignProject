@@ -121,7 +121,7 @@ public class Transaction extends Model {
             setDateTime(rolledBack ? dateTime : date);
 
             rolledBack = false;
-            isPersistent = true;
+            //isPersistent = true;
 
             setChanged();
             saveModels(Equity.class);
@@ -154,7 +154,7 @@ public class Transaction extends Model {
             }
 
             rolledBack = true;
-            isPersistent = false;
+            //isPersistent = false;
 
             setChanged();
             saveModels(Equity.class);

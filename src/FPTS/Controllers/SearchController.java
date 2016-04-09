@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.util.Observable;
+import javafx.scene.text.Text;
 
 //
 //@author: Eric
@@ -26,11 +27,11 @@ import java.util.Observable;
 //Description: Contains behavior and elements for UI.
 //
 public class SearchController extends Controller {
-
+    
     @FXML private TextField id;
     @FXML private TextField name;
     @FXML private TextField marketAverage;
-    
+    @FXML private Text page;
     @FXML
     RadioButton beginsWith1;        
     @FXML
@@ -53,6 +54,8 @@ public class SearchController extends Controller {
     private SearchQuery _search1;
     private SearchQuery _search2;
     private SearchQuery _search3;
+    
+    private SearchIterator iterator;
 
     @FXML private TableView<MarketEquity> searchResultsPane;
     
@@ -66,6 +69,7 @@ public class SearchController extends Controller {
         _search1 = new SearchQuery(new BeginsWith());
         _search2 = new SearchQuery(new BeginsWith());
         _search3 = new SearchQuery(new BeginsWith());
+        //page.setText("(" + iterator.getPageNumber() + "/" + iterator.getPagesTotal() + ")");
     }
     
     @Override
@@ -87,6 +91,8 @@ public class SearchController extends Controller {
         TableColumn col = (TableColumn)searchResultsPane.getColumns().get(0);
         String data = (String) col.getCellObservableValue(item).getValue();
 
+        this.addListener(_app);
+        
         for (SelectSearchListener hl : selectSearchListeners)
             hl.SearchResultSelected(data);
 
@@ -125,9 +131,31 @@ public class SearchController extends Controller {
         marketEquities = _search1.executeStrategy(marketEquities, id.getText(),SearchParameter.searchParameter.id);
         marketEquities = _search2.executeStrategy(marketEquities, name.getText(), SearchParameter.searchParameter.name);
 
-        ObservableList<MarketEquity> observableResults = FXCollections.observableArrayList(marketEquities);
+        iterator = new SearchIterator(FXCollections.observableArrayList(marketEquities));
+        ObservableList<MarketEquity> observableResults = iterator.getCurrentResults();        //FXCollections.observableArrayList(marketEquities);
 
         searchResultsPane.setItems(observableResults);
+        
+        page.setText("(" + iterator.getPageNumber() + "/" + iterator.getPagesTotal() + ")");
+    }
+    
+    
+    @FXML
+    protected void handleNextPage(ActionEvent event) {
+        
+        ObservableList<MarketEquity> observableResults = iterator.getNextResultSet();        //FXCollections.observableArrayList(marketEquities);
+
+        searchResultsPane.setItems(observableResults);
+        page.setText("(" + iterator.getPageNumber() + "/" + iterator.getPagesTotal() + ")");
+    }
+    
+    @FXML
+    protected void handlePrevPage(ActionEvent event) {
+        ObservableList<MarketEquity> observableResults = iterator.getPrevResultSet();        //FXCollections.observableArrayList(marketEquities);
+
+        searchResultsPane.setItems(observableResults);
+        page.setText("(" + iterator.getPageNumber() + "/" + iterator.getPagesTotal() + ")");
+    
     }
     
 }
