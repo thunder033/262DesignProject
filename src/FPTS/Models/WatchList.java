@@ -14,9 +14,10 @@ import java.util.concurrent.Callable;
  */
 public class WatchList extends Model {
 
-    private Map<String, WatchedEquity> equities;
+    private final Map<String, WatchedEquity> equities;
     private Callable<Void> subscriber;
     private int updateInterval;
+    private Timer timer;
 
     public WatchList(Portfolio portfolio) {
         super(portfolio.id);
@@ -101,12 +102,19 @@ public class WatchList extends Model {
      * Begins monitoring the equities in the watch list
      */
     public void beginWatch(){
-        Timer timer = new Timer();
+        if(timer != null){
+            //TODO write error
+            throw new UnsupportedOperationException();
+        }
+
+        System.out.println("begin Check prices for " + equities.size() + " in " + id);
+        timer = new Timer();
         YFSClient.instance().setMaxCacheAge(updateInterval);
 
         timer.schedule(new TimerTask() {
             public void run() {
                 Platform.runLater(() -> {
+                    System.out.println("Check prices for " + equities.size() + " in " + id);
                     equities.values().stream().forEach(WatchedEquity::checkPrice);
                     if(subscriber != null){
                         try {
@@ -120,5 +128,11 @@ public class WatchList extends Model {
                 });
             }
         }, 0, updateInterval);
+    }
+
+    public void endWatch(){
+        if(timer != null){
+            timer.cancel();
+        }
     }
 }

@@ -146,6 +146,7 @@ public class PortfolioController extends Controller {
     }
 
     public void handlelLogOut(ActionEvent actionEvent) {
+        _app.getData().getInstanceById(WatchList.class, _portfolio.id).endWatch();
         _app.loadView(new LoginView(_app));
     }
     

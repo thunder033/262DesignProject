@@ -3,11 +3,7 @@ package FPTS.Core;
 import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 import FPTS.Models.*;
-import FPTS.Transaction.Entry;
-import FPTS.Transaction.Log;
 import FPTS.Views.LoginView;
-import FPTS.Search.SelectSearchListener;
-import FPTS.Controllers.AddHoldingController;
 
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -117,6 +113,10 @@ public class FPTSApp extends Application {
                 data.writeAll();
             }
         }
+    }
+
+    public void stop(){
+        getData().getInstances(WatchList.class).stream().forEach(WatchList::endWatch);
     }
 
     public static void main(String[] args) {
