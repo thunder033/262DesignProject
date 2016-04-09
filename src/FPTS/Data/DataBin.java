@@ -134,6 +134,10 @@ public abstract class DataBin {
      * @param element the instance to add
      */
     protected void addInstance(Model element) {
+        if(instanceMap.containsKey(element.id)){
+            System.out.println("Warning: Overwriting instance with ID " + element.id + " in " + getClass().getSimpleName());
+        }
+
         instanceMap.put(element.id, element);
         element.addObserver(FPTSData.getDataRoot());
     }
