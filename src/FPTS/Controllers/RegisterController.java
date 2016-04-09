@@ -3,6 +3,7 @@ package FPTS.Controllers;
 import FPTS.Core.Controller;
 import FPTS.Data.Authenticator;
 import FPTS.Models.Portfolio;
+import FPTS.Models.WatchList;
 import FPTS.Views.PortfolioView;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -43,9 +44,10 @@ public class RegisterController extends Controller {
 
         if(error.length() == 0){
             Portfolio portfolio = new Portfolio(username.getText(), Authenticator.makeHash(password.getText()));
-            _app.getData().addInstance(portfolio);
             _portfolio = portfolio;
-            portfolio.notifyObservers();
+            portfolio.save();
+            WatchList watchList = new WatchList(portfolio);
+            watchList.save();
             _app.loadView(new PortfolioView(_app));
         }
         else {

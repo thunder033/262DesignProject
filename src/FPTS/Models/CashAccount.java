@@ -9,7 +9,7 @@ import FPTS.Core.Model;
  * Description: Representation of
  * liquid assets held in the portfolio.
  */
-public class CashAccount extends Model implements Holding {
+public class CashAccount extends Holding {
 
     protected float _value;
     protected String name;

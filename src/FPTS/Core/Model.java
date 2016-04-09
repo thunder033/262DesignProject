@@ -1,5 +1,6 @@
 package FPTS.Core;
 
+import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 
 import java.io.IOException;
@@ -7,6 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.Observable;
 
 /**
@@ -21,11 +23,18 @@ import java.util.Observable;
 public abstract class Model extends Observable {
     public String id;
     public boolean isPersistent = true;
-    private boolean deleted = false;
+
+    private Date dateCreated;
+    private Date dateDeleted = null;
 
     private static int incrementId = 0;
     private static String incrementIdCache = "modelId.config";
     private FPTSData dataRoot;
+
+    public void Load(DataBin.ModelInitializer initializer){
+        dateCreated = initializer.dateCreated != null ? initializer.dateCreated : new Date();
+        dateDeleted = initializer.dateDeleted;
+    }
 
     public Model(String _id) {
         dataRoot = FPTSData.getDataRoot();
@@ -39,7 +48,7 @@ public abstract class Model extends Observable {
         setChanged();
     }
 
-    protected <T extends Model> T findById(Class<T> type, String id){
+    protected final <T extends Model> T findById(Class<T> type, String id){
         return dataRoot.getInstanceById(type, id);
     }
 
@@ -52,22 +61,44 @@ public abstract class Model extends Observable {
         else if(!isPersistent && indexedInstance != null){
             dataRoot.deleteInstance(this);
         }
+
+        if(dateCreated == null){
+            dateCreated = new Date();
+        }
+
         notifyObservers();
     }
 
-    public void setDeleted()
-    {
-        deleted = true;
+    public void delete(){
+        if(dateDeleted != null){
+            throw new UnsupportedOperationException("Attempting to delete model " + id + " this is already been deleted");
+        }
+
+        dateDeleted = new Date();
+        setChanged();
+        save();
     }
 
-    public void delete(){
-        deleted = true;
+    public void restore(){
+        if(dateDeleted == null){
+            throw new UnsupportedOperationException("Attempting to restore model " + id + " this is already active");
+        }
+
+        dateDeleted = null;
         setChanged();
         save();
     }
 
     public boolean isDeleted(){
-        return deleted;
+        return dateDeleted != null;
+    }
+
+    public Date getDateCreated(){
+        return dateCreated;
+    }
+
+    public Date getDateDeleted(){
+        return dateDeleted;
     }
 
     public void ignoreChanges(){
