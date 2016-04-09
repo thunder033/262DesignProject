@@ -6,7 +6,7 @@ import FPTS.Core.View;
 /**
  * @author: Alexander Kidd
  * Created: 4/4/2016
- * Revised: 4/4/2016
+ * Revised: 4/9/2016
  * Description: Responsible for displaying relevant
  * watch list components, such as a means to change
  * the timer that updates the watch list.  The watch list
@@ -16,8 +16,8 @@ import FPTS.Core.View;
 public class WatchListView extends View {
     public WatchListView(FPTSApp app) {
         super(app);
-        width = 820;
-        height = 500;
+        width = 940;
+        height = 570;
         _fxmlName = "watchList.fxml";
         newWindow = true;
     }

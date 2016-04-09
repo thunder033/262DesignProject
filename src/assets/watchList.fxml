@@ -5,26 +5,76 @@
 <?import javafx.scene.text.Text?>
 <?import java.net.URL?>
 <?import FPTS.Controls.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <GridPane alignment="TOP_CENTER" hgap="10" vgap="10"
           maxWidth="Infinity"
           fx:controller="FPTS.Controllers.WatchListController"
           xmlns:fx="http://javafx.com/fxml">
     <padding><Insets top="25" right="25" left="25" bottom="10"/></padding>
-    <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="4"/>
+    <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
 
-    <NumericField fx:id="minutesInterval" maxWidth="100" promptText="Minutes" GridPane.rowIndex="1" GridPane.columnIndex="1"></NumericField>
-    <Text text=":" GridPane.rowIndex="1" GridPane.columnIndex="2"></Text>
-    <NumericField fx:id="secondsInterval" maxWidth="100" promptText="Seconds" GridPane.rowIndex="1" GridPane.columnIndex="3"></NumericField>
+    <HBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="10">
+        <NumericField fx:id="minutesInterval" maxWidth="50"></NumericField>
+        <Text text=":"></Text>
+        <NumericField fx:id="secondsInterval" maxWidth="50"></NumericField>
+        <Button fx:id="setTimer" text="Set Update Interval (mm:ss)" onAction="#handleTimer" prefWidth="200"/>
+    </HBox>
 
-    <Button fx:id="setTimer" text="Set Update Interval" onAction="#handleTimer" GridPane.rowIndex="1" GridPane.columnIndex="4" prefWidth="150"/>
+    <Text fx:id="errorMessage" GridPane.rowIndex="1" GridPane.columnIndex="5"/>
 
-    <Label text="Watched Holdings" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="holdings-header" GridPane.columnSpan="1"/>
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="0">
+        <fx:define>
+            <Image fx:id="upTriggeredIcon" url="/assets/upArrowTriggered.png" />
+        </fx:define>
+        <Text text="Previously Triggered (High) = "></Text>
+        <ImageView image="$upTriggeredIcon">
+        </ImageView>
+    </HBox>
 
-    <TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" prefHeight="350">
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="1">
+        <fx:define>
+            <Image fx:id="upArrowIcon" url="/assets/upArrow.png" />
+        </fx:define>
+        <Text text="Currently Triggered (High) = "></Text>
+        <ImageView image="$upArrowIcon">
+        </ImageView>
+    </HBox>
+
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="2">
+        <fx:define>
+            <Image fx:id="samePriceIcon" url="/assets/samePriceIcon.png" />
+        </fx:define>
+        <Text text="Not Triggered (Default) = "></Text>
+        <ImageView image="$samePriceIcon">
+        </ImageView>
+    </HBox>
+
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="3">
+        <fx:define>
+            <Image fx:id="downArrowIcon" url="/assets/downArrow.png" />
+        </fx:define>
+        <Text text="Currently Triggered (Down) = "></Text>
+        <ImageView image="$downArrowIcon">
+        </ImageView>
+    </HBox>
+
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="4">
+        <fx:define>
+            <Image fx:id="downTriggeredIcon" url="/assets/downArrowTriggered.png"/>
+        </fx:define>
+        <Text text="Previously Triggered (Down) = "></Text>
+        <ImageView image="$downTriggeredIcon">
+        </ImageView>
+    </HBox>
+
+    <Label text="Watched Holdings" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="holdings-header" GridPane.columnSpan="1"/>
+
+    <TableView fx:id="holdingsPane" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" prefHeight="350">
         <!--<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>-->
         <columns>
-            <TableColumn text="Type" prefWidth="125">
-                <cellValueFactory><PropertyValueFactory property="type" /></cellValueFactory>
+            <TableColumn text="Price Trigger" prefWidth="125">
+                <cellValueFactory><PropertyValueFactory property="priceTrigger" /></cellValueFactory>
             </TableColumn>
             <TableColumn text="Name" prefWidth="285">
                 <cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory>

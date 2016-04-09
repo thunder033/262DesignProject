@@ -32,7 +32,7 @@
         </graphic>
     </Button>
     </HBox>
-    <Button fx:id="logout" text="Log Out" onAction="#handlelLogOut" GridPane.rowIndex="0" GridPane.columnIndex="5" prefWidth="80"/>
+    <Button fx:id="logout" text="Log Out" onAction="#handleLogOut" GridPane.rowIndex="0" GridPane.columnIndex="5" prefWidth="80"/>
 
     <Text fx:id="portfolioName" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
     <Button text="Simulate Portfolio" onAction="#handleSimulate" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
@@ -42,7 +42,7 @@
             <StackPane alignment="CENTER">
                 <children>
                     <Circle fill="CHARTREUSE" radius="8.0" stroke="BLACK"/>
-                    <Text fx:id="alertHoldings" text="0"></Text>
+                    <Text fx:id="triggerAlert"></Text>
                 </children>
             </StackPane>
         </graphic>

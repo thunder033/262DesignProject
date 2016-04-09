@@ -59,7 +59,7 @@ public class WatchList extends Model {
     }
 
     public int getUpdateInterval(){
-        return updateInterval;
+        return updateInterval / 1000;
     }
 
     /**
@@ -75,7 +75,7 @@ public class WatchList extends Model {
      * Returns the count of watched equities that are currently triggered
      * @return number of triggered watches
      */
-    public int getTriggeredCount(){
+    public int getTriggeredCount() {
         return (int) getWatchedEquities().stream()
                 .filter(WatchedEquity::isTriggered)
                 .count();

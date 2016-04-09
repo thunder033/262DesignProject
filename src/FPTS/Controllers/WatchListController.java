@@ -54,21 +54,23 @@ public class WatchListController extends Controller {
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
+        minutesInterval.setText(Integer.toString(_app.getData().getInstanceById(WatchList.class, _portfolio.id).getUpdateInterval() / 60));
+        secondsInterval.setText(Integer.toString(_app.getData().getInstanceById(WatchList.class, _portfolio.id).getUpdateInterval() % 60));
         refreshView();
     }
 
     @Override
     public void refreshView() {
         portfolioName.setText(String.format("%1$s's Watch List", _portfolio.getUsername()));
-        if(_app.getData().getInstanceById(WatchList.class, _portfolio.id).getWatchedEquities() != null) {
-            ObservableList<WatchedEquity> watchedEquities = FXCollections.observableArrayList(_app.getData().getInstanceById(WatchList.class, _portfolio.id).getWatchedEquities());
-            holdingsPane.setItems(watchedEquities);
-        }
+        ObservableList<WatchedEquity> watchedEquities = FXCollections.observableArrayList(FPTSApp.getInstance().getData().getInstanceById(WatchList.class, _portfolio.id).getWatchedEquities());
+        holdingsPane.setItems(watchedEquities);
+        System.out.println(holdingsPane.getItems().size());
     }
-
 
     @FXML
     public void handleTimer() {
-        System.out.println("Timer Set To " + minutesInterval.getText() + ":" + secondsInterval.getText());
+        _app.getData().getInstanceById(WatchList.class, _portfolio.id).setUpdateInterval((Integer.parseInt(minutesInterval.getText()) * 60)
+        + Integer.parseInt(secondsInterval.getText()));
+        System.out.println("Timer Set To " + _app.getData().getInstanceById(WatchList.class, _portfolio.id).getUpdateInterval());
     }
 }

@@ -46,7 +46,7 @@ public class PortfolioController extends Controller {
     @FXML private TableView<Entry> transactionLogPane;
     @FXML private TableColumn<Holding, Holding> holdingActionColumn;
     @FXML private Text errorMessage;
-    @FXML private Text alertHoldings;
+    @FXML private Text triggerAlert;
 
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final FileChooser fileChooser = new FileChooser();
@@ -88,8 +88,8 @@ public class PortfolioController extends Controller {
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
-        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
         _app.centerWindow(_app.getStage());
+        triggerAlert.setText(Integer.toString(_app.getData().getInstanceById(WatchList.class, _portfolio.id).getTriggeredCount()));
         transactionLog = new Log(portfolio);
         app.getData().getInstanceById(WatchList.class, portfolio.id).subscribe(() -> {refreshView(); return null;});
         refreshView();
@@ -146,7 +146,7 @@ public class PortfolioController extends Controller {
         _app.loadView(new SimulationView(_app));
     }
 
-    public void handlelLogOut(ActionEvent actionEvent) {
+    public void handleLogOut(ActionEvent actionEvent) {
         _app.loadView(new LoginView(_app));
     }
     
@@ -190,5 +190,6 @@ public class PortfolioController extends Controller {
     @FXML
     public void handleWatchList() {
         _app.loadView(new WatchListView(_app));
+        triggerAlert.setText(Integer.toString(_app.getData().getInstanceById(WatchList.class, _portfolio.id).getTriggeredCount()));
     }
 }
