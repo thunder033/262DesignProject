@@ -113,18 +113,8 @@ public class FPTSApp extends Application {
             System.out.println("Delete portfolio " + params.get(1));
             Portfolio portfolio = data.getInstanceById(Portfolio.class, params.get(1));
             if(portfolio != null){
-                new Log(portfolio).getEntries().stream()
-                        .map(Entry::getTransaction)
-                        .forEach(Model::hardDelete);
-                portfolio.getHoldings().stream().forEach(Model::hardDelete);
-                data.getInstanceById(WatchList.class, portfolio.id).hardDelete();
                 portfolio.hardDelete();
-
-                data.writeBin(Transaction.class);
-                data.writeBin(CashAccount.class);
-                data.writeBin(Equity.class);
-                data.writeBin(WatchList.class);
-                data.writeBin(Portfolio.class);
+                data.writeAll();
             }
         }
     }

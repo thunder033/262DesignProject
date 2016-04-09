@@ -1,6 +1,8 @@
 package FPTS.Models;
 
 import FPTS.Core.Model;
+import FPTS.Transaction.Entry;
+import FPTS.Transaction.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,5 +113,15 @@ public class Portfolio extends Model {
         addHolding(holding);
 
         return holding;
+    }
+
+    @Override
+    public void hardDelete() {
+        new Log(this).getEntries().stream()
+                .map(Entry::getTransaction)
+                .forEach(Model::hardDelete);
+        getHoldings().stream().forEach(Model::hardDelete);
+        findById(WatchList.class, id).hardDelete();
+        super.hardDelete();
     }
 }
