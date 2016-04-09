@@ -64,7 +64,6 @@ public class WatchListController extends Controller {
         portfolioName.setText(String.format("%1$s's Watch List", _portfolio.getUsername()));
         ObservableList<WatchedEquity> watchedEquities = FXCollections.observableArrayList(FPTSApp.getInstance().getData().getInstanceById(WatchList.class, _portfolio.id).getWatchedEquities());
         holdingsPane.setItems(watchedEquities);
-        System.out.println(holdingsPane.getItems().size());
     }
 
     @FXML
