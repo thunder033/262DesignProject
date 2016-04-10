@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package FPTS.Search;
 
 import FPTS.Models.MarketEquity;
 import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -15,7 +11,7 @@ import javafx.collections.ObservableList;
  * @author Eric
  */
 public class SearchIterator {
-    int nPages = 3;
+        entries = FXCollections.observableArrayList(entries.stream().sorted((MarketEquity a, MarketEquity b) -> a.getTickerSymbol().compareTo(b.getTickerSymbol())).collect(toList()));
     private int pageNumber = 0;
     private ObservableList<MarketEquity> entries;
     
@@ -55,7 +51,6 @@ public class SearchIterator {
             ret.add(entries.get(i + getPageNumber()*nPages));
         }
         return ret;
-        //return (ObservableList<MarketEquity>) entries.subList(getPageNumber()*nPages, getPageNumber()*nPages + 19);
     }
      public ObservableList<MarketEquity> getPrevResultSet(){
         pageNumber--;
