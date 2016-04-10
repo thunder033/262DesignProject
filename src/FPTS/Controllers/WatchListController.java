@@ -23,7 +23,7 @@ import java.util.ResourceBundle;
 /**
  * @author: Alexander Kidd
  * Created: 4/4/2016
- * Revised: 4/4/2016
+ * Revised: 4/10/2016
  * Description: Facilitates in communication
  * between the watch list logic and the watch list UI View.
  */
