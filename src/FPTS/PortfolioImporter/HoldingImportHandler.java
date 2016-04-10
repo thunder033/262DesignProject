@@ -6,6 +6,7 @@ import FPTS.Models.CashAccount;
 import FPTS.Models.Equity;
 import FPTS.Models.Holding;
 import FPTS.Models.Portfolio;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by traub_000 on 4/1/2016.
@@ -32,14 +34,13 @@ public class HoldingImportHandler {
     private static boolean[] hasDuplCA;
     private static ArrayList<Holding> equityMergeList;
     private static Portfolio _portfolio;
-    private static FPTSApp _app;
     private static ArrayList<Holding> CAMergeList = new ArrayList<>();
     private static ArrayList<Holding> CAReplaceList = new ArrayList<>();
     private static ArrayList<Holding> CAIgnoreList = new ArrayList<>();
 
-    public static ObservableList getNewHoldings(Path path){
+    public static ObservableList<ImportItem> getNewHoldings(Path path, Portfolio portfolio){
 
-
+        _portfolio = portfolio;
         Importer importer = new Importer(path);
         importer.setStrategy(new CSVImporter());
         if(CSVHoldings != null){
@@ -48,15 +49,18 @@ public class HoldingImportHandler {
         CSVHoldings = importer.importData().portfolio.getHoldings();
         holdings.addAll(FXCollections.observableArrayList(CSVHoldings));
         System.out.println(holdings.size());
-        return holdings;
-
+        ArrayList<ImportItem> items = CSVHoldings.stream()
+                .map(holding -> new ImportItem(holding, _portfolio))
+                .collect(Collectors.toCollection(ArrayList::new));
+        return FXCollections.observableArrayList(items);
     }
 
-    public static ObservableList getNewHoldings(String newCAName, String newCAValue) throws IOException{
+    public static ObservableList getNewHoldings(String newCAName, String newCAValue) throws IllegalArgumentException {
 
         if(newCAName.equals("")){
-            throw new IOException();
+            throw new IllegalArgumentException("New Cash Account must have a name");
         }
+
         float value = Float.parseFloat(newCAValue);
 
         CashAccount newCA = new CashAccount(newCAName,value);
@@ -70,14 +74,9 @@ public class HoldingImportHandler {
         equityMergeList = new ArrayList<>();
         HoldingImportHandler._portfolio = _portfolio;
         hasDuplCA = new boolean[holdings.size()];
-        Map<String, String> OldHolding = new HashMap<>();
-        for(Holding hold: _portfolio.getHoldings()){
-            OldHolding.put(hold.getName(),hold.getType());
-        }
 
         for(int i = 0; i < holdings.size(); i++) {
-            String newName = holdings.get(i).getName();
-            if(OldHolding.containsKey(newName) && OldHolding.get(newName).equals(holdings.get(i).getType())){
+            if(_portfolio.containsHolding(holdings.get(i))){
                 if(holdings.get(i).getType().equals(Equity.type)){
                     equityMergeList.add(holdings.get(i));
                 }else{
@@ -87,79 +86,60 @@ public class HoldingImportHandler {
         }
     }
 
-    public static ObservableList getDuplOpts() {
-        String[] items = {"Merge", "Replace", "Ignore"};
-        return FXCollections.observableArrayList(items);
-    }
-
     public static boolean[] getDuplCAIndices() {
         return hasDuplCA;
     }
 
     private static void addHolding(Holding holding){
         _portfolio.addHolding(holding);
-        _app.getData().addInstance(Model.class.cast(holding));
     }
 
 
-    public static void importHoldings(FPTSApp _app, GridPane boxes) throws InvalidChoiceException{
-        HoldingImportHandler._app = _app;
+    public static void importHoldings(List<ImportItem> items) throws InvalidChoiceException {
         // Method to separate out merge, replace, ignore
-
-            separateCases(boxes);
-            mergeHoldings();
-            replaceHoldings();
-            holdings.stream().forEach(HoldingImportHandler::addHolding);
-            _portfolio.save();
-            holdings.clear();
-
-
+        separateCases(items);
+        mergeHoldings();
+        replaceHoldings();
+        holdings.stream().forEach(HoldingImportHandler::addHolding);
+        _portfolio.save();
+        holdings.clear();
     }
 
     private static void replaceHoldings() {
         for(Holding hold : CAReplaceList){
-            // Uncomment when merged with delete functionality
-            Holding oldHold = ( (Holding)_portfolio.getHoldings().stream().filter(holding ->
-                    // Uncomment this and delete the lines below when delete function is merged
-                    holding.getName().equals(hold.getName())).toArray()[0]);
-            Model instance = Model.class.cast(oldHold);
+            System.out.println("CA Replace " + hold.getExportIdentifier());
+            Holding oldHold = _portfolio.getHolding(hold.getExportIdentifier());
             _portfolio.removeHolding(oldHold);
-            instance.delete();
+            oldHold.delete();
+            _portfolio.addHolding(hold);
         }
     }
 
     private static void mergeHoldings() {
         for(Holding hold : CAMergeList){
-            ( (Holding) _portfolio.getHoldings().stream().filter(holding ->
-                    holding.getName().equals(hold.getName())).toArray()[0] ).addValue(hold.getValue());
+            System.out.println("CA Merge " + hold.getExportIdentifier());
+            _portfolio.getHolding(hold.getExportIdentifier()).addValue(hold.getValue());
         }
-
     }
 
-    private static void separateCases(GridPane boxes) throws InvalidChoiceException{
-        Object choice;
-        ComboBox CBox;
+    private static void separateCases(List<ImportItem> items) throws InvalidChoiceException{
         CAMergeList.clear();
         CAReplaceList.clear();
         CAIgnoreList.clear();
-        for(int i = 0; i < boxes.getChildren().size() - 1; i++) {
-            if (hasDuplCA[i]) {
-                CBox = ((ComboBox) boxes.getChildren().get(i + 1));
-                choice = CBox.getSelectionModel().getSelectedItem();
-                if (choice == null) {
-                    throw new InvalidChoiceException(holdings.get(i).getName());
-                }else if(choice.toString().equals("Merge")){
-                    CAMergeList.add(holdings.get(i));
-                } else if (choice.toString().equals("Replace")) {
-                    CAReplaceList.add(holdings.get(i));
-                } else if (choice.toString().equals("Ignore")) {
-                    CAIgnoreList.add(holdings.get(i));
-                } else {
-                    throw new InvalidChoiceException(holdings.get(i).getName());
-                }
 
+        items.stream().forEach(item -> {
+            switch (item.getAction()){
+                case IGNORE:
+                    CAIgnoreList.add(item.getHolding());
+                    break;
+                case MERGE:
+                    CAMergeList.add(item.getHolding());
+                    break;
+                case REPLACE:
+                    CAReplaceList.add(item.getHolding());
             }
-        }
+        });
+
         holdings.removeAll(CAIgnoreList);
         holdings.removeAll(CAMergeList);
         holdings.removeAll(equityMergeList);

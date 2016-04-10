@@ -2,8 +2,11 @@
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+<?import FPTS.Controls.*?>
+<?import javafx.geometry.Insets?>
 <GridPane fx:id="grid" fx:controller="FPTS.Controllers.ImportHoldingsController"
           xmlns:fx="http://javafx.com/fxml" gridLinesVisible="false">
+    <padding><Insets top="25" right="25" left="25" bottom="10"/></padding>
     <Button text="Choose Import File" onAction="#fileSelected" GridPane.columnIndex="1" GridPane.rowIndex="0" />
     <Button fx:id="importButton" text="Import Holdings" onAction="#importHoldings" GridPane.columnIndex="2"
             GridPane.rowIndex="0" visible="false"/>
@@ -11,31 +14,37 @@
     <Button text="Long text that acts as to set the table size" GridPane.columnIndex="4" GridPane.rowIndex="0"
             visible="false"/>
     <Label fx:id="choiceError" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.columnSpan="2"/>
-<TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="5"
-           GridPane.hgrow="ALWAYS">
-    <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
-    <columns>
-        <TableColumn text="Type" prefWidth="60.0">
-            <cellValueFactory><PropertyValueFactory property="type" /></cellValueFactory>
-        </TableColumn>
-        <TableColumn text="Name" prefWidth="60.0">
-            <cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory>
-        </TableColumn>
-        <TableColumn text="Value (USD)" prefWidth="60.0">
-            <cellValueFactory><PropertyValueFactory property="value" /></cellValueFactory>
-        </TableColumn>
-        <TableColumn text="Shares" prefWidth="30.0">
-            <cellValueFactory><PropertyValueFactory property="shares"/></cellValueFactory>
-        </TableColumn>
 
-    </columns>
-
-</TableView>
     <TextField fx:id="newCAName" promptText="Name" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-    <TextField fx:id="newCAValue" promptText="Value" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+    <NumericField fx:id="newCAValue" promptText="Value" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
     <Button text="Add new Cash Account" GridPane.columnIndex="3" GridPane.rowIndex="3"
             onAction="#addCashAccount"/>
     <Label fx:id="CAerrorMessage" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+<TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="6"
+           GridPane.hgrow="ALWAYS" prefWidth="770">
+    <columns>
+        <TableColumn text="Type" prefWidth="80.0">
+            <cellValueFactory><PropertyValueFactory property="type" /></cellValueFactory>
+        </TableColumn>
+        <TableColumn text="Name" prefWidth="250.0">
+            <cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory>
+        </TableColumn>
+        <TableColumn text="Value (USD)" prefWidth="80.0">
+            <cellValueFactory><PropertyValueFactory property="value" /></cellValueFactory>
+        </TableColumn>
+        <TableColumn text="Shares" prefWidth="80.0">
+            <cellValueFactory><PropertyValueFactory property="shares"/></cellValueFactory>
+        </TableColumn>
+        <TableColumn fx:id="actionColumn" text="Action" prefWidth="90">
+
+        </TableColumn>
+        <TableColumn text="Result Value" prefWidth="110">
+            <cellValueFactory><PropertyValueFactory property="result"/></cellValueFactory>
+        </TableColumn>
+    </columns>
+
+</TableView>
 
 <stylesheets>
     <URL value="@styles/importHoldings.css"/>

@@ -100,7 +100,7 @@ public class TransactionController extends Controller implements SelectSearchLis
             @Override
             public Holding fromString(String string) {
                 String eid = string.split(" \\(")[0];
-                _portfolio.getHoldingByExportID(eid);
+                _portfolio.getHolding(eid);
                 return null;
             }
         };
@@ -261,7 +261,7 @@ public class TransactionController extends Controller implements SelectSearchLis
 
             //ensure a new holding is persisted in the portfolio
             Holding destHolding = destHoldingField.getValue();
-            if(_portfolio.getHoldingByExportID(destHolding.getExportIdentifier()) == null){
+            if(_portfolio.getHolding(destHolding.getExportIdentifier()) == null){
                 destHolding.isPersistent = true;
                 _portfolio.addHolding(destHolding);
                 _portfolio.save();
@@ -294,7 +294,7 @@ public class TransactionController extends Controller implements SelectSearchLis
 
     @Override
     public void SearchResultSelected(String result) {
-        Holding holding = _portfolio.getHoldingByExportID(result);
+        Holding holding = _portfolio.getHolding(result);
         if(holding == null){
             holding = new Equity(_app.getData().getInstanceById(MarketEquity.class, result));
             holding.isPersistent = false;
