@@ -1,20 +1,33 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
+import FPTS.Models.Holding;
 import FPTS.PortfolioImporter.HoldingImportHandler;
+import FPTS.PortfolioImporter.ImportItem;
 import FPTS.PortfolioImporter.InvalidChoiceException;
 import FPTS.Views.ImportHoldingsView;
 import FPTS.Views.PortfolioView;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Import;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * Created by traub_000 on 3/25/2016.
@@ -23,16 +36,57 @@ import java.util.ArrayList;
  * the import holdings page
  */
 public class ImportHoldingsController extends Controller{
-    @FXML private TableView holdingsPane;
+    @FXML private TableView<ImportItem> holdingsPane;
     @FXML private Button importButton;
     @FXML private GridPane grid;
     @FXML private Label CAerrorMessage;
     @FXML private TextField newCAName;
     @FXML private TextField newCAValue;
     @FXML private Label choiceError;
-    private ArrayList<ComboBox> duplicateBoxes;
+
+    @FXML private TableColumn<ImportItem, ImportItem> actionColumn;
+
     final FileChooser fileChooser = new FileChooser();
     private GridPane newGrid = new GridPane();
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        super.initialize(location, resources);
+
+        actionColumn.setCellValueFactory(features -> new ReadOnlyObjectWrapper<>(features.getValue()));
+        actionColumn.setCellFactory(actionColumn -> {
+            ObservableList<ImportItem.Action> actions = FXCollections.observableArrayList(ImportItem.Action.values());
+            final ComboBox<ImportItem.Action> comboBox = new ComboBox<>(actions);
+            comboBox.setMinWidth(60);
+
+            TableCell<ImportItem, ImportItem> cell = new TableCell<ImportItem, ImportItem>() {
+                @Override protected void updateItem(final ImportItem importItem, boolean empty) {
+                    super.updateItem(importItem, empty);
+                    if(importItem == null){
+                        return;
+                    }
+
+                    if(importItem.isConflicted()){
+                        comboBox.setValue(importItem.getAction());
+                        setGraphic(comboBox);
+                    } else {
+                        setGraphic(new Text(importItem.getAction().toString()));
+                    }
+                }
+            };
+
+            comboBox.valueProperty().addListener((observable, oldAction, action) -> {
+                if(action == null){
+                    return;
+                }
+
+                cell.getItem().setAction(action);
+                holdingsPane.refresh();
+            });
+
+            return cell;
+        });
+    }
 
     /**
      * This method stores information about the import file
@@ -40,9 +94,12 @@ public class ImportHoldingsController extends Controller{
      * @param event unused
      */
     public void fileSelected(ActionEvent event) {
-        Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
-        holdingsPane.setItems(HoldingImportHandler.getNewHoldings(path));
-        showHoldings();
+        File file = fileChooser.showOpenDialog(_app.getStage());
+        if(file != null){
+            Path path = Paths.get(file.getPath());
+            holdingsPane.setItems(HoldingImportHandler.getNewHoldings(path, _portfolio));
+            showHoldings();
+        }
     }
 
     public void addCashAccount(ActionEvent event) {
@@ -52,29 +109,14 @@ public class ImportHoldingsController extends Controller{
             showHoldings();
         }catch (NumberFormatException e){
             CAerrorMessage.setText("Invalid value for new cash account.");
-        }catch (IOException e) {
-            CAerrorMessage.setText("Invalid cash account name.");
+        }catch (IllegalArgumentException e) {
+            CAerrorMessage.setText(e.getMessage());
         }
     }
 
     private void showHoldings(){
         importButton.setVisible(true);
-
         HoldingImportHandler.determineConflicts(_portfolio);
-
-        boolean[] duplCAIndices = HoldingImportHandler.getDuplCAIndices();
-
-        ComboBox box = new ComboBox();
-        box.setVisible(false);
-        newGrid = new GridPane();
-        newGrid.addColumn(0, box);
-        for (boolean duplCAIndex : duplCAIndices) {
-            box = new ComboBox(HoldingImportHandler.getDuplOpts());
-            box.setPrefHeight(18);
-            box.setVisible(duplCAIndex);
-            newGrid.addColumn(0, box);
-        }
-        grid.add(newGrid, 6, 2);
     }
 
     /**
@@ -85,12 +127,16 @@ public class ImportHoldingsController extends Controller{
     public void importHoldings(ActionEvent event){
         // Pass newGrid into below
         try {
-            HoldingImportHandler.importHoldings(_app, newGrid);
+            ArrayList<ImportItem> items = holdingsPane.getItems().stream()
+                    .map(actionColumn::getCellObservableValue)
+                    .map(ObservableValue::getValue)
+                    .collect(Collectors.toCollection(ArrayList::new));
+
+            HoldingImportHandler.importHoldings(items);
             _app.loadView(new ImportHoldingsView(_app));
         } catch (InvalidChoiceException e) {
             choiceError.setText("Invalid choice for " + e.getMessage());
         }
-
     }
 
     /**

@@ -102,7 +102,9 @@ public class WatchList extends Model {
      */
     public void beginWatch(){
         Timer timer = new Timer();
-        YFSClient.instance().setMaxCacheAge(updateInterval);
+
+        //don't let the cache be less than 30 seconds
+        YFSClient.instance().setMaxCacheAge(Math.max(updateInterval - 500, 30 * 1000));
 
         timer.schedule(new TimerTask() {
             public void run() {

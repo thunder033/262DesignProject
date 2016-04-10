@@ -8,6 +8,7 @@ import FPTS.Transaction.Log;
  * Stores the results of an imported portfolio
  */
 public class ImportResult {
+
     public final Portfolio portfolio;
     public final Log transactionLog;
 

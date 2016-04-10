@@ -72,12 +72,12 @@ public class CSVImporter implements ImportStrategy {
 
                     if(!values[i].equals("")){
                         final String identifier = values[i];
-                        source = portfolio.getHoldingByExportID(identifier);
+                        source = portfolio.getHolding(identifier);
                     }
 
                     if(!values[i + 2].equals("")){
                         final String identifier = values[i + 1];
-                        dest = portfolio.getHoldingByExportID(identifier);
+                        dest = portfolio.getHolding(identifier);
                     }
 
                     float sharePrice = Float.parseFloat(values[i + 2]);
