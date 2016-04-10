@@ -40,7 +40,7 @@ public abstract class View {
 
     public void Load()
     {
-        _controller.Load(_app, Controller._portfolio);
+    _controller.Load(_app, Controller._portfolio);
     }
 
     public void Exit() {

@@ -77,7 +77,7 @@ public class Transaction extends Model {
      * @return source holding, or destination if source is null
      */
     public Holding getIndexHolding(){
-        return source == null ? getDestination() : getSource();
+        return source == null || Model.class.cast(source).isDeleted() ? getDestination() : getSource();
     }
 
     public float getValue(){

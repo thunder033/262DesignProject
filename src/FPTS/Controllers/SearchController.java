@@ -6,7 +6,6 @@ import FPTS.Models.MarketIndex;
 import FPTS.Search.*;
 import FPTS.Data.FPTSData;
 
-import FPTS.Views.AddHoldingView;
 import FPTS.Views.SearchView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -17,7 +16,6 @@ import javafx.scene.control.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import java.util.Observable;
 import javafx.scene.text.Text;
 
 //
@@ -27,7 +25,7 @@ import javafx.scene.text.Text;
 //Description: Contains behavior and elements for UI.
 //
 public class SearchController extends Controller {
-    
+
     @FXML private TextField id;
     @FXML private TextField name;
     @FXML private TextField marketAverage;
@@ -54,7 +52,7 @@ public class SearchController extends Controller {
     private SearchQuery _search1;
     private SearchQuery _search2;
     private SearchQuery _search3;
-    
+
     private SearchIterator iterator;
 
     @FXML private TableView<MarketEquity> searchResultsPane;
@@ -91,8 +89,6 @@ public class SearchController extends Controller {
         TableColumn col = (TableColumn)searchResultsPane.getColumns().get(0);
         String data = (String) col.getCellObservableValue(item).getValue();
 
-        this.addListener(_app);
-        
         for (SelectSearchListener hl : selectSearchListeners)
             hl.SearchResultSelected(data);
 
@@ -135,27 +131,28 @@ public class SearchController extends Controller {
         ObservableList<MarketEquity> observableResults = iterator.getCurrentResults();
 
         searchResultsPane.setItems(observableResults);
-        
+
         page.setText("(" + (iterator.getPageNumber() + 1) + "/" + iterator.getPagesTotal() + ")");
     }
-    
-    
+
+
     @FXML
     protected void handleNextPage(ActionEvent event) {
-        
+
         ObservableList<MarketEquity> observableResults = iterator.getNextResultSet();
 
         searchResultsPane.setItems(observableResults);
         page.setText("(" + (iterator.getPageNumber() + 1) + "/" + iterator.getPagesTotal() + ")");
+        searchResultsPane.refresh();
     }
-    
+
     @FXML
     protected void handlePrevPage(ActionEvent event) {
         ObservableList<MarketEquity> observableResults = iterator.getPrevResultSet();
 
         searchResultsPane.setItems(observableResults);
         page.setText("(" + (iterator.getPageNumber() + 1) + "/" + iterator.getPagesTotal() + ")");
-    
+        searchResultsPane.refresh();
     }
     
 }

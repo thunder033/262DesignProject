@@ -4,8 +4,6 @@ import FPTS.Data.DataBin;
 import FPTS.Data.FPTSData;
 import FPTS.Models.*;
 import FPTS.Views.LoginView;
-import FPTS.Search.SelectSearchListener;
-import FPTS.Controllers.AddHoldingController;
 
 import javafx.application.Application;
 import javafx.scene.image.Image;
@@ -25,33 +23,19 @@ import java.util.Map;
  * and CSV file data is loaded into respective bins.
  */
 
-public class FPTSApp extends Application  implements SelectSearchListener {
+public class FPTSApp extends Application  {
 
     private FPTSData data;
     private View currentView;
     private Map<String, Stage> stageMap;
-    
-    private ArrayList<SelectSearchListener> selectSearchListeners = new ArrayList<SelectSearchListener>();
-        
-    public void addListener(SelectSearchListener toAdd) {
-        selectSearchListeners.add(toAdd);
-    }
-    
+
     /**
      * @return a reference to the data root
      */
     public FPTSData getData() {
         return data;
     }
-    
-    @Override
-    public void SearchResultSelected(String s) {
-        
-        for (SelectSearchListener hl : selectSearchListeners)
-            hl.SearchResultSelected(s);
-    }
-    
-    
+
     /**
      * @return the current view
      */
@@ -119,6 +103,20 @@ public class FPTSApp extends Application  implements SelectSearchListener {
         primaryStage.setX(100);
         primaryStage.setY(100);
         primaryStage.show();
+
+        List<String> params = this.getParameters().getRaw();
+        if(params.size() == 2 && params.get(0).equals("delete")){
+            System.out.println("Delete portfolio " + params.get(1));
+            Portfolio portfolio = data.getInstanceById(Portfolio.class, params.get(1));
+            if(portfolio != null){
+                portfolio.hardDelete();
+                data.writeAll();
+            }
+        }
+    }
+
+    public void stop(){
+        getData().getInstances(WatchList.class).stream().forEach(WatchList::endWatch);
     }
 
     public static void main(String[] args) {

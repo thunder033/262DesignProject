@@ -59,6 +59,10 @@ public class FPTSData implements Observer {
         bins.get(type).writeInstances();
     }
 
+    public void writeAll(){
+        bins.values().forEach(DataBin::writeInstances);
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         bins.get(o.getClass()).writeInstances();
