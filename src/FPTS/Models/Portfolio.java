@@ -5,6 +5,7 @@ import FPTS.Core.Model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author: Greg
@@ -40,7 +41,14 @@ public class Portfolio extends Model {
      * @return a list of holding in the portfolio
      */
     public List<Holding> getHoldings() {
-        return holdings;
+        return holdings.stream()
+                .filter(holding -> !Model.class.cast(holding).isDeleted())
+                .collect(Collectors.toList());
+    }
+
+    public List<Holding> getHoldings(boolean includeDeleted)
+    {
+        return includeDeleted ? holdings : getHoldings();
     }
 
     /**

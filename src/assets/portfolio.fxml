@@ -16,7 +16,6 @@
 
     <Label text="Holdings" GridPane.columnIndex="0" GridPane.rowIndex="1" styleClass="holdings-header" GridPane.columnSpan="1"/>
     <Button text="Export" onAction="#handleExportAction" GridPane.columnIndex="1" GridPane.rowIndex="1" alignment="CENTER_RIGHT"/>
-    <Button text="Add Holding" onAction="#handleNewHolding" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
     <Button text="Import Holdings" onAction="#handleImport" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
 
     <TableView fx:id="holdingsPane" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" prefHeight="350">
