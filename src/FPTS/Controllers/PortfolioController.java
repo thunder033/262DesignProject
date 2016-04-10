@@ -145,6 +145,8 @@ public class PortfolioController extends Controller {
                 ex.printStackTrace();
             }
 		}
+
+        refreshView();
     }
     
     public void handleRedo(ActionEvent actionevent){
