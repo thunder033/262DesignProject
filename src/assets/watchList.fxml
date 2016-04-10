@@ -71,21 +71,29 @@
     <Label text="Watched Holdings" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="holdings-header" GridPane.columnSpan="1"/>
 
     <TableView fx:id="holdingsPane" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" prefHeight="350">
-        <!--<columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>-->
         <columns>
-            <TableColumn text="Price Trigger" prefWidth="125">
-                <cellValueFactory><PropertyValueFactory property="priceTrigger" /></cellValueFactory>
+            <TableColumn fx:id="priceTriggerColumn" minWidth="24" maxWidth="24">
+
             </TableColumn>
-            <TableColumn text="Name" prefWidth="285">
-                <cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory>
+            <TableColumn fx:id="symbolColumn" text="Symbol" minWidth="75" maxWidth="75">
+
             </TableColumn>
-            <TableColumn text="Value (USD)" prefWidth="135">
-                <cellValueFactory><PropertyValueFactory property="value" /></cellValueFactory>
+            <TableColumn fx:id="nameColumn" text="Name" maxWidth="275">
+
             </TableColumn>
-            <TableColumn text="Shares" prefWidth="135">
-                <cellValueFactory><PropertyValueFactory property="shares"/></cellValueFactory>
+            <TableColumn fx:id="priceColumn" text="Value (USD)" prefWidth="135">
+
             </TableColumn>
-            <TableColumn fx:id="holdingActionColumn" text="Action" prefWidth="65">
+            <TableColumn fx:id="lowTriggerColumn" text="Low Trigger Price" prefWidth="135">
+
+            </TableColumn>
+            <TableColumn fx:id="highTriggerColumn" text="High Trigger Price" prefWidth="135">
+
+            </TableColumn>
+            <TableColumn fx:id="setTriggersColumn" text="Set Price Triggers (Whole USD)" prefWidth="200">
+
+            </TableColumn>
+            <TableColumn fx:id="deleteHoldingColumn" text="Delete" prefWidth="65">
 
             </TableColumn>
         </columns>
@@ -93,6 +101,10 @@
 
         </items>
     </TableView>
+
+    <TextField fx:id="newEquitySymbol" prefWidth="150" promptText="Equity Ticker Symbol" GridPane.rowIndex="5" GridPane.columnIndex="0" ></TextField>
+
+    <Button fx:id="submitNewWatchEquity" text="Add Equity" onAction="#handleAddWatchedEquity" GridPane.rowIndex="5" GridPane.columnIndex="1"></Button>
 
     <stylesheets>
         <URL value="@styles/portfolio.css" />

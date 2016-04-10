@@ -33,7 +33,7 @@ import java.util.Date;
 /**
  * @author: Alexander Kidd
  * Created: 3/11/2016
- * Revised: 3/13/2016
+ * Revised: 4/10/2016
  * Description: This controller handles requests
  * to alternate the portfolio UI based on internal
  * model changes and UI changes that alter the internal model state.
@@ -57,7 +57,7 @@ public class PortfolioController extends Controller {
         holdingActionColumn.setCellValueFactory(features -> new ReadOnlyObjectWrapper<>(features.getValue()));
         holdingActionColumn.setCellFactory(actionColumn -> {
             final Button button = new Button();
-            button.setMinWidth(60);
+            button.setMinWidth(145);
             TableCell<Holding, Holding> cell = new TableCell<Holding, Holding>() {
                 @Override protected void updateItem(final Holding holding, boolean empty) {
                     super.updateItem(holding, empty);

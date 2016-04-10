@@ -15,8 +15,8 @@ public class WatchedEquity {
 
     private final MarketEquity equity;
 
-    protected float lowerTrigger = 0;
-    protected float upperTrigger = 0;
+    protected float lowerTrigger = 0.0f;
+    protected float upperTrigger = 0.0f;
     private TriggerState triggerState = TriggerState.NONE;
 
     public WatchedEquity(MarketEquity equity){
