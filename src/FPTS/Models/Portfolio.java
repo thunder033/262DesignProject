@@ -1,6 +1,8 @@
 package FPTS.Models;
 
 import FPTS.Core.Model;
+import FPTS.Transaction.Entry;
+import FPTS.Transaction.Log;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -88,5 +90,15 @@ public class Portfolio extends Model {
             holdings.remove(holding.getExportIdentifier());
             setChanged();
         }
+    }
+
+    @Override
+    public void hardDelete() {
+        new Log(this).getEntries().stream()
+                .map(Entry::getTransaction)
+                .forEach(Model::hardDelete);
+        getHoldings().stream().forEach(Model::hardDelete);
+        findById(WatchList.class, id).hardDelete();
+        super.hardDelete();
     }
 }

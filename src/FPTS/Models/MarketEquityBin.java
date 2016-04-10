@@ -17,6 +17,7 @@ public class MarketEquityBin extends DataBin {
     public MarketEquityBin()
     {
         useFullValueArray = true;
+        readOnly = true;
         fileName = "marketEquities.csv";
         dataClass = MarketEquity.class;
     }
