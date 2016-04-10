@@ -15,7 +15,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -23,7 +22,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Screen;
 
 import java.io.File;
 import java.net.URL;
@@ -116,27 +114,8 @@ public class PortfolioController extends Controller {
         }
     }
 
-    public void handleNewHolding(ActionEvent actionEvent) {
-        _app.loadView(new AddHoldingView(_app));
-    }
+    public void handleImport(ActionEvent actionEvent) { _app.loadView(new ImportHoldingsView(_app)); }
 
-    private void addHolding(Holding holding) {
-        _portfolio.addHolding(holding);
-        _app.getData().addInstance(holding);
-    }
-
-    public void handleImport(ActionEvent actionEvent) {
-        File file = fileChooser.showOpenDialog(_app.getStage());
-
-        if(file != null){
-            Path path = Paths.get(fileChooser.showOpenDialog(_app.getStage()).getPath());
-            Importer importer = new Importer(path);
-            importer.setStrategy(new CSVImporter());
-            importer.importData().portfolio.getHoldings().stream().forEach(this::addHolding);
-            _portfolio.save();
-        }
-
-    }
 
     public void handleTransaction(ActionEvent actionEvent) {
         _app.loadView(new TransactionView(_app));

@@ -6,7 +6,6 @@ import FPTS.Models.MarketIndex;
 import FPTS.Search.*;
 import FPTS.Data.FPTSData;
 
-import FPTS.Views.AddHoldingView;
 import FPTS.Views.SearchView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,8 +15,6 @@ import javafx.scene.control.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import java.util.Observable;
 
 //
 //@author: Eric
