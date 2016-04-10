@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -102,6 +103,20 @@ public class FPTSApp extends Application {
         primaryStage.setX(100);
         primaryStage.setY(100);
         primaryStage.show();
+
+        List<String> params = this.getParameters().getRaw();
+        if(params.size() == 2 && params.get(0).equals("delete")){
+            System.out.println("Delete portfolio " + params.get(1));
+            Portfolio portfolio = data.getInstanceById(Portfolio.class, params.get(1));
+            if(portfolio != null){
+                portfolio.hardDelete();
+                data.writeAll();
+            }
+        }
+    }
+
+    public void stop(){
+        getData().getInstances(WatchList.class).stream().forEach(WatchList::endWatch);
     }
 
     public static void main(String[] args) {

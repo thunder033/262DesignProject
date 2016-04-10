@@ -79,6 +79,12 @@ public abstract class Model extends Observable {
         save();
     }
 
+    public void hardDelete(){
+        isPersistent = false;
+        setChanged();
+        save();
+    }
+
     public void restore(){
         if(dateDeleted == null){
             throw new UnsupportedOperationException("Attempting to restore model " + id + " this is already active");
