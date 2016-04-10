@@ -12,8 +12,6 @@ public class DJIA extends MarketIndex {
 
     private static final double divisor = 0.14602128057775;
 
-    private ArrayList<MarketEquity> equities;
-
     protected DJIA(String indexName) {
         super(indexName);
     }
@@ -30,4 +28,13 @@ public class DJIA extends MarketIndex {
                 .map(MarketEquity::getSharePrice)
                 .reduce(0.0f, (a, b) -> (float)(a + (b / divisor)));
     }
+
+    /**
+     * Adds a new market equity to the index
+     * @param equity the equity to add
+     */
+    public void addEquity(MarketEquity equity) {
+        super.addEquity(equity);
+    }
+
 }

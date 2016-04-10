@@ -133,6 +133,10 @@ public class HoldingImportHandler {
             ( (Holding) _portfolio.getHoldings().stream().filter(holding ->
                     holding.getName().equals(hold.getName())).toArray()[0] ).addValue(hold.getValue());
         }
+        for(Holding hold : equityMergeList){
+            ( (Equity) _portfolio.getHoldings().stream().filter(holding ->
+            holding.getName().equals(hold.getName())).toArray()[0] ).addValue(hold.getValue());
+        }
 
     }
 

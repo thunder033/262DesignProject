@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class MarketIndex extends MarketEquity {
 
-    private ArrayList<MarketEquity> equities;
+    protected ArrayList<MarketEquity> equities;
 
     protected MarketIndex(String indexName)
     {

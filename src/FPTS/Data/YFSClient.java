@@ -75,7 +75,7 @@ public class YFSClient {
      * @param equity the equity to look up
      * @return the share price of the equity
      */
-    public float getSharePrice(MarketEquity equity) {
+    public float getSharePrice(MarketEquity equity) throws NumberFormatException, IOException{
         String ticker = equity.getTickerSymbol();
         if(cache.containsKey(ticker) && !cache.get(ticker).isExpired()){
             System.out.println("Return cached " + ticker + ":" + cache.get(ticker).getSharePrice());
@@ -117,8 +117,10 @@ public class YFSClient {
                 } while (node.getNodeType() != Node.ELEMENT_NODE);
                 Element eElement = (Element) node;
                 sharePrice = Float.valueOf(eElement.getElementsByTagName("LastTradePriceOnly").item(0).getTextContent());
+                CachedPrice price = new CachedPrice(sharePrice);
+                cache.put(ticker, price);
 
-            } catch (IOException | ParserConfigurationException | SAXException e) {
+            } catch (ParserConfigurationException | SAXException e) {
                 e.printStackTrace();
             } finally {
                 if(con != null){
@@ -130,13 +132,12 @@ public class YFSClient {
         }catch (IOException e) {
             if(cache.containsKey(ticker)){
                 sharePrice = cache.get(ticker).sharePrice;
+            }else {
+                throw new IOException();
             }
-
-            e.printStackTrace();
         }
 
-        CachedPrice price = new CachedPrice(sharePrice);
-        cache.put(ticker, price);
+
 
         return sharePrice;
     }

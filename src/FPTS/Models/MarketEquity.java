@@ -3,6 +3,8 @@ package FPTS.Models;
 import FPTS.Core.Model;
 import FPTS.Data.YFSClient;
 
+import java.io.IOException;
+
 /**
  * @author: Greg
  * Created: 3/9/16
@@ -31,6 +33,10 @@ public class MarketEquity extends Model {
     }
 
     public float getSharePrice() {
-        return YFSClient.instance().getSharePrice(this);
+        try {
+            return YFSClient.instance().getSharePrice(this);
+        }catch (NumberFormatException | IOException e){
+            return _sharePrice;
+        }
     }
 }
