@@ -11,12 +11,13 @@ import javafx.collections.ObservableList;
  * @author Eric
  */
 public class SearchIterator {
-        entries = FXCollections.observableArrayList(entries.stream().sorted((MarketEquity a, MarketEquity b) -> a.getTickerSymbol().compareTo(b.getTickerSymbol())).collect(toList()));
+    int nPages = 10;
     private int pageNumber = 0;
     private ObservableList<MarketEquity> entries;
     
     public SearchIterator(ObservableList<MarketEquity> e){
         entries = e;
+        entries = FXCollections.observableArrayList(entries.stream().sorted((MarketEquity a, MarketEquity b) -> a.getTickerSymbol().compareTo(b.getTickerSymbol())).collect(toList()));
     }
     
     public int getPagesTotal(){
