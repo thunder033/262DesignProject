@@ -15,55 +15,60 @@
     <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
 
     <HBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="10">
-        <NumericField fx:id="minutesInterval" maxWidth="50"></NumericField>
-        <Text text=":"></Text>
-        <NumericField fx:id="secondsInterval" maxWidth="50"></NumericField>
+        <NumericField fx:id="minutesInterval" maxWidth="50"/>
+        <Text text=":"/>
+        <NumericField fx:id="secondsInterval" maxWidth="50"/>
         <Button fx:id="setTimer" text="Set Update Interval (mm:ss)" onAction="#handleTimer" prefWidth="200"/>
     </HBox>
 
     <Text fx:id="errorMessage" GridPane.rowIndex="1" GridPane.columnIndex="5"/>
 
-    <HBox GridPane.rowIndex="2" GridPane.columnIndex="0">
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
         <fx:define>
             <Image fx:id="upTriggeredIcon" url="/assets/upArrowTriggered.png" />
         </fx:define>
-        <Text text="Previously Triggered (High) = "></Text>
+        <Text text="Previously Triggered (High) = "/>
         <ImageView image="$upTriggeredIcon">
         </ImageView>
     </HBox>
 
-    <HBox GridPane.rowIndex="2" GridPane.columnIndex="1">
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
         <fx:define>
             <Image fx:id="upArrowIcon" url="/assets/upArrow.png" />
         </fx:define>
-        <Text text="Currently Triggered (High) = "></Text>
+        <Text text="Currently Triggered (High) = "/>
         <ImageView image="$upArrowIcon">
         </ImageView>
     </HBox>
 
-    <HBox GridPane.rowIndex="2" GridPane.columnIndex="2">
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="2" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
         <fx:define>
             <Image fx:id="samePriceIcon" url="/assets/samePriceIcon.png" />
         </fx:define>
-        <Text text="Not Triggered (Default) = "></Text>
+        <Text text="Not Triggered (Default) = "/>
         <ImageView image="$samePriceIcon">
         </ImageView>
     </HBox>
 
-    <HBox GridPane.rowIndex="2" GridPane.columnIndex="3">
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="3" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
         <fx:define>
             <Image fx:id="downArrowIcon" url="/assets/downArrow.png" />
         </fx:define>
-        <Text text="Currently Triggered (Down) = "></Text>
+        <Text text="Currently Triggered (Low) = "/>
         <ImageView image="$downArrowIcon">
         </ImageView>
     </HBox>
 
-    <HBox GridPane.rowIndex="2" GridPane.columnIndex="4">
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="4" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
         <fx:define>
             <Image fx:id="downTriggeredIcon" url="/assets/downArrowTriggered.png"/>
         </fx:define>
-        <Text text="Previously Triggered (Down) = "></Text>
+        <Text text="Previously Triggered (Low) = "/>
         <ImageView image="$downTriggeredIcon">
         </ImageView>
     </HBox>
@@ -112,5 +117,6 @@
 
     <stylesheets>
         <URL value="@styles/portfolio.css" />
+        <URL value="@styles/watchList.css" />
     </stylesheets>
 </GridPane>
