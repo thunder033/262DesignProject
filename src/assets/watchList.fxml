@@ -1,0 +1,122 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import java.net.URL?>
+<?import FPTS.Controls.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<GridPane alignment="TOP_CENTER" hgap="10" vgap="10"
+          maxWidth="Infinity"
+          fx:controller="FPTS.Controllers.WatchListController"
+          xmlns:fx="http://javafx.com/fxml">
+    <padding><Insets top="25" right="25" left="25" bottom="10"/></padding>
+    <Text fx:id="portfolioName" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
+
+    <HBox GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="2" spacing="10">
+        <NumericField fx:id="minutesInterval" maxWidth="50"/>
+        <Text text=":"/>
+        <NumericField fx:id="secondsInterval" maxWidth="50"/>
+        <Button fx:id="setTimer" text="Set Update Interval (mm:ss)" onAction="#handleTimer" prefWidth="200"/>
+    </HBox>
+
+    <Text fx:id="errorMessage" GridPane.rowIndex="1" GridPane.columnIndex="5"/>
+
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
+        <fx:define>
+            <Image fx:id="upTriggeredIcon" url="/assets/upArrowTriggered.png" />
+        </fx:define>
+        <Text text="Previously Triggered (High) = "/>
+        <ImageView image="$upTriggeredIcon">
+        </ImageView>
+    </HBox>
+
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="1" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
+        <fx:define>
+            <Image fx:id="upArrowIcon" url="/assets/upArrow.png" />
+        </fx:define>
+        <Text text="Currently Triggered (High) = "/>
+        <ImageView image="$upArrowIcon">
+        </ImageView>
+    </HBox>
+
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="2" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
+        <fx:define>
+            <Image fx:id="samePriceIcon" url="/assets/samePriceIcon.png" />
+        </fx:define>
+        <Text text="Not Triggered (Default) = "/>
+        <ImageView image="$samePriceIcon">
+        </ImageView>
+    </HBox>
+
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="3" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
+        <fx:define>
+            <Image fx:id="downArrowIcon" url="/assets/downArrow.png" />
+        </fx:define>
+        <Text text="Currently Triggered (Low) = "/>
+        <ImageView image="$downArrowIcon">
+        </ImageView>
+    </HBox>
+
+    <HBox GridPane.rowIndex="2" GridPane.columnIndex="4" styleClass="legend-item">
+        <padding><Insets right="3" left="3" bottom="3" top="3"/></padding>
+        <fx:define>
+            <Image fx:id="downTriggeredIcon" url="/assets/downArrowTriggered.png"/>
+        </fx:define>
+        <Text text="Previously Triggered (Low) = "/>
+        <ImageView image="$downTriggeredIcon">
+        </ImageView>
+    </HBox>
+
+    <Label text="Watched Holdings" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="holdings-header" GridPane.columnSpan="1"/>
+
+    <TableView fx:id="holdingsPane" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" prefHeight="350">
+        <columns>
+            <TableColumn fx:id="priceTriggerColumn" minWidth="24" maxWidth="24">
+
+            </TableColumn>
+            <TableColumn fx:id="symbolColumn" text="Symbol" minWidth="75" maxWidth="75">
+
+            </TableColumn>
+            <TableColumn fx:id="nameColumn" text="Name" maxWidth="275">
+
+            </TableColumn>
+            <TableColumn fx:id="priceColumn" text="Value (USD)" prefWidth="135">
+
+            </TableColumn>
+            <TableColumn fx:id="lowTriggerColumn" text="Low Trigger Price" prefWidth="135">
+
+            </TableColumn>
+            <TableColumn fx:id="highTriggerColumn" text="High Trigger Price" prefWidth="135">
+
+            </TableColumn>
+            <TableColumn fx:id="setTriggersColumn" text="Set Price Triggers (Whole USD)" prefWidth="200">
+
+            </TableColumn>
+            <TableColumn fx:id="deleteHoldingColumn" text="Delete" prefWidth="65">
+
+            </TableColumn>
+        </columns>
+        <items>
+
+        </items>
+    </TableView>
+
+    <TextField fx:id="newEquitySymbol" prefWidth="150" promptText="Equity Ticker Symbol" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+
+    <HBox GridPane.rowIndex="5" GridPane.columnIndex="1" spacing="10">
+        <Button onAction="#searchEquities" text="Search"/>
+        <Button fx:id="submitNewWatchEquity" text="Add Equity" onAction="#handleAddWatchedEquity"/>
+    </HBox>
+
+
+    <stylesheets>
+        <URL value="@styles/portfolio.css" />
+        <URL value="@styles/watchList.css" />
+    </stylesheets>
+</GridPane>

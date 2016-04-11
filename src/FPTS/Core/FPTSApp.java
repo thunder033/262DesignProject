@@ -6,7 +6,9 @@ import FPTS.Models.*;
 import FPTS.Views.LoginView;
 
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,17 +25,23 @@ import java.util.Map;
  * and CSV file data is loaded into respective bins.
  */
 
-public class FPTSApp extends Application  {
+public class FPTSApp extends Application {
 
     private FPTSData data;
     private View currentView;
     private Map<String, Stage> stageMap;
-
+    
     /**
      * @return a reference to the data root
      */
     public FPTSData getData() {
         return data;
+    }
+
+    private static FPTSApp instance = null;
+
+    public static FPTSApp getInstance(){
+        return instance;
     }
 
     /**
@@ -80,8 +88,15 @@ public class FPTSApp extends Application  {
 
     }
 
+    public void centerWindow(Stage stage) {
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        instance = this;
         stageMap = new HashMap<>();
         stageMap.put("Main", primaryStage);
 
@@ -100,9 +115,8 @@ public class FPTSApp extends Application  {
         loadView(new LoginView(this));
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
-        primaryStage.setX(100);
-        primaryStage.setY(100);
         primaryStage.show();
+        centerWindow(primaryStage);
 
         List<String> params = this.getParameters().getRaw();
         if(params.size() == 2 && params.get(0).equals("delete")){

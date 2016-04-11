@@ -33,7 +33,7 @@ import java.util.Date;
 /**
  * @author: Alexander Kidd
  * Created: 3/11/2016
- * Revised: 3/13/2016
+ * Revised: 4/10/2016
  * Description: This controller handles requests
  * to alternate the portfolio UI based on internal
  * model changes and UI changes that alter the internal model state.
@@ -43,7 +43,8 @@ public class PortfolioController extends Controller {
     @FXML private TableView<Holding> holdingsPane;
     @FXML private TableView<Entry> transactionLogPane;
     @FXML private TableColumn<Holding, Holding> holdingActionColumn;
-    @FXML private  Text errorMessage;
+    @FXML private Text errorMessage;
+    @FXML private Text triggerAlert;
 
     private final DirectoryChooser directoryChooser = new DirectoryChooser();
     private final FileChooser fileChooser = new FileChooser();
@@ -56,7 +57,7 @@ public class PortfolioController extends Controller {
         holdingActionColumn.setCellValueFactory(features -> new ReadOnlyObjectWrapper<>(features.getValue()));
         holdingActionColumn.setCellFactory(actionColumn -> {
             final Button button = new Button();
-            button.setMinWidth(60);
+            button.setMinWidth(145);
             TableCell<Holding, Holding> cell = new TableCell<Holding, Holding>() {
                 @Override protected void updateItem(final Holding holding, boolean empty) {
                     super.updateItem(holding, empty);
@@ -85,7 +86,8 @@ public class PortfolioController extends Controller {
     @Override
     public void Load(FPTSApp app, Portfolio portfolio) {
         super.Load(app, portfolio);
-
+        _app.centerWindow(_app.getStage());
+        triggerAlert.setText(Integer.toString(_app.getData().getInstanceById(WatchList.class, _portfolio.id).getTriggeredCount()));
         transactionLog = new Log(portfolio);
         app.getData().getInstanceById(WatchList.class, portfolio.id).subscribe(() -> {refreshView(); return null;});
         refreshView();
@@ -123,7 +125,7 @@ public class PortfolioController extends Controller {
         _app.loadView(new SimulationView(_app));
     }
 
-    public void handlelLogOut(ActionEvent actionEvent) {
+    public void handleLogOut(ActionEvent actionEvent) {
         _app.getData().getInstanceById(WatchList.class, _portfolio.id).endWatch();
         _app.loadView(new LoginView(_app));
     }
@@ -170,5 +172,11 @@ public class PortfolioController extends Controller {
             ex.printStackTrace();
         }
         refreshView();
+    }
+
+    @FXML
+    public void handleWatchList() {
+        _app.loadView(new WatchListView(_app));
+        triggerAlert.setText(Integer.toString(_app.getData().getInstanceById(WatchList.class, _portfolio.id).getTriggeredCount()));
     }
 }

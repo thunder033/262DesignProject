@@ -50,6 +50,7 @@ public class Controller implements Observer, Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        _app = FPTSApp.getInstance();
         refreshView();
     }
 
