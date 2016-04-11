@@ -2,6 +2,7 @@ package FPTS.Models;
 
 /**
  * Created by Greg on 4/5/2016.
+ * Contains a record of
  */
 public class WatchedEquity {
 
@@ -15,11 +16,11 @@ public class WatchedEquity {
 
     private final MarketEquity equity;
 
-    protected float lowerTrigger = 0.0f;
-    protected float upperTrigger = 0.0f;
+    private float lowerTrigger = 0.0f;
+    private float upperTrigger = 0.0f;
     private TriggerState triggerState = TriggerState.NONE;
 
-    public WatchedEquity(MarketEquity equity){
+    WatchedEquity(MarketEquity equity){
         this.equity = equity;
     }
 
@@ -43,7 +44,7 @@ public class WatchedEquity {
         this.upperTrigger = upperTrigger;
     }
 
-    public void checkPrice(){
+    void checkPrice(){
         float price = equity.getSharePrice();
         if(price > upperTrigger){
             triggerState = TriggerState.CURRENTLY_ABOVE;
@@ -58,7 +59,7 @@ public class WatchedEquity {
         }
     }
 
-    public void resetTriggers(){
+    void resetTriggers(){
         checkPrice();
         if(triggerState != TriggerState.CURRENTLY_ABOVE && triggerState != TriggerState.CURRENTLY_BELOW){
             triggerState = TriggerState.NONE;
@@ -69,11 +70,11 @@ public class WatchedEquity {
         return triggerState;
     }
 
-    public boolean isTriggered(){
+    boolean isTriggered(){
         return triggerState != TriggerState.NONE;
     }
 
-    public String[] serialize(){
+    String[] serialize(){
         return new String[]{
                 equity.getTickerSymbol(),
                 Float.toString(lowerTrigger),

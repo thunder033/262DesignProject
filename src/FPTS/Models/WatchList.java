@@ -117,6 +117,8 @@ public class WatchList extends Model {
             public void run() {
                 Platform.runLater(() -> {
                     equities.values().stream().forEach(WatchedEquity::checkPrice);
+
+                    //attempt to call the watchlist subscriber
                     if(subscriber != null){
                         try {
                             System.out.println("Call subscriber");
@@ -124,13 +126,15 @@ public class WatchList extends Model {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-
                     }
                 });
             }
         }, 0, updateInterval);
     }
 
+    /**
+     * Stop watching the equities in the list
+     */
     public void endWatch(){
         if(timer != null){
             timer.cancel();

@@ -17,7 +17,9 @@ public class SearchIterator {
     
     public SearchIterator(ObservableList<MarketEquity> e){
         entries = e;
-        entries = FXCollections.observableArrayList(entries.stream().sorted((MarketEquity a, MarketEquity b) -> a.getTickerSymbol().compareTo(b.getTickerSymbol())).collect(toList()));
+        entries = FXCollections.observableArrayList(entries.stream()
+                .sorted((MarketEquity a, MarketEquity b) -> a.getTickerSymbol().compareTo(b.getTickerSymbol()))
+                .collect(toList()));
     }
     
     public int getPagesTotal(){

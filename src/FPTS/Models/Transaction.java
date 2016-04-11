@@ -19,14 +19,20 @@ public class Transaction extends Model {
 
     private boolean rolledBack = false;
 
-    private Transaction(){
+    //These are private because only the builder can make a transaction
+    private Transaction(){}
 
-    }
-
+    /**
+     * Rebuild a persisted transaction
+     * @param id the ID of the transaction
+     */
     private Transaction(String id){
         super(id);
     }
 
+    /**
+     * Provides a simple interface to define a transaction
+     */
     public static class Builder {
         Transaction txn;
 
@@ -53,21 +59,35 @@ public class Transaction extends Model {
         public Builder dateTime(Date date){
             txn.dateTime = date; return this;}
 
+        /**
+         * Complete the builder
+         * @return the created transaction
+         */
         public Transaction build(){
+            //Destroy the reference to the build transaction so the builder is invalid
             Transaction ret = txn;
             txn = null;
             return ret;
         }
     }
 
+    /**
+     * @return the source holding (where funds are coming from)
+     */
     public Holding getSource(){
         return source;
     }
 
+    /**
+     * @return the destination holding (where funds are going to)
+     */
     public Holding getDestination(){
         return destination;
     }
 
+    /**
+     * @return get the share price of any equity at the time of the transaction
+     */
     public float getSharePrice(){
         return sharePrice;
     }
@@ -80,6 +100,9 @@ public class Transaction extends Model {
         return source == null || Model.class.cast(source).isDeleted() ? getDestination() : getSource();
     }
 
+    /**
+     * @return the monetary value of funds transferred by the transaction
+     */
     public float getValue(){
         return value;
     }
@@ -93,19 +116,32 @@ public class Transaction extends Model {
         return dateTime;
     }
 
+    /**
+     * Complete the transaction with a default date (now)
+     * @throws InvalidTransactionException
+     * @throws TransactionReExecutionException
+     */
     public void execute() throws InvalidTransactionException, TransactionReExecutionException {
         execute(new Date());
     }
 
+    /**
+     * Complete the transaction, writing all associated models
+     * @param date when the transaction was completed
+     * @throws InvalidTransactionException
+     * @throws TransactionReExecutionException
+     */
     public void execute(Date date) throws InvalidTransactionException, TransactionReExecutionException {
         if(dateTime == null || rolledBack){
 
-            float cashValue = value * sharePrice;
+            float cashValue = value * sharePrice; //calculate the funds to transfer
 
+            //A valid transaction must have at least source or dest, and the source must be able to remain above $0
             if(source == null && destination == null || source != null && source.getValue() < cashValue){
                 throw new InvalidTransactionException(source, cashValue);
             }
 
+            //A valid transaction cannot be completed between to reference to the same holding
             if(source != null && destination != null && source.getExportIdentifier().equals(destination.getExportIdentifier())){
                 throw new InvalidTransactionException(source, destination);
             }
@@ -117,12 +153,12 @@ public class Transaction extends Model {
             if(source != null) {
                 source.removeValue(cashValue);
             }
-
+            //If the transaction was rolled back, use the existing date
             setDateTime(rolledBack ? dateTime : date);
 
             rolledBack = false;
             isPersistent = true;
-
+            //Write all changes
             setChanged();
             save();
 
@@ -139,9 +175,14 @@ public class Transaction extends Model {
         return rolledBack;
     }
 
+    /**
+     * Reverses all fund transfers performed by this transaction, writing the changes
+     * This also make the transaction non-persistent and allows it to be re-executed
+     * @throws InvalidTransactionException
+     */
     public void rollback() throws InvalidTransactionException {
         if(dateTime != null){
-
+            //The transaction must have been previously executed to roll it back
             float cashValue = value * sharePrice;
             if(destination.getValue() < cashValue) {
                 throw new InvalidTransactionException(source, value);
@@ -157,7 +198,7 @@ public class Transaction extends Model {
 
             rolledBack = true;
             isPersistent = false;
-
+            //write all changes
             setChanged();
             save();
 

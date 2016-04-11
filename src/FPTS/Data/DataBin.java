@@ -18,6 +18,9 @@ import java.util.stream.Collectors;
  */
 public abstract class DataBin {
 
+    /**
+     * Stores values used to initialize a persisted model instance
+     */
     public final class ModelInitializer {
         public final Date dateCreated;
         public final Date dateDeleted;
@@ -91,10 +94,16 @@ public abstract class DataBin {
         }
     }
 
+    /**
+     * Builds the value array for the given model
+     * @param model the model to serialize
+     * @return an array of values representing the model
+     */
     private String[] buildValueArray(Model model){
         String[] values =  toValueArray(model);
         String[] modelValues = new String[values.length + 2];
         System.arraycopy(values, 0, modelValues, 0, values.length);
+        //add the created and deleted date fields
         modelValues[values.length] = Long.toString(model.getDateCreated().getTime());
         modelValues[values.length + 1] = model.isDeleted() ? Long.toString(model.getDateDeleted().getTime()) : "0";
         return modelValues;

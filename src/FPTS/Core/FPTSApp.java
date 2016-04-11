@@ -119,7 +119,7 @@ public class FPTSApp extends Application {
         centerWindow(primaryStage);
 
         List<String> params = this.getParameters().getRaw();
-        if(params.size() == 2 && params.get(0).equals("delete")){
+        if(params.size() == 2 && params.get(0).equals("-delete")){
             System.out.println("Delete portfolio " + params.get(1));
             Portfolio portfolio = data.getInstanceById(Portfolio.class, params.get(1));
             if(portfolio != null){

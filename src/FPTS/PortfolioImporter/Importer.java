@@ -20,10 +20,18 @@ public class Importer {
         _path = path;
     }
 
+    /**
+     * Sets the parsing strategy the Importer will use
+     * @param strategy a strategy based on the file format
+     */
     public void setStrategy(ImportStrategy strategy) {
         parsingStrategy = strategy;
     }
 
+    /**
+     * Imports the file at Importer path and attempts to parse the raw data into models
+     * @return
+     */
     public ImportResult importData() {
         return parsingStrategy.execute(_path);
     }

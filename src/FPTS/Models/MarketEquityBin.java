@@ -24,7 +24,7 @@ public class MarketEquityBin extends DataBin {
 
     /**
      * Parses a market equity values array into a market equity instance
-     * Builds market indexs by adding the created equity to the appropriate index
+     * Builds market indexes by adding the created equity to the appropriate index
      * @param values [tickerSymbol, name, sharePrice, index/sector]
      * @return a market equity index
      */
@@ -50,6 +50,11 @@ public class MarketEquityBin extends DataBin {
         return mEquity;
     }
 
+    /**
+     * WARNING: Market equities are not meant to persisted
+     * @param instance instance to serialize
+     * @return an empty array
+     */
     @Override
     public String[] toValueArray(Model instance) {
         return new String[0];
