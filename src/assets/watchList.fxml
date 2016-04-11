@@ -102,9 +102,13 @@
         </items>
     </TableView>
 
-    <TextField fx:id="newEquitySymbol" prefWidth="150" promptText="Equity Ticker Symbol" GridPane.rowIndex="5" GridPane.columnIndex="0" ></TextField>
+    <TextField fx:id="newEquitySymbol" prefWidth="150" promptText="Equity Ticker Symbol" GridPane.rowIndex="5" GridPane.columnIndex="0" />
 
-    <Button fx:id="submitNewWatchEquity" text="Add Equity" onAction="#handleAddWatchedEquity" GridPane.rowIndex="5" GridPane.columnIndex="1"></Button>
+    <HBox GridPane.rowIndex="5" GridPane.columnIndex="1" spacing="10">
+        <Button onAction="#searchEquities" text="Search"/>
+        <Button fx:id="submitNewWatchEquity" text="Add Equity" onAction="#handleAddWatchedEquity"/>
+    </HBox>
+
 
     <stylesheets>
         <URL value="@styles/portfolio.css" />

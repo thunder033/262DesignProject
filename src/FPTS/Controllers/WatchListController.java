@@ -3,10 +3,14 @@ package FPTS.Controllers;
 import FPTS.Controls.NumericField;
 import FPTS.Core.Controller;
 import FPTS.Core.FPTSApp;
+import FPTS.Core.View;
 import FPTS.Models.*;
+import FPTS.Search.SelectSearchListener;
+import FPTS.Views.SearchView;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -27,7 +31,7 @@ import java.util.ResourceBundle;
  * Description: Facilitates in communication
  * between the watch list logic and the watch list UI View.
  */
-public class WatchListController extends Controller {
+public class WatchListController extends Controller implements SelectSearchListener {
     @FXML private Text portfolioName;
 
     @FXML private NumericField minutesInterval;
@@ -263,5 +267,16 @@ public class WatchListController extends Controller {
             highTriggerFields.add(new TextField());
             refreshView();
         }
+    }
+
+    public void searchEquities(ActionEvent actionEvent) {
+        View view = new SearchView(_app);
+        _app.loadView(view);
+        SearchController.class.cast(view.getController()).addListener(this);
+    }
+
+    @Override
+    public void SearchResultSelected(String searchResult) {
+        newEquitySymbol.setText(searchResult);
     }
 }
