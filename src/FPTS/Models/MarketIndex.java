@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 public class MarketIndex extends MarketEquity {
 
-    private ArrayList<MarketEquity> equities;
+    protected ArrayList<MarketEquity> equities;
 
     protected MarketIndex(String indexName)
     {
@@ -28,9 +28,8 @@ public class MarketIndex extends MarketEquity {
     @Override
     public float getSharePrice()
     {
-        return equities.stream()
-                .map(MarketEquity::getSharePrice)
-                .reduce(0.0f, (a, b) -> a + b);
+        return (float) equities.stream()
+                .mapToDouble(MarketEquity::getSharePrice).average().getAsDouble();
     }
 
     /**

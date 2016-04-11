@@ -1,13 +1,11 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
-import FPTS.Models.Holding;
 import FPTS.PortfolioImporter.HoldingImportHandler;
 import FPTS.PortfolioImporter.ImportItem;
 import FPTS.PortfolioImporter.InvalidChoiceException;
 import FPTS.Views.ImportHoldingsView;
 import FPTS.Views.PortfolioView;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.Import;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -20,12 +18,10 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 

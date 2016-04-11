@@ -160,10 +160,10 @@ public class Transaction extends Model {
             isPersistent = true;
             //Write all changes
             setChanged();
-            save();
-
             saveModels(Equity.class);
             saveModels(CashAccount.class);
+            save();
+
             saveModels(Transaction.class);
         } else {
             throw new TransactionReExecutionException(this);
@@ -200,10 +200,10 @@ public class Transaction extends Model {
             isPersistent = false;
             //write all changes
             setChanged();
-            save();
-
             saveModels(Equity.class);
             saveModels(CashAccount.class);
+            save();
+
             saveModels(Transaction.class);
 
         } else {

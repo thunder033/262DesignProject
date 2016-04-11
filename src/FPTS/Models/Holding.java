@@ -58,6 +58,10 @@ public abstract class Holding extends Model {
      * @return type-id hash: [Type][ID], ex. C12 or E333
      */
     static String serializeHolding(Holding holding){
+        if(holding == null){
+            return "";
+        }
+
         return holding instanceof CashAccount ? "C" + holding.id : "E" + holding.id;
     }
 
@@ -67,6 +71,10 @@ public abstract class Holding extends Model {
      * @return the cash account or equity holding
      */
     static Holding deserializeHolding(String hash){
+        if(hash.length() == 0){
+            return null;
+        }
+
         String id = hash.substring(1);
         Class type = hash.charAt(0) == 'C' ? CashAccount.class : Equity.class;
         return Holding.class.cast(FPTSData.getDataRoot().getInstanceById(type, id));

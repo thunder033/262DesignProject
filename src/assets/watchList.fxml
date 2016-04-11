@@ -74,6 +74,7 @@
     </HBox>
 
     <Label text="Watched Holdings" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="holdings-header" GridPane.columnSpan="1"/>
+    <Button text="Reset Trigger States" onAction="#resetTriggerStates" GridPane.columnIndex="4" GridPane.rowIndex="3" />
 
     <TableView fx:id="holdingsPane" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="5" GridPane.hgrow="ALWAYS" prefHeight="350">
         <columns>

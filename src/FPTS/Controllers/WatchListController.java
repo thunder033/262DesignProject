@@ -154,19 +154,19 @@ public class WatchListController extends Controller implements SelectSearchListe
                     if(watchedEquity != null && !empty) {
                         switch(watchedEquity.getTriggerState()) {
                             case PREVIOUSLY_ABOVE:
-                                setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/upArrow.png"))));
+                                setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/upArrowTriggered.png"))));
                                 break;
                             case CURRENTLY_ABOVE:
-                                setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/upArrowTriggered.png"))));
+                                setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/upArrow.png"))));
                                 break;
                             case NONE:
                                 setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/samePriceIcon.png"))));
                                 break;
                             case CURRENTLY_BELOW:
-                                setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/downArrowTriggered.png"))));
+                                setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/downArrow.png"))));
                                 break;
                             case PREVIOUSLY_BELOW:
-                                setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/downArrow.png"))));
+                                setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/downArrowTriggered.png"))));
                                 break;
                             default:
                                 setGraphic(new ImageView(new Image(this.getClass().getResourceAsStream("/assets/samePriceIcon.png"))));
@@ -222,6 +222,7 @@ public class WatchListController extends Controller implements SelectSearchListe
                 System.out.println("Deleted From Watchlist Equity: " + cell.getItem().getEquity().getName());
                 FPTSApp.getInstance().getData().getInstanceById(WatchList.class, _portfolio.id).removeEquity(cell.getItem().getEquity());
                 FPTSApp.getInstance().getData().getInstanceById(WatchList.class, _portfolio.id).save();
+                _app.getData().writeBin(WatchList.class);
                 refreshView();
             });
 
@@ -266,6 +267,7 @@ public class WatchListController extends Controller implements SelectSearchListe
             lowTriggerFields.add(new TextField());
             highTriggerFields.add(new TextField());
             refreshView();
+            _app.getData().writeBin(WatchList.class);
         }
     }
 
@@ -278,5 +280,11 @@ public class WatchListController extends Controller implements SelectSearchListe
     @Override
     public void SearchResultSelected(String searchResult) {
         newEquitySymbol.setText(searchResult);
+    }
+
+    public void resetTriggerStates(ActionEvent actionEvent) {
+        WatchList watchList = _app.getData().getInstanceById(WatchList.class, _portfolio.id);
+        watchList.resetTriggers();
+        refreshView();
     }
 }
