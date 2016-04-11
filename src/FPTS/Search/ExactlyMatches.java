@@ -11,6 +11,7 @@ package FPTS.Search;
 public class ExactlyMatches implements SearchMethod{
 
         @Override
+        //Comparison
 	public boolean compare(String searchTerm, String cmp){
 
 		return cmp.equals(searchTerm);

@@ -11,10 +11,14 @@ package FPTS.Search;
 public class BeginsWith implements SearchMethod{
 
         @Override
+        
+        //Comparison
 	public boolean compare(String searchTerm, String cmp){
                 if (searchTerm.length() > cmp.length()){
                     return false;
                 }
+                
+                //Return true or false depending on if they are equal
 		return searchTerm.equals(cmp.substring(0, searchTerm.length()));
 
 	}

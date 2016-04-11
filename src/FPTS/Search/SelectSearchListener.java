@@ -7,7 +7,7 @@ package FPTS.Search;
 
 /**
  *
- * @author Nimex
+ * @author Eric
  */
 public interface SelectSearchListener {
   public void SearchResultSelected(String searchResult);

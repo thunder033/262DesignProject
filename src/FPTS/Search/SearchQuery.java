@@ -28,6 +28,7 @@ public class SearchQuery{
         ArrayList<MarketEquity> results = new ArrayList<>();
         
         //Iterate through Equities for each parameter to find if the searchTerm (not case sensitive) matches the Fields
+        
         if (f == SearchParameter.searchParameter.id){
             marketEquities.stream().filter((i) -> (searchMethod.compare(searchTerm.toUpperCase(), i.getTickerSymbol().toUpperCase()))).forEach((i) -> {
                 results.add(i);
@@ -46,6 +47,7 @@ public class SearchQuery{
             });
         }
 
+        //Return list of equities that match all search parameters
         return results;
 
     }

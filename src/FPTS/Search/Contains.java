@@ -9,6 +9,7 @@ package FPTS.Search;
 public class Contains implements SearchMethod{
 
         @Override
+        //Comparison
 	public boolean compare(String searchTerm, String cmp){
 		return cmp.contains(searchTerm);
 	}
