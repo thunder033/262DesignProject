@@ -7,7 +7,8 @@
 
 The Financial Portfolio Tracking System (FPTS) is a JavaFX application for 
 managing a portfolio of holdings (equities and cash accounts).  Users can also 
-import and export said holdings 
+import and export said holdings, simulate market environments with their holdings,
+track a special list of holdings for price fluctuations, and make transactions.
 
 Below is how to install and run FPTS:
 
