@@ -48,8 +48,8 @@ public class WatchListController extends Controller {
     @FXML private TextField newEquitySymbol;
     @FXML private Button submitNewWatchEquity;
 
-    ArrayList<TextField> lowTriggerFields = new ArrayList<>();
-    ArrayList<TextField> highTriggerFields = new ArrayList<>();
+    private ArrayList<TextField> lowTriggerFields = new ArrayList<>();
+    private ArrayList<TextField> highTriggerFields = new ArrayList<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -247,9 +247,11 @@ public class WatchListController extends Controller {
 
     @FXML
     public void handleTimer() {
-        _app.getData().getInstanceById(WatchList.class, _portfolio.id).setUpdateInterval((Integer.parseInt(minutesInterval.getText()) * 60)
+        WatchList watchList = _app.getData().getInstanceById(WatchList.class, _portfolio.id);
+        watchList.setUpdateInterval((Integer.parseInt(minutesInterval.getText()) * 60)
         + Integer.parseInt(secondsInterval.getText()));
-        System.out.println("Timer Set To " + _app.getData().getInstanceById(WatchList.class, _portfolio.id).getUpdateInterval());
+        System.out.println("Timer Set To " + watchList.getUpdateInterval());
+        _app.getData().writeBin(WatchList.class);
     }
 
     @FXML

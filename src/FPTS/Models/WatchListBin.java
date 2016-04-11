@@ -43,7 +43,7 @@ public class WatchListBin extends DataBin {
         ArrayList<String> values = new ArrayList<>();
 
         values.add(watchList.id);
-        values.add(Integer.toString(watchList.getUpdateInterval()));
+        values.add(Integer.toString(watchList.getUpdateInterval() * 1000));
 
         watchList.getWatchedEquities().stream()
                 .map(WatchedEquity::serialize)
