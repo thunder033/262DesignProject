@@ -5,6 +5,9 @@ import java.util.Stack;
 
 /**
  * Created by traub_000 on 3/11/2016.
+ * Holds information about the current simulation session.
+ * Includes methods for keeping track of which algorithms have been used,
+ * simulating the portfolio, and reverting the portfolio.
  */
 public class Simulation {
 
