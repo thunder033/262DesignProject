@@ -2,6 +2,7 @@ package FPTS.MarketSimulation;
 
 /**
  * Created by traub_000 on 3/11/2016.
+ * A Bear market algorithm decreases the portfolio's value over time
  */
 public class BearMarketSimulation extends MarketSimulationAlgorithm {
 
