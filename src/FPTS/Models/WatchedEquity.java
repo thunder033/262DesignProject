@@ -46,13 +46,13 @@ public class WatchedEquity {
 
     void checkPrice(){
         float price = equity.getSharePrice();
-        if(price > upperTrigger){
+        if(price > upperTrigger && upperTrigger > 0){
             triggerState = TriggerState.CURRENTLY_ABOVE;
         } else if (triggerState == TriggerState.CURRENTLY_ABOVE){
             triggerState = TriggerState.PREVIOUSLY_ABOVE;
         }
 
-        if( price < lowerTrigger) {
+        if( price < lowerTrigger && lowerTrigger > 0) {
             triggerState = TriggerState.CURRENTLY_BELOW;
         } else if (triggerState == TriggerState.CURRENTLY_BELOW) {
             triggerState = TriggerState.PREVIOUSLY_BELOW;
