@@ -2,6 +2,9 @@ package FPTS.MarketSimulation;
 
 /**
  * Created by Brian on 3/10/2016.
+ * The parent class for Market Simulation Algorithms.
+ * defines attributes and methods to implement for
+ * all algorithms.
  */
 public abstract class MarketSimulationAlgorithm {
 
