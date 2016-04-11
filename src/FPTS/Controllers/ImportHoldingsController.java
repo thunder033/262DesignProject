@@ -1,6 +1,7 @@
 package FPTS.Controllers;
 
 import FPTS.Core.Controller;
+import FPTS.Models.CashAccount;
 import FPTS.PortfolioImporter.HoldingImportHandler;
 import FPTS.PortfolioImporter.ImportItem;
 import FPTS.PortfolioImporter.InvalidChoiceException;
@@ -100,9 +101,28 @@ public class ImportHoldingsController extends Controller{
 
     public void addCashAccount(ActionEvent event) {
 
+        if(newCAName.getText().length() == 0){
+            CAerrorMessage.setText("Must provide a name for the cash account");
+        }
+
+        if(_portfolio.getHolding(newCAName.getText()) != null){
+            CAerrorMessage.setText("Cash account already exists with name: " + newCAName.getText());
+            return;
+        }
+
         try {
-            holdingsPane.setItems(HoldingImportHandler.getNewHoldings(newCAName.getText(), newCAValue.getText()));
-            showHoldings();
+            //holdingsPane.setItems(HoldingImportHandler.getNewHoldings(newCAName.getText(), newCAValue.getText()));
+            //showHoldings();
+
+            float value = Float.parseFloat(newCAValue.getText());
+            CashAccount account = new CashAccount(newCAName.getText(), value);
+            _portfolio.addHolding(account);
+            account.save();
+            _portfolio.save();
+
+            newCAName.clear();
+            newCAValue.clear();
+            CAerrorMessage.setText("Added Cash Account " + account.getName());
         }catch (NumberFormatException e){
             CAerrorMessage.setText("Invalid value for new cash account.");
         }catch (IllegalArgumentException e) {
