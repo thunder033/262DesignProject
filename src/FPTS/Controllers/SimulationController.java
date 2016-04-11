@@ -14,6 +14,8 @@ import java.text.DecimalFormat;
 
 /**
  * Created by traub_000 on 3/11/2016.
+ * This controller reads the simulation options the user has chosen through 
+ * the UI and sends them to the Simulation class where the algorithm is performed. 
  */
 public class SimulationController extends Controller {
 
