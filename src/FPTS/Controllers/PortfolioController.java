@@ -158,6 +158,11 @@ public class PortfolioController extends Controller {
                 break;
             }
         }
+
+        if(i == 0){
+            return;
+        }
+
         try {
             transactionLog.getTransactions().get(i-1).execute();
         } catch (InvalidTransactionException|TransactionReExecutionException ex) {
