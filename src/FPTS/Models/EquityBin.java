@@ -19,6 +19,11 @@ public class EquityBin extends DataBin {
         dataClass = Equity.class;
     }
 
+    /**
+     * Creates an equity instance from the values array
+     * @param values an array of string values read from CSV
+     * @return an equity instance
+     */
     @Override
     public Model fromValueArray(String[] values) {
         MarketEquity marketEquity = FPTSData.getDataRoot().getInstanceById(MarketEquity.class, values[1]);
@@ -27,6 +32,11 @@ public class EquityBin extends DataBin {
         return equity;
     }
 
+    /**
+     * Serializes an equity into an internal values array
+     * @param instance instance to serialize
+     * @return an array of values representing the equity
+     */
     @Override
     public String[] toValueArray(Model instance) {
         Equity equity = Equity.class.cast(instance);

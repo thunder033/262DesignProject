@@ -6,7 +6,9 @@ import FPTS.Models.*;
 import FPTS.Views.LoginView;
 
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +37,13 @@ public class FPTSApp extends Application {
     public FPTSData getData() {
         return data;
     }
-    
+
+    private static FPTSApp instance = null;
+
+    public static FPTSApp getInstance(){
+        return instance;
+    }
+
     /**
      * @return the current view
      */
@@ -80,8 +88,15 @@ public class FPTSApp extends Application {
 
     }
 
+    public void centerWindow(Stage stage) {
+        Rectangle2D primScreenBounds = Screen.getPrimary().getVisualBounds();
+        stage.setX((primScreenBounds.getWidth() - stage.getWidth()) / 2);
+        stage.setY((primScreenBounds.getHeight() - stage.getHeight()) / 2);
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        instance = this;
         stageMap = new HashMap<>();
         stageMap.put("Main", primaryStage);
 
@@ -100,12 +115,11 @@ public class FPTSApp extends Application {
         loadView(new LoginView(this));
         primaryStage.getIcons().add(new Image(this.getClass().getResourceAsStream("/assets/appIcon.png")));
         primaryStage.setTitle("ThunderForge FPTS");
-        primaryStage.setX(100);
-        primaryStage.setY(100);
         primaryStage.show();
+        centerWindow(primaryStage);
 
         List<String> params = this.getParameters().getRaw();
-        if(params.size() == 2 && params.get(0).equals("delete")){
+        if(params.size() == 2 && params.get(0).equals("-delete")){
             System.out.println("Delete portfolio " + params.get(1));
             Portfolio portfolio = data.getInstanceById(Portfolio.class, params.get(1));
             if(portfolio != null){

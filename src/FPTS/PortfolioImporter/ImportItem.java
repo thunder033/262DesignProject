@@ -7,6 +7,9 @@ import FPTS.Models.Portfolio;
 
 /**
  * Created by Greg on 4/9/2016.
+ * Provides operations and instructions for importing a
+ *  holding into a portfolio. Directly exposes holding
+ *  fields for easy use in a view
  */
 public class ImportItem {
 
@@ -36,6 +39,10 @@ public class ImportItem {
         this.holding = holding;
     }
 
+    /**
+     * Determines if the holding conflicts with an existing holding
+     * @return whether or not the holding conflicts
+     */
     public boolean isConflicted(){
         return holding.getClass() == CashAccount.class && portfolio.containsHolding(holding);
     }
@@ -68,6 +75,10 @@ public class ImportItem {
         return holding.getClass() == Equity.class ? String.format("%.4f", Equity.class.cast(holding).getShares()) : "";
     }
 
+    /**
+     * Determines what the final value of the imported holding will be based on the item action
+     * @return A formatted dollar value of the import item result
+     */
     public String getResult(){
 
         Holding existing = portfolio.getHolding(holding.getExportIdentifier());

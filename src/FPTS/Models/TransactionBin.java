@@ -18,6 +18,11 @@ public class TransactionBin extends DataBin {
         fileName = "transactions.csv";
     }
 
+    /**
+     * De-serializes a value array into a transaction instance
+     * @param values an array of string values read from CSV
+     * @return a Transaction instance
+     */
     @Override
     public Model fromValueArray(String[] values) {
        return new Transaction.Builder(values[0])
@@ -29,6 +34,11 @@ public class TransactionBin extends DataBin {
                 .build();
     }
 
+    /**
+     * Serializes a transaction into a value array
+     * @param instance instance to serialize
+     * @return an array of string values representing the transaction
+     */
     @Override
     public String[] toValueArray(Model instance) {
         Transaction transaction = Transaction.class.cast(instance);

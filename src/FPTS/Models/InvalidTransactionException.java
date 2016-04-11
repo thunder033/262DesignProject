@@ -2,6 +2,7 @@ package FPTS.Models;
 
 /**
  * Created by gjrwcs on 3/17/2016.
+ * An error indicating a transaction with invalid parameters was attempted
  */
 public class InvalidTransactionException extends Exception {
     public InvalidTransactionException(Holding holding, float value){

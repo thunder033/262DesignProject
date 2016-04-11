@@ -10,6 +10,7 @@ import java.util.Collections;
 
 /**
  * Created by Greg on 4/5/2016.
+ * Indexes WatchList instances and serializes/deserializes them
  */
 public class WatchListBin extends DataBin {
 
@@ -18,6 +19,11 @@ public class WatchListBin extends DataBin {
         fileName = "watchLists.csv";
     }
 
+    /**
+     * Creates an instance of a WatchList from a valid value array
+     * @param values an array of string values read from CSV
+     * @return a WatchList instance
+     */
     @Override
     public Model fromValueArray(String[] values) {
 
@@ -28,14 +34,19 @@ public class WatchListBin extends DataBin {
         while(i < values.length) {
             MarketEquity equity = FPTSData.getDataRoot().getInstanceById(MarketEquity.class, values[i++]);
             WatchedEquity watchedEquity = new WatchedEquity(equity);
-            watchedEquity.lowerTrigger = Float.parseFloat(values[i++]);
-            watchedEquity.upperTrigger = Float.parseFloat(values[i++]);
+            watchedEquity.setLowerTrigger(Float.parseFloat(values[i++]));
+            watchedEquity.setUpperTrigger(Float.parseFloat(values[i++]));
             watchList.loadWatchedEquity(watchedEquity);
         }
 
         return watchList;
     }
 
+    /**
+     * Generates a value array from a WatchList instance
+     * @param instance instance to serialize
+     * @return an array of values that represent the WatchList
+     */
     @Override
     public String[] toValueArray(Model instance) {
 
@@ -43,7 +54,7 @@ public class WatchListBin extends DataBin {
         ArrayList<String> values = new ArrayList<>();
 
         values.add(watchList.id);
-        values.add(Integer.toString(watchList.getUpdateInterval()));
+        values.add(Integer.toString(watchList.getUpdateInterval() * 1000));
 
         watchList.getWatchedEquities().stream()
                 .map(WatchedEquity::serialize)

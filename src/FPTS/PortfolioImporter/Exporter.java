@@ -41,6 +41,11 @@ public class Exporter {
         return values;
     }
 
+    /**
+     * Serialize a transaction into an array of values
+     * @param transaction the transaction to serialize
+     * @return an array of values
+     */
     public static String[] serializeTransaction(Transaction transaction) {
 
         String sourceID = transaction.getSource() == null ? "" : transaction.getSource().getExportIdentifier();

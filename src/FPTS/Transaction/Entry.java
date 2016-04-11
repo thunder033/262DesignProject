@@ -78,6 +78,12 @@ public class Entry {
         return getType(txn.getSource(), txn.getDestination());
     }
 
+    /**
+     * Determines the type of transaction that would be performed
+     * @param src source holding or null
+     * @param dest destination holding or null
+     * @return the type of transaction
+     */
     public static EntryFormat getType(Holding src, Holding dest) {
         EntryFormat type = EntryFormat.TRANSFER_CASH_ACCOUNT;
         if(src == null && dest == null) {
@@ -95,6 +101,9 @@ public class Entry {
         return type;
     }
 
+    /**
+     * @return Plain-text description of the transaction
+     */
     public String getDescription(){
         return getType().apply(txn);
     }
@@ -106,5 +115,13 @@ public class Entry {
 
     public Transaction getTransaction(){
         return txn;
+    }
+    
+    public String getStatus(){
+        if (txn.isRolledBack()){
+            return "Disabled";
+        } else {
+            return "Enabled";
+        }
     }
 }

@@ -60,7 +60,7 @@ public class WatchList extends Model {
     }
 
     public int getUpdateInterval(){
-        return updateInterval;
+        return updateInterval / 1000;
     }
 
     /**
@@ -76,7 +76,7 @@ public class WatchList extends Model {
      * Returns the count of watched equities that are currently triggered
      * @return number of triggered watches
      */
-    public int getTriggeredCount(){
+    public int getTriggeredCount() {
         return (int) getWatchedEquities().stream()
                 .filter(WatchedEquity::isTriggered)
                 .count();
@@ -117,6 +117,8 @@ public class WatchList extends Model {
             public void run() {
                 Platform.runLater(() -> {
                     equities.values().stream().forEach(WatchedEquity::checkPrice);
+
+                    //attempt to call the watchlist subscriber
                     if(subscriber != null){
                         try {
                             System.out.println("Call subscriber");
@@ -124,13 +126,15 @@ public class WatchList extends Model {
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
-
                     }
                 });
             }
         }, 0, updateInterval);
     }
 
+    /**
+     * Stop watching the equities in the list
+     */
     public void endWatch(){
         if(timer != null){
             timer.cancel();

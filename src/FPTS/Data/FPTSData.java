@@ -32,7 +32,10 @@ public class FPTSData implements Observer {
         return _instance;
     }
 
-
+    /**
+     * Imports the DataBin instance into the data index, and invokes the bin load operation
+     * @param bin the bin to import
+     */
     public void importBin(DataBin bin) {
         bins.put(bin.dataClass, bin);
         bin.loadInstances();
@@ -55,6 +58,11 @@ public class FPTSData implements Observer {
         }
     }
 
+    /**
+     * Invokes the write operation for the bin with the given type, saving all changes
+     * @param type the bin type to write to
+     * @param <T> A model sub-class with an associated DataBin
+     */
     public <T extends Model> void writeBin(Class<T> type){
         bins.get(type).writeInstances();
     }

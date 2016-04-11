@@ -33,11 +33,11 @@ public class Equity extends Holding {
     }
 
     /**
-     * @return name of the equity on the market
+     * @return name of the equity on the market.
      */
     @Override
     public String getName() {
-        return String.format("%s (%s, $%.2f)", _marketEquity.getName(), _marketEquity.getTickerSymbol(), _marketEquity.getSharePrice());
+        return _marketEquity.getName();
     }
 
     /**

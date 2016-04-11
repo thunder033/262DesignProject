@@ -21,10 +21,14 @@ import java.util.Map;
 /**
  * Created by gjr8050 on 4/6/2016.
  * Handles interactions with Yahoo Financial Services API
+ * This class is a Singleton so that current share prices
+ * can be cached uniformly to prevent extra requests.
  */
 public class YFSClient {
 
+    //How many milliseconds a cached price is valid
     private float maxCacheAge = 1000 * 60 * 5;
+    //A map of ticker symbols to cached prices
     private Map<String, CachedPrice> cache;
     private static YFSClient instance = null;
 
@@ -35,7 +39,7 @@ public class YFSClient {
         final float sharePrice;
         final Date date;
 
-        public CachedPrice(float sharePrice){
+        CachedPrice(float sharePrice){
             this.sharePrice = sharePrice;
             date = new Date();
         }

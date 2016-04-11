@@ -13,7 +13,7 @@ import FPTS.Core.View;
 public class PortfolioView extends View {
     public PortfolioView(FPTSApp app){
         super(app);
-        width = 800;
+        width = 900;
         height = 800;
         _fxmlName = "portfolio.fxml";
     }

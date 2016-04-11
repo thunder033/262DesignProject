@@ -32,6 +32,11 @@ public class Portfolio extends Model {
         super.save();
     }
 
+    /**
+     * Validates the provided hash against the that stored in the portfolio
+     * @param hash the password hash to check
+     * @return boolean indicating if hash is correct
+     */
     public boolean validateHash(String hash){
         return hash.equals(_passHash);
     }
@@ -46,15 +51,30 @@ public class Portfolio extends Model {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Retrieve the collection of holding in the portfolio
+     * @param includeDeleted whether or not to include soft-deleted holdings (default false)
+     * @return a list of holding
+     */
     public List<Holding> getHoldings(boolean includeDeleted)
     {
         return includeDeleted ? new ArrayList<>(holdings.values()) : getHoldings();
     }
 
+    /**
+     * Determines if the holding is contained in the portfolio based on export ID
+     * @param holding the holding to check
+     * @return if the portfolio contains the holding
+     */
     public boolean containsHolding(Holding holding){
         return holdings.containsKey(holding.getExportIdentifier());
     }
 
+    /**
+     * Retrieve a holding from the portfolio based on its Export ID
+     * @param exportID the holding Export ID (Ticker symbol or CA Name)
+     * @return the holding if it exists, or null
+     */
     public Holding getHolding(String exportID){
         if(holdings.containsKey(exportID)){
             return holdings.get(exportID);
@@ -84,6 +104,10 @@ public class Portfolio extends Model {
         }
     }
 
+    /**
+     * Removes the holding from the portfolio, based on export ID
+     * @param holding the holding to remove
+     */
     public void removeHolding(Holding holding)
     {
         if(holding != null){
@@ -92,6 +116,9 @@ public class Portfolio extends Model {
         }
     }
 
+    /**
+     * Hard deletes the holding and all of its associated entities. NOT Undoable.
+     */
     @Override
     public void hardDelete() {
         new Log(this).getEntries().stream()
