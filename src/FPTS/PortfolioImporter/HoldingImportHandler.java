@@ -1,23 +1,15 @@
 package FPTS.PortfolioImporter;
 
-import FPTS.Core.FPTSApp;
-import FPTS.Core.Model;
 import FPTS.Models.CashAccount;
 import FPTS.Models.Equity;
 import FPTS.Models.Holding;
 import FPTS.Models.Portfolio;
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -118,6 +110,11 @@ public class HoldingImportHandler {
     private static void mergeHoldings() {
         for(Holding hold : CAMergeList){
             System.out.println("CA Merge " + hold.getExportIdentifier());
+            _portfolio.getHolding(hold.getExportIdentifier()).addValue(hold.getValue());
+        }
+
+        for(Holding hold : equityMergeList){
+            System.out.println("Equity Merge " + hold.getExportIdentifier());
             _portfolio.getHolding(hold.getExportIdentifier()).addValue(hold.getValue());
         }
     }
