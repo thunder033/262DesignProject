@@ -116,7 +116,13 @@ public class YFSClient {
                     i++;
                 } while (node.getNodeType() != Node.ELEMENT_NODE);
                 Element eElement = (Element) node;
-                sharePrice = Float.valueOf(eElement.getElementsByTagName("LastTradePriceOnly").item(0).getTextContent());
+
+                try {
+                    sharePrice = Float.valueOf(eElement.getElementsByTagName("LastTradePriceOnly").item(0).getTextContent());
+                } catch (NumberFormatException ex){
+                    sharePrice = 0;
+                }
+
 
             } catch (IOException | ParserConfigurationException | SAXException e) {
                 e.printStackTrace();

@@ -9,6 +9,8 @@ Description: UI component formatting.
 <?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
+
+<?import javafx.scene.text.Text?>
 <GridPane alignment="center" hgap="10" vgap="10"
           maxWidth="Infinity"
           fx:controller="FPTS.Controllers.SearchController"
@@ -43,14 +45,18 @@ Description: UI component formatting.
     <RadioButton toggleGroup="$RB_Group3" fx:id="beginsWith3" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
     <RadioButton toggleGroup="$RB_Group3" fx:id="contains3" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
     <RadioButton toggleGroup="$RB_Group3" fx:id="exactlyMatches3" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
-    <Button text="Search" onAction="#handleSearchAction" GridPane.columnIndex="4" GridPane.rowIndex="5"/>
+    <Button text="Search" onAction="#handleSearchAction" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
     <Button text="Select" onAction="#handleSelectAction" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-    <TableView fx:id="searchResultsPane" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="3" GridPane.hgrow="ALWAYS">
+    <Button text="Previous Page" onAction="#handlePrevPage" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+    <Text fx:id="page" GridPane.columnIndex="2" GridPane.rowIndex="7"/>
+    <Button text="Next Page" onAction="#handleNextPage" GridPane.columnIndex="3" GridPane.rowIndex="7"/>
+    
+    <TableView fx:id="searchResultsPane" GridPane.columnIndex="0" GridPane.rowIndex="6" GridPane.columnSpan="4" GridPane.hgrow="ALWAYS">
         <columns>
             <TableColumn text="TickerSymbol">
                 <cellValueFactory><PropertyValueFactory property="TickerSymbol" /></cellValueFactory>
             </TableColumn>
-            <TableColumn text="Name">
+            <TableColumn text="Name" prefWidth="200">
                 <cellValueFactory><PropertyValueFactory property="name" /></cellValueFactory>
             </TableColumn>
             <TableColumn text="Value (USD)" prefWidth="150">

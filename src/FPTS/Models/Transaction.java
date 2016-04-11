@@ -124,9 +124,11 @@ public class Transaction extends Model {
             isPersistent = true;
 
             setChanged();
+            save();
+
             saveModels(Equity.class);
             saveModels(CashAccount.class);
-            save();
+            saveModels(Transaction.class);
         } else {
             throw new TransactionReExecutionException(this);
         }
@@ -157,9 +159,11 @@ public class Transaction extends Model {
             isPersistent = false;
 
             setChanged();
+            save();
+
             saveModels(Equity.class);
             saveModels(CashAccount.class);
-            save();
+            saveModels(Transaction.class);
 
         } else {
             throw new UnsupportedOperationException("Transaction " + id + " cannot be rolled back because it has not been executed.");

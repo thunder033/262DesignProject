@@ -23,19 +23,19 @@ import java.util.Map;
  * and CSV file data is loaded into respective bins.
  */
 
-public class FPTSApp extends Application {
+public class FPTSApp extends Application  {
 
     private FPTSData data;
     private View currentView;
     private Map<String, Stage> stageMap;
-    
+
     /**
      * @return a reference to the data root
      */
     public FPTSData getData() {
         return data;
     }
-    
+
     /**
      * @return the current view
      */

@@ -132,36 +132,43 @@ public class PortfolioController extends Controller {
         int i=0;
         errorMessage.setText("");
         if(transactionLog.getTransactions().isEmpty()) {return;}
-        while(!transactionLog.getTransactions().get(i).isRolledBack()){
+        while(transactionLog.getTransactions().get(i).isRolledBack()){
             if (++i==transactionLog.getTransactions().size()){
                 break;
             }
         }
-        if(i>0){
+        if(i<transactionLog.getTransactions().size()){
             try {
-                transactionLog.getTransactions().get(i-1).rollback();
+                transactionLog.getTransactions().get(i).rollback();
             } catch (InvalidTransactionException ex) {
                 errorMessage.setText(ex.getMessage());
                 ex.printStackTrace();
             }
+		}
 
-        }
+        refreshView();
     }
     
-    public void handleRedo(ActionEvent actionevent) {
+    public void handleRedo(ActionEvent actionevent){
         int i=0;
         errorMessage.setText("");
         if(transactionLog.getTransactions().isEmpty()) {return;}
-        while(!transactionLog.getTransactions().get(i).isRolledBack()){
+        while(transactionLog.getTransactions().get(i).isRolledBack()){
             if (++i==transactionLog.getTransactions().size()){
                 break;
             }
         }
+
+        if(i == 0){
+            return;
+        }
+
         try {
-            transactionLog.getTransactions().get(i).execute();
+            transactionLog.getTransactions().get(i-1).execute();
         } catch (InvalidTransactionException|TransactionReExecutionException ex) {
             errorMessage.setText(ex.getMessage());
             ex.printStackTrace();
         }
+        refreshView();
     }
 }

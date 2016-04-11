@@ -107,4 +107,12 @@ public class Entry {
     public Transaction getTransaction(){
         return txn;
     }
+    
+    public String getStatus(){
+        if (txn.isRolledBack()){
+            return "Disabled";
+        } else {
+            return "Enabled";
+        }
+    }
 }
